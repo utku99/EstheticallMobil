@@ -5,8 +5,9 @@ import CustomInputs from './CustomInputs'
 import LikeIcon from '../assets/svg/common/LikeIcon'
 import StepIndicator from 'react-native-step-indicator';
 import CustomButtons from './CustomButtons'
+import LikeUnlikeComp from './LikeUnlikeComp'
 
-const AppointmentComp = () => {
+const AppointmentComp = ({ item }: { item: any }) => {
 
 
 
@@ -15,22 +16,22 @@ const AppointmentComp = () => {
 
 
             <View className='p-[10px] space-y-2'>
-                <Text className='text-customGray font-poppins text-xs '>04.03.2021</Text>
+                <Text className='text-customGray font-poppins text-xs '>{item?.createdDate}</Text>
 
                 {/* header */}
                 <View className='flex-row justify-between items-center '>
                     <View className='w-[60px] h-[60px] overflow-hidden rounded-full border-[0.6px] border-customGray'>
-                        <Image source={require("../assets/images/authBg/auth.jpg")} className='w-full h-full' resizeMode='cover' />
+                        <Image source={{ uri: item?.companyModel?.companyLogo }} className='w-full h-full' resizeMode='cover' />
                     </View>
                     <View className=' w-[40%]'>
-                        <Text numberOfLines={1} className='text-customGray font-poppins text-sm font-bold'>Esteworld</Text>
-                        <Text numberOfLines={1} className='text-customGray font-poppins text-xs '>TR, İstanbul, Ataşehir</Text>
+                        <Text numberOfLines={1} className='text-customGray font-poppins text-sm font-bold'>{item?.companyModel?.companyName}</Text>
+                        <Text numberOfLines={1} className='text-customGray font-poppins text-xs '>{item?.companyModel?.location}</Text>
                     </View>
                     <View className='items-center'>
                         <Text className='text-customGray font-poppins text-xs'>Yorumlar</Text>
-                        <CustomInputs type='rating' value={100 / 20} />
+                        <CustomInputs type='rating' value={Number(item?.companyModel?.companyPoint) / 20} />
                     </View>
-                    <LikeIcon />
+                    <LikeUnlikeComp item={item} isFavorite={item?.companyModel?.isCompanyFavorite} readOnly />
                 </View>
 
                 <View className=''>
@@ -40,12 +41,12 @@ const AppointmentComp = () => {
 
                 <View >
                     <Text className='text-customGray font-poppins text-sm font-medium  '>Operasyonlar: </Text>
-                    <Text className='text-customGray font-poppins text-sm '>Deviasyon (Septum Eğriliği) Ameliyatı, Revizyon Burun Cerrahisi.</Text>
+                    <Text className='text-customGray font-poppins text-sm '>{item?.serviceName}</Text>
                 </View>
 
                 <View >
                     <Text className='text-customOrange font-poppins text-sm font-medium '>Teklif Tarih Aralığı: </Text>
-                    <Text className='text-customOrange font-poppins text-sm '>15 Şubat 2024 - 15 Nisan 2024</Text>
+                    <Text className='text-customOrange font-poppins text-sm '>{item?.startDate} - {item?.endDate}</Text>
                 </View>
             </View>
 
@@ -72,7 +73,7 @@ const AppointmentComp = () => {
                     separatorUnFinishedColor: "#CECECE",
                     stepIndicatorUnFinishedColor: "#FF8170",
                 }}
-                currentPosition={2}
+                currentPosition={item?.operationState}  // 0 1 2
                 labels={["Onay Bekliyor", "Onaylandı", "Tamamlandı"]}
                 stepCount={3}
             />

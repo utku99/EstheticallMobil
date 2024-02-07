@@ -14,6 +14,8 @@ const Sharings = () => {
     const { Post, loading } = WebClient()
     const dispatch = useDispatch()
     const { user } = useSelector((state: any) => state.user)
+    const [clicked, setClicked] = useState(false)
+
     const { country, city, town, institution, operation, suboperation, listFilters } = useSelector((state: any) => state.filter)
 
     const [shareds, SetShareds] = useState<any>([])
@@ -33,9 +35,9 @@ const Sharings = () => {
         })
 
         dispatch(setListFilters(false))
+        setClicked(false)
 
-    }, [listFilters])
-
+    }, [listFilters, clicked])
 
 
     return (
@@ -47,7 +49,7 @@ const Sharings = () => {
                     contentContainerStyle={{ display: "flex", gap: 15, paddingBottom: 20 }}
                     data={shareds}
                     renderItem={({ item }) =>
-                        <SharingComp key={item.sharedID} item={item} onClickable />
+                        <SharingComp key={item.sharedID} item={item} onClickable setClicked={setClicked} />
                     }
                 />
 

@@ -2,13 +2,15 @@ import { View, Text, Image } from 'react-native'
 import React from 'react'
 import LikeIcon from '../assets/svg/common/LikeIcon'
 import { SIZES } from '../constants/constants'
+import LikeUnlikeComp from './LikeUnlikeComp'
 
 interface props {
-    item?: any
+    item?: any,
+    setClicked?: any
+    readOnly?: boolean
 }
 
-const DoctorComp: React.FC<props> = ({ item }) => {
-
+const DoctorComp: React.FC<props> = ({ item, setClicked, readOnly }) => {
 
 
     return (
@@ -16,16 +18,20 @@ const DoctorComp: React.FC<props> = ({ item }) => {
             <View className='w-[60px] h-[60px] overflow-hidden rounded-full border-[0.6px] border-customGray'>
                 <Image source={{ uri: item?.logo }} className='w-full h-full' resizeMode='cover' />
             </View>
-            <View className='w-[40%] '>
-                <Text numberOfLines={1} className='text-customGray font-poppins text-xs font-bold'>{item?.nameWithTitle}</Text>
-                <Text numberOfLines={1} className='text-customGray font-poppins text-xs'>{item?.doctorBranch}</Text>
-                <Text numberOfLines={1} className='text-customGray font-poppins text-xs'>{item?.doctorLocation}</Text>
+            <View className='w-[40%] space-y-[3px]'>
+                <Text numberOfLines={1} className='text-customGray font-poppins text-xs font-bold'>{item?.nameWithTitle ?? item?.name}</Text>
+                {
+                    (item?.doctorBranch ?? item?.branch) && (
+                        <Text numberOfLines={1} className='text-customGray font-poppins text-xs'>{item?.doctorBranch ?? item?.branch}</Text>
+                    )
+                }
+                <Text numberOfLines={1} className='text-customGray font-poppins text-xs'>{item?.doctorLocation ?? item?.location}</Text>
             </View>
             <View className='items-center '>
-                <Text className='text-customGray font-poppins text-xs'>{item?.commentsPoint.split("/")[0] / 20}/5</Text>
+                <Text className='text-customGray font-poppins text-xs'>{(item?.commentsPoint?.split("/")[0] ?? item?.point) / 20}/5</Text>
                 <Text className='text-customGray font-poppins text-xs'>Yorumlar</Text>
             </View>
-            <LikeIcon />
+            <LikeUnlikeComp item={item} setClicked={setClicked} readOnly={readOnly} isFavorite={item?.isFavorite} />
         </View >
     )
 }

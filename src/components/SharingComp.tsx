@@ -13,6 +13,8 @@ import { SIZES } from '../constants/constants'
 import HandleData from './HandleData'
 import { useNavigation } from '@react-navigation/native'
 import { useSelector } from 'react-redux'
+import LikeUnlikeComp from './LikeUnlikeComp'
+import SharingSavedIcon from '../assets/svg/homepages/SharingSavedIcon'
 
 
 const CommentComp = ({ item }: any) => {
@@ -35,14 +37,14 @@ const CommentComp = ({ item }: any) => {
 }
 
 
-const SharingComp = ({ item, onClickable = false }: { item: any, onClickable?: boolean }) => {
+const SharingComp = ({ item, onClickable = false, setClicked, readOnly }: { item: any, onClickable?: boolean, setClicked?: any, readOnly?: boolean }) => {
     const [seeComments, setSeeComments] = useState(false)
     const [sharedDetail, setSharedDetail] = useState<any>(null)
     const [index, setIndex] = useState<any>(0)
     const { Post, loading } = WebClient()
     const isCarousel = useRef(null);
     const navigation = useNavigation()
-    const { user } = useSelector((state: any) => state.user)
+    const { user, isLoggedIn } = useSelector((state: any) => state.user)
 
 
     useEffect(() => {
@@ -72,9 +74,15 @@ const SharingComp = ({ item, onClickable = false }: { item: any, onClickable?: b
                 </TouchableOpacity>
                 <View className='items-center'>
                     <Text className='text-customGray font-poppins text-xs'>Yorumlar</Text>
-                    <CustomInputs type='rating' value={Number(item?.companyPoint ?? "") / 20} />
+                    {
+                        item?.companyPoint ? (
+                            <CustomInputs type='rating' value={Number(item?.companyPoint) / 20} />
+                        ) : (
+                            <CustomInputs type='rating' value={item?.parentModel?.companyPoint ? item?.parentModel?.companyPoint / 20 : 0} />
+                        )
+                    }
                 </View>
-                <LikeIcon />
+                <LikeUnlikeComp item={item} setClicked={setClicked} readOnly={readOnly} isFavorite={item?.isFavorite ?? item?.parentModel?.isFavorite} />
             </View>
 
             {/* carousel */}
@@ -120,10 +128,31 @@ const SharingComp = ({ item, onClickable = false }: { item: any, onClickable?: b
             <View className={`bg-customBrown w-full h-[35px] px-[10px] rounded-b-xl flex-row items-center`}>
                 <Text onPress={() => setSeeComments(!seeComments)} className='text-white text-xs font-poppins flex-1'>{seeComments ? "Yorumları Gizle" : "Yorumları Gör"}</Text>
                 <View className='flex-row space-x-3 '>
-                    <Pressable onPress={() => setSeeComments(!seeComments)}>
+
+                    <TouchableOpacity onPress={() => setSeeComments(!seeComments)}>
                         <SharingMessageIcon />
-                    </Pressable>
-                    <SharingSaveIcon />
+                    </TouchableOpacity>
+
+                    {
+                        isLoggedIn ? (
+                            <TouchableOpacity onPress={() => {
+                                Post("/api/Common/SaveShared", {
+                                    "userID": user?.id,
+                                    "sharedID": item?.sharedID,
+                                    "isSaved": !item?.isSaved ?? !item?.parentModel?.isSaved
+                                }).then(res => {
+                                    setClicked(true)
+                                })
+                            }}>
+                                {
+                                    item?.isSaved ?? item?.parentModel?.isSaved ? <SharingSavedIcon /> : <SharingSaveIcon />
+                                }
+                            </TouchableOpacity>
+                        ) : (
+                            <SharingSaveIcon />
+                        )
+                    }
+
                     <SharingShareIcon />
                 </View>
             </View>
@@ -139,9 +168,9 @@ const SharingComp = ({ item, onClickable = false }: { item: any, onClickable?: b
                     </HandleData>
 
 
-                    <View className='rounded-xl border border-customLightGray h-[40px] overflow-hidden flex-row items-center'>
+                    <View className='rounded-xl border border-customLightGray bg-white h-[40px] overflow-hidden flex-row items-center'>
                         <TextInput
-                            className='placeholder flex-1'
+                            className='placeholder flex-1 pl-2'
                             placeholder='Yorumunuzu Yazın...'
                             placeholderTextColor={"#4D4A48"}
                         />

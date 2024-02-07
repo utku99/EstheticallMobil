@@ -6,11 +6,14 @@ import ShareIcon from '../assets/svg/homepages/ShareIcon'
 import LinearGradient from 'react-native-linear-gradient'
 import SeeAllArrow from '../assets/svg/homepages/SeeAllArrow'
 import { SIZES } from '../constants/constants'
+import LikeUnlikeComp from './LikeUnlikeComp'
 
 
 
 const CommentToCompanyComp = ({ item }: any) => {
     const [seeAll, setSeeAll] = useState(false)
+
+    console.log(item);
 
 
     return (
@@ -76,7 +79,9 @@ const CommentToCompanyComp = ({ item }: any) => {
                     </View>
                     <View className='items-center space-y-2'>
                         <ShareIcon />
-                        <LikeIcon />
+                        <View>
+                            <LikeUnlikeComp item={item} readOnly isFavorite={item?.isFavorite} />
+                        </View>
                     </View>
                 </View>
             </View>

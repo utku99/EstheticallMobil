@@ -1,10 +1,8 @@
-import { Text, View } from 'react-native'
 import React, { Component } from 'react'
 import { DrawerContentScrollView, DrawerItem, DrawerItemList } from '@react-navigation/drawer'
 import ProfileIcon from '../assets/svg/userMenu/ProfileIcon'
 import OfferIcon from '../assets/svg/userMenu/OfferIcon'
 import AppointmentIcon from '../assets/svg/userMenu/AppointmentIcon'
-import BuyIcon from '../assets/svg/userMenu/BuyIcon'
 import MessageIcon from '../assets/svg/userMenu/MessageIcon'
 import NotificationIcon from '../assets/svg/userMenu/NotificationIcon'
 import CommentIcon from '../assets/svg/userMenu/CommentIcon'
@@ -23,8 +21,7 @@ export class DrawerBar extends Component {
                 <DrawerItem label="Profilim" onPress={() => navigation.navigate("userprofile")} icon={() => <ProfileIcon />} activeTintColor='red' pressColor='blue' />
                 <DrawerItem label="Tekliflerim" onPress={() => navigation.navigate("useroffer")} icon={() => <OfferIcon />} activeTintColor='red' pressColor='blue' />
                 <DrawerItem label="Randevularım" onPress={() => navigation.navigate("userappointment")} icon={() => <AppointmentIcon />} activeTintColor='red' pressColor='blue' />
-                <DrawerItem label="Aldıklarım" onPress={() => navigation.navigate("userbuy")} icon={() => <BuyIcon />} activeTintColor='red' pressColor='blue' />
-                <DrawerItem label="Mesajlar" onPress={() => navigation.navigate("usermessage")} icon={() => <MessageIcon />} activeTintColor='red' pressColor='blue' />
+                <DrawerItem label="Mesajlar" onPress={() => navigation.navigate("userincomingmessage")} icon={() => <MessageIcon />} activeTintColor='red' pressColor='blue' />
                 <DrawerItem label="Bildirimler" onPress={() => navigation.navigate("usernotification")} icon={() => <NotificationIcon />} activeTintColor='red' pressColor='blue' />
                 <DrawerItem label="Yorumlarım" onPress={() => navigation.navigate("usercomment")} icon={() => <CommentIcon />} activeTintColor='red' pressColor='blue' />
                 <DrawerItem label="Favoriler" onPress={() => navigation.navigate("userfavorite")} icon={() => <FavoriteIcon />} activeTintColor='red' pressColor='blue' />

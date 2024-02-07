@@ -4,8 +4,8 @@ import Svg, { Path } from "react-native-svg"
 function TrashIcon(props: any) {
     return (
         <Svg
-            width={18}
-            height={23}
+            width={props.width ?? 18}
+            height={props.height ?? 23}
             viewBox="0 0 18 23"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"

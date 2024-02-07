@@ -1,23 +1,44 @@
 import { View, Text, FlatList } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import UserWrapper from './UserWrapper'
 import HandleData from '../../components/HandleData'
 import CustomButtons from '../../components/CustomButtons'
 import AppointmentComp from '../../components/AppointmentComp'
+import { useNavigation } from '@react-navigation/native'
+import WebClient from '../../utility/WebClient'
+import { useSelector } from 'react-redux'
 
 const UserAppointment = () => {
-    const [activeTab, setActiveTab] = useState(1)
+    const navigation = useNavigation()
+    const { Post, loading } = WebClient()
+    const [userAppointments, setUserAppointments] = useState<any>([])
+    const { user } = useSelector((state: any) => state.user)
+
+    useEffect(() => {
+        Post("/api/Appointments/MyAppointments", {
+            "userID": user?.id
+        }).then(res => {
+            setUserAppointments(res.data.object)
+        })
+    }, [])
+
+
     return (
         <UserWrapper>
 
             <View className='flex-row items-center mb-4 space-x-3'>
-                <CustomButtons type={activeTab == 1 ? "brownsolid" : "brownoutlined"} label='Randevularım' width={"w-[130px] mr-4"} onPress={() => setActiveTab(1)} />
-                <CustomButtons type={activeTab == 2 ? "brownsolid" : "brownoutlined"} label='Yeni Randevu' width={"w-[130px]"} onPress={() => setActiveTab(2)} />
+                <CustomButtons type="brownsolid" label='Randevularım' style={{ width: 130, }} />
+                <CustomButtons type="brownoutlined" label='Yeni Randevu' style={{ width: 130 }} onPress={() => navigation.navigate("appointment")} />
             </View>
 
-            <HandleData title={"Randevunuz Bulunmamaktadır"} loading={false}>
+            <HandleData data={userAppointments} title={"Randevunuz Bulunmamaktadır"} loading={false}>
 
-                <AppointmentComp />
+                <FlatList
+                    contentContainerStyle={{ display: "flex", gap: 15, paddingBottom: 20 }}
+                    data={userAppointments}
+                    renderItem={({ item }) => <AppointmentComp item={item} />}
+
+                />
 
             </HandleData>
 

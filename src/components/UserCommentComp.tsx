@@ -12,6 +12,7 @@ import WebClient from '../utility/WebClient'
 import ModalWrapper from './ModalWrapper'
 import CustomButtons from './CustomButtons'
 import { Controller, useForm } from 'react-hook-form'
+import LikeUnlikeComp from './LikeUnlikeComp'
 
 
 
@@ -45,7 +46,6 @@ const UserCommentComp = ({ item, setClicked }: any) => {
         console.log(data);
 
     }
-
 
 
     return (
@@ -123,7 +123,9 @@ const UserCommentComp = ({ item, setClicked }: any) => {
                     </View>
                     <View className='items-center space-y-2'>
                         <ShareIcon />
-                        <LikeIcon />
+                        <View>
+                            <LikeUnlikeComp item={item} readOnly isFavorite={item?.doctor?.isDoctorFavorite} />
+                        </View>
                     </View>
                 </View>
 

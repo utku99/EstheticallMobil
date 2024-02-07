@@ -12,16 +12,18 @@ import DoctorArrowDownIcon from '../assets/svg/firm/DoctorArrowDownIcon'
 import ShareIcon from '../assets/svg/homepages/ShareIcon'
 import RenderHTML from 'react-native-render-html'
 import CustomButtons from './CustomButtons'
+import LikeUnlikeComp from './LikeUnlikeComp'
 
 
 
-const PackageComp = ({ item, onClickable = false }: { item: any, onClickable?: boolean }) => {
+const PackageComp = ({ item, onClickable = false, setClicked }: { item: any, onClickable?: boolean, setClicked?: any }) => {
 
     const [seeAll, setSeeAll] = useState(false)
     const [index, setIndex] = useState<any>(0)
     const isCarousel = useRef(null);
     const navigation = useNavigation()
 
+    console.log(item.isFavorite);
 
 
     return (
@@ -42,7 +44,7 @@ const PackageComp = ({ item, onClickable = false }: { item: any, onClickable?: b
                     <Text className='text-customGray font-poppins text-xs'>Yorumlar</Text>
                     <CustomInputs type='rating' value={Number(item?.headerModel?.commentPoint ?? item?.companyPoint) / 20} />
                 </View>
-                <LikeIcon />
+                <LikeUnlikeComp item={item} setClicked={setClicked} isFavorite={item?.isFavorite} />
             </View>
 
             {/* carousel */}
@@ -104,7 +106,9 @@ const PackageComp = ({ item, onClickable = false }: { item: any, onClickable?: b
                         </View>
                         <View className='items-center space-y-2'>
                             <ShareIcon />
-                            <LikeIcon />
+                            <View>
+                                <LikeUnlikeComp item={item} readOnly isFavorite={item?.doctorIsFavorite} />
+                            </View>
                         </View>
                     </View>
                     <View className='px-[10px] space-y-3 flex-row'>

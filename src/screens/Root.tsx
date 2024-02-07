@@ -31,8 +31,7 @@ import DrawerBar from '../components/DrawerBar'
 import UserProfile from './user/UserProfile'
 import UserOffer from './user/UserOffer'
 import UserAppointment from './user/UserAppointment'
-import UserBuy from './user/UserBuy'
-import UserMessage from './user/UserMessage'
+import UserMessage from './user/message/UserMessage'
 import UserNotification from './user/UserNotification'
 import UserComment from './user/UserComment'
 import UserFavorite from './user/UserFavorite'
@@ -48,6 +47,7 @@ import Question from './bottomTab/Question'
 import Offer from './bottomTab/Offer'
 import Appointment from './bottomTab/Appointment'
 import FirmAppointmentPayment from './firm/FirmAppointmentPayment'
+import UserIncomingMessage from './user/message/UserIncomingMessage'
 
 
 const Stack = createStackNavigator()
@@ -137,7 +137,7 @@ const UserStack = () => {
         <Stack.Screen name='userprofile' component={UserProfile} />
         <Stack.Screen name='useroffer' component={UserOffer} />
         <Stack.Screen name='userappointment' component={UserAppointment} />
-        <Stack.Screen name='userbuy' component={UserBuy} />
+        <Stack.Screen name='userincomingmessage' component={UserIncomingMessage} />
         <Stack.Screen name='usermessage' component={UserMessage} />
         <Stack.Screen name='usernotification' component={UserNotification} />
         <Stack.Screen name='usercomment' component={UserComment} />

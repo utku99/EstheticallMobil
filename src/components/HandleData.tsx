@@ -36,7 +36,7 @@ const HandleData = ({ data, loading, title, children }: props) => {
         )
     } else
         return (
-            <View className='flex-1'>
+            <View className='flex-1 '>
                 {children}
             </View>
         )

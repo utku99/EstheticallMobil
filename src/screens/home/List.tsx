@@ -15,6 +15,8 @@ const List = () => {
     const { Post, loading } = WebClient()
     const dispatch = useDispatch()
     const { user } = useSelector((state: any) => state.user)
+    const [clicked, setClicked] = useState(false)
+
     const { country, city, town, institution, operation, suboperation, listFilters } = useSelector(state => state.filter)
 
     const [doctors, setDoctors] = useState<any>([])
@@ -34,8 +36,9 @@ const List = () => {
         })
 
         dispatch(setListFilters(false))
+        setClicked(false)
 
-    }, [listFilters])
+    }, [listFilters, clicked])
 
 
     return (
@@ -46,7 +49,7 @@ const List = () => {
                 <FlatList
                     contentContainerStyle={{ display: "flex", gap: 15, paddingBottom: 20 }}
                     data={doctors}
-                    renderItem={({ item }) => <DoctorComp item={item} />}
+                    renderItem={({ item }) => <DoctorComp item={item} setClicked={setClicked} />}
                 />
             </HandleData>
 

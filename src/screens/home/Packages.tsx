@@ -24,6 +24,8 @@ const Packages = () => {
     const [operation, setOperation] = useState<any>(null)
     const [suboperation, setSuboperation] = useState<any>(null)
 
+    const [clickedLike, setClickedLike] = useState(false)
+
     const [clicked, setClicked] = useState(false)
     const [visible, setVisible] = useState(false)
     const [countries, setCountries] = useState([]);
@@ -109,7 +111,8 @@ const Packages = () => {
         })
 
         setClicked(false)
-    }, [clicked])
+        setClickedLike(false)
+    }, [clicked, clickedLike])
 
 
 
@@ -126,7 +129,7 @@ const Packages = () => {
                     contentContainerStyle={{ display: "flex", gap: 15, paddingBottom: 20, paddingVertical: 15, alignItems: "center" }}
                     data={packages}
                     renderItem={({ item }) =>
-                        <PackageComp key={item.packageID} item={item} onClickable />
+                        <PackageComp key={item.packageID} item={item} onClickable setClicked={setClickedLike} />
                     }
                 />
 

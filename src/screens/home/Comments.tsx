@@ -1,10 +1,9 @@
-import { View, Text, FlatList } from 'react-native'
+import { FlatList } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import HomeWrapper from './HomeWrapper'
 import CommentToCompanyComp from '../../components/CommentToCompanyComp'
 import WebClient from '../../utility/WebClient'
-import { useDispatch, useSelector } from 'react-redux'
-import { setListFilters } from '../../redux/slices/filter'
+import { useSelector } from 'react-redux'
 import HandleData from '../../components/HandleData'
 
 
@@ -13,7 +12,6 @@ import HandleData from '../../components/HandleData'
 
 const Comments = () => {
     const { Post, loading } = WebClient()
-    const dispatch = useDispatch()
     const { user } = useSelector((state: any) => state.user)
     const { country, city, town, institution, operation, suboperation, listFilters } = useSelector(state => state.filter)
 
