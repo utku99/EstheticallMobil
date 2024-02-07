@@ -1,0 +1,338 @@
+{
+  "v": "5.11.0",
+  "fr": 24,
+  "ip": 0,
+  "op": 24,
+  "w": 500,
+  "h": 500,
+  "nm": "Spinner 1",
+  "ddd": 0,
+  "assets": [
+    {
+      "id": "image_0",
+      "w": 114,
+      "h": 106,
+      "u": "",
+      "p": "data:image/png;base64,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",
+      "e": 1
+    }
+  ],
+  "layers": [
+    {
+      "ddd": 0,
+      "ind": 1,
+      "ty": 2,
+      "nm": "Vector.pdf",
+      "cl": "pdf",
+      "refId": "image_0",
+      "sr": 1,
+      "ks": {
+        "o": { "a": 0, "k": 100, "ix": 11 },
+        "r": { "a": 0, "k": 0, "ix": 10 },
+        "p": { "a": 0, "k": [250, 250, 0], "ix": 2, "l": 2 },
+        "a": { "a": 0, "k": [57, 53, 0], "ix": 1, "l": 2 },
+        "s": { "a": 0, "k": [100, 100, 100], "ix": 6, "l": 2 }
+      },
+      "ao": 0,
+      "ip": 0,
+      "op": 14400,
+      "st": 0,
+      "ct": 1,
+      "bm": 0
+    },
+    {
+      "ddd": 0,
+      "ind": 2,
+      "ty": 4,
+      "nm": "Control Panel",
+      "sr": 1,
+      "ks": {
+        "o": { "a": 0, "k": 100, "ix": 11 },
+        "r": { "a": 0, "k": 0, "ix": 10 },
+        "p": { "a": 0, "k": [250, 250, 0], "ix": 2, "l": 2 },
+        "a": { "a": 0, "k": [0, 0, 0], "ix": 1, "l": 2 },
+        "s": { "a": 0, "k": [100, 100, 100], "ix": 6, "l": 2 }
+      },
+      "ao": 0,
+      "ef": [
+        {
+          "ty": 5,
+          "nm": "Circle Stroke",
+          "np": 3,
+          "mn": "ADBE Slider Control",
+          "ix": 1,
+          "en": 1,
+          "ef": [
+            {
+              "ty": 0,
+              "nm": "Slider",
+              "mn": "ADBE Slider Control-0001",
+              "ix": 1,
+              "v": { "a": 0, "k": 34, "ix": 1 }
+            }
+          ]
+        },
+        {
+          "ty": 5,
+          "nm": "Circle Color",
+          "np": 3,
+          "mn": "ADBE Color Control",
+          "ix": 2,
+          "en": 1,
+          "ef": [
+            {
+              "ty": 2,
+              "nm": "Color",
+              "mn": "ADBE Color Control-0001",
+              "ix": 1,
+              "v": {
+                "a": 0,
+                "k": [1, 0.505882382393, 0.439215689898, 1],
+                "ix": 1
+              }
+            }
+          ]
+        },
+        {
+          "ty": 5,
+          "nm": "Circle BG Opacity",
+          "np": 3,
+          "mn": "ADBE Slider Control",
+          "ix": 3,
+          "en": 1,
+          "ef": [
+            {
+              "ty": 0,
+              "nm": "Slider",
+              "mn": "ADBE Slider Control-0001",
+              "ix": 1,
+              "v": { "a": 0, "k": 25, "ix": 1 }
+            }
+          ]
+        },
+        {
+          "ty": 5,
+          "nm": "Circle Size",
+          "np": 3,
+          "mn": "ADBE Slider Control",
+          "ix": 4,
+          "en": 1,
+          "ef": [
+            {
+              "ty": 0,
+              "nm": "Slider",
+              "mn": "ADBE Slider Control-0001",
+              "ix": 1,
+              "v": { "a": 0, "k": 366, "ix": 1 }
+            }
+          ]
+        }
+      ],
+      "shapes": [],
+      "ip": 0,
+      "op": 17580,
+      "st": 0,
+      "ct": 1,
+      "bm": 0
+    },
+    {
+      "ddd": 0,
+      "ind": 3,
+      "ty": 4,
+      "nm": "Cirlce",
+      "sr": 1,
+      "ks": {
+        "o": { "a": 0, "k": 100, "ix": 11 },
+        "r": {
+          "a": 1,
+          "k": [
+            {
+              "i": { "x": [0.09], "y": [1] },
+              "o": { "x": [0.333], "y": [0] },
+              "t": 0,
+              "s": [0]
+            },
+            {
+              "i": { "x": [0.833], "y": [1] },
+              "o": { "x": [0.333], "y": [0] },
+              "t": 20,
+              "s": [360]
+            },
+            { "t": 24, "s": [360] }
+          ],
+          "ix": 10,
+          "x": "var $bm_rt;\n$bm_rt = loopOut();"
+        },
+        "p": { "a": 0, "k": [250, 250, 0], "ix": 2, "l": 2 },
+        "a": { "a": 0, "k": [16, 24, 0], "ix": 1, "l": 2 },
+        "s": {
+          "a": 1,
+          "k": [
+            {
+              "i": { "x": [0.667, 0.667, 0.667], "y": [1, 1, 1] },
+              "o": { "x": [0.333, 0.333, 0.333], "y": [0, 0, 0] },
+              "t": 0,
+              "s": [90, 90, 100]
+            },
+            {
+              "i": { "x": [0.667, 0.667, 0.667], "y": [1, 1, 1] },
+              "o": { "x": [0.333, 0.333, 0.333], "y": [0, 0, 0] },
+              "t": 12,
+              "s": [100, 100, 100]
+            },
+            { "t": 24, "s": [90, 90, 100] }
+          ],
+          "ix": 6,
+          "l": 2,
+          "x": "var $bm_rt;\n$bm_rt = loopOut();"
+        }
+      },
+      "ao": 0,
+      "shapes": [
+        {
+          "ty": "gr",
+          "it": [
+            {
+              "d": 1,
+              "ty": "el",
+              "s": {
+                "a": 0,
+                "k": [1080, 1080],
+                "ix": 2,
+                "x": "var $bm_rt;\nvar temp;\ntemp = thisComp.layer('Control Panel').effect('Circle Size')('ADBE Slider Control-0001');\n$bm_rt = [\n    temp,\n    temp\n];"
+              },
+              "p": { "a": 0, "k": [0, 0], "ix": 3 },
+              "nm": "Ellipse Path 1",
+              "mn": "ADBE Vector Shape - Ellipse",
+              "hd": false
+            },
+            {
+              "ty": "tm",
+              "s": { "a": 0, "k": 47, "ix": 1 },
+              "e": { "a": 0, "k": 72, "ix": 2 },
+              "o": { "a": 0, "k": 144, "ix": 3 },
+              "m": 1,
+              "ix": 2,
+              "nm": "Trim Paths 1",
+              "mn": "ADBE Vector Filter - Trim",
+              "hd": false
+            },
+            {
+              "ty": "st",
+              "c": {
+                "a": 0,
+                "k": [0.996078431373, 0.070588235294, 0.007843137255, 1],
+                "ix": 3,
+                "x": "var $bm_rt;\n$bm_rt = thisComp.layer('Control Panel').effect('Circle Color')('ADBE Color Control-0001');"
+              },
+              "o": { "a": 0, "k": 100, "ix": 4 },
+              "w": {
+                "a": 0,
+                "k": 150,
+                "ix": 5,
+                "x": "var $bm_rt;\n$bm_rt = thisComp.layer('Control Panel').effect('Circle Stroke')('ADBE Slider Control-0001');"
+              },
+              "lc": 1,
+              "lj": 1,
+              "ml": 4,
+              "bm": 0,
+              "nm": "Stroke 1",
+              "mn": "ADBE Vector Graphic - Stroke",
+              "hd": false
+            },
+            {
+              "ty": "tr",
+              "p": { "a": 0, "k": [16, 24], "ix": 2 },
+              "a": { "a": 0, "k": [0, 0], "ix": 1 },
+              "s": { "a": 0, "k": [100, 100], "ix": 3 },
+              "r": { "a": 0, "k": 0, "ix": 6 },
+              "o": { "a": 0, "k": 100, "ix": 7 },
+              "sk": { "a": 0, "k": 0, "ix": 4 },
+              "sa": { "a": 0, "k": 0, "ix": 5 },
+              "nm": "Transform"
+            }
+          ],
+          "nm": "Fill",
+          "np": 3,
+          "cix": 2,
+          "bm": 0,
+          "ix": 1,
+          "mn": "ADBE Vector Group",
+          "hd": false
+        },
+        {
+          "ty": "gr",
+          "it": [
+            {
+              "d": 1,
+              "ty": "el",
+              "s": {
+                "a": 0,
+                "k": [1080, 1080],
+                "ix": 2,
+                "x": "var $bm_rt;\nvar temp;\ntemp = thisComp.layer('Control Panel').effect('Circle Size')('ADBE Slider Control-0001');\n$bm_rt = [\n    temp,\n    temp\n];"
+              },
+              "p": { "a": 0, "k": [0, 0], "ix": 3 },
+              "nm": "Ellipse Path 1",
+              "mn": "ADBE Vector Shape - Ellipse",
+              "hd": false
+            },
+            {
+              "ty": "st",
+              "c": {
+                "a": 0,
+                "k": [0.996078431373, 0.070588235294, 0.007843137255, 1],
+                "ix": 3,
+                "x": "var $bm_rt;\n$bm_rt = thisComp.layer('Control Panel').effect('Circle Color')('ADBE Color Control-0001');"
+              },
+              "o": {
+                "a": 0,
+                "k": 25,
+                "ix": 4,
+                "x": "var $bm_rt;\n$bm_rt = thisComp.layer('Control Panel').effect('Circle BG Opacity')('ADBE Slider Control-0001');"
+              },
+              "w": {
+                "a": 0,
+                "k": 150,
+                "ix": 5,
+                "x": "var $bm_rt;\n$bm_rt = thisComp.layer('Control Panel').effect('Circle Stroke')('ADBE Slider Control-0001');"
+              },
+              "lc": 1,
+              "lj": 1,
+              "ml": 4,
+              "bm": 0,
+              "nm": "Stroke 1",
+              "mn": "ADBE Vector Graphic - Stroke",
+              "hd": false
+            },
+            {
+              "ty": "tr",
+              "p": { "a": 0, "k": [16, 24], "ix": 2 },
+              "a": { "a": 0, "k": [0, 0], "ix": 1 },
+              "s": { "a": 0, "k": [100, 100], "ix": 3 },
+              "r": { "a": 0, "k": 0, "ix": 6 },
+              "o": { "a": 0, "k": 100, "ix": 7 },
+              "sk": { "a": 0, "k": 0, "ix": 4 },
+              "sa": { "a": 0, "k": 0, "ix": 5 },
+              "nm": "Transform"
+            }
+          ],
+          "nm": "BG",
+          "np": 2,
+          "cix": 2,
+          "bm": 0,
+          "ix": 2,
+          "mn": "ADBE Vector Group",
+          "hd": false
+        }
+      ],
+      "ip": 0,
+      "op": 17495,
+      "st": 0,
+      "ct": 1,
+      "bm": 0
+    }
+  ],
+  "markers": [],
+  "props": {}
+}
