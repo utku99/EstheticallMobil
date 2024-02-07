@@ -9,8 +9,7 @@ import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PURGE, PERSIST, 
 const persistConfig = {
     key: 'root',
     storage: AsyncStorage,
-    whitelist: ["user"]
-    // blacklist: ['key3', 'key4'],
+    whitelist: ["user"],
 };
 
 const rootReducer = combineReducers({

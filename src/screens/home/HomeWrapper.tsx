@@ -7,7 +7,7 @@ import CustomInputs from '../../components/CustomInputs'
 import { Modal } from 'react-native-paper'
 import WebClient from '../../utility/WebClient'
 import { useDispatch, useSelector } from 'react-redux'
-import { setCity, setCountry, setInstitution, setListFilters, setOperation, setSubOperation, setTown } from '../../redux/slices/filter'
+import { resetFilters, setCity, setCountry, setInstitution, setListFilters, setOperation, setSubOperation, setTown } from '../../redux/slices/filter'
 import { SIZES } from '../../constants/constants'
 
 interface props {
@@ -20,7 +20,7 @@ const HomeWrapper: React.FC<props> = ({ children }) => {
     const route = useRoute();
     const { Post } = WebClient()
 
-    const { country, city, town, institution, operation, suboperation } = useSelector(state => state.filter)
+    const { country, city, town, institution, operation, suboperation } = useSelector((state: any) => state.filter)
 
     const dispatch = useDispatch()
 
@@ -88,7 +88,7 @@ const HomeWrapper: React.FC<props> = ({ children }) => {
             })
         })
 
-    }, [country, city, operation])
+    }, [])
 
 
     return (
@@ -100,10 +100,10 @@ const HomeWrapper: React.FC<props> = ({ children }) => {
                     <FitlerIcon />
                 </TouchableOpacity>
                 <ScrollView horizontal contentContainerStyle={{ alignItems: "center", gap: 10, paddingHorizontal: 10, }}>
-                    <CustomButtons type={route.name == "sharing" ? 'solid' : "outlined"} label='Paylaşımlar' width="w-[110px]" onPress={() => { navigation.navigate("sharing", { tab: 1 }) }} />
-                    <CustomButtons type={route.name == "comment" ? 'solid' : "outlined"} label='Yorumlar' width="w-[110px]" onPress={() => { navigation.navigate("comment", { tab: 2 }) }} />
-                    <CustomButtons type={route.name == "list" ? 'solid' : "outlined"} label='Liste' width="w-[110px]" onPress={() => { navigation.navigate("list", { tab: 3 }) }} />
-                    <CustomButtons type={route.name == "map" ? 'iconsolid' : "iconoutlined"} icon='location' label='Harita' width="w-[110px]" onPress={() => { navigation.navigate("map", { tab: 4 }) }} />
+                    <CustomButtons type={route.name == "sharing" ? 'solid' : "outlined"} label='Paylaşımlar' style={{ width: 110 }} onPress={() => { navigation.navigate("sharing", { tab: 1 }) }} />
+                    <CustomButtons type={route.name == "comment" ? 'solid' : "outlined"} label='Yorumlar' style={{ width: 110 }} onPress={() => { navigation.navigate("comment", { tab: 2 }) }} />
+                    <CustomButtons type={route.name == "list" ? 'solid' : "outlined"} label='Liste' style={{ width: 110 }} onPress={() => { navigation.navigate("list", { tab: 3 }) }} />
+                    <CustomButtons type={route.name == "map" ? 'iconsolid' : "iconoutlined"} icon='location' label='Harita' style={{ width: 110 }} onPress={() => { navigation.navigate("map", { tab: 4 }) }} />
                 </ScrollView>
             </View >
 
@@ -127,7 +127,10 @@ const HomeWrapper: React.FC<props> = ({ children }) => {
                 {!operation && <CustomInputs type='dropdown' value={operation} dropdownData={services} placeholder='Operasyon Seç' isSearchable onChange={(e: any) => dispatch(setOperation(e))} />}
                 {operation && <CustomInputs type='dropdown' value={suboperation} dropdownData={serviceSubs} placeholder='Alt Operasyon Seç' isSearchable onChange={(e: any) => dispatch(setSubOperation(e))} />}
 
-                <CustomButtons type='solid' label='Listele' theme='middle' style={{ width: 90 }} onPress={() => { dispatch(setListFilters(true)); setVisible(false) }} />
+                <View className='flex-row  justify-between'>
+                    <CustomButtons type='solid' label='Listele' theme='middle' style={{ width: 90 }} onPress={() => { dispatch(setListFilters(true)); setVisible(false) }} />
+                    <CustomButtons type='outlined' label='Sıfırla' theme='middle' style={{ width: 90 }} onPress={() => { dispatch(setListFilters(true)); dispatch(resetFilters()); setVisible(false) }} />
+                </View>
             </Modal>
 
         </View >

@@ -33,7 +33,6 @@ const Comments = () => {
             setComments(res.data)
         })
 
-        dispatch(setListFilters(false))
 
     }, [listFilters])
 

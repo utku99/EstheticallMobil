@@ -30,7 +30,6 @@ const AuthWrapper: React.FC<props> = ({ children, title, onPress }) => {
     const dispatch = useDispatch()
     const route = useRoute();
 
-    console.log(route.name);
 
 
     return (

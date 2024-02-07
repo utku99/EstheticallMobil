@@ -2,6 +2,7 @@ import { View, Text } from 'react-native'
 import React from 'react'
 import { SIZES } from '../constants/constants'
 import loader from "../assets/lottie/data.json"
+import LottieView from "lottie-react-native";
 
 interface props {
     data?: any,
@@ -24,8 +25,12 @@ const HandleData = ({ data, loading, title, children }: props) => {
         return (
             <View className='w-full h-full items-center justify-center '>
                 <View className='w-[80px] h-[80px] items-center justify-center'>
-                    {/* <LottieView source={require('../assets/lottie/data.json')} loop autoPlay /> */}
-                    <Text>loading...</Text>
+                    <LottieView
+                        source={require('../assets/lottie/data.json')}
+                        style={{ width: "100%", height: "100%" }}
+                        loop
+                        autoPlay
+                    />
                 </View>
             </View>
         )

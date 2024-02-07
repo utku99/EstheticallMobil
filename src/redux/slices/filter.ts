@@ -35,8 +35,16 @@ const filterSlice = createSlice({
         setListFilters: (state, action) => {
             state.listFilters = action.payload
         },
+        resetFilters: (state) => {
+            state.country = null,
+                state.city = null,
+                state.town = null,
+                state.institution = null,
+                state.operation = null,
+                state.suboperation = null
+        },
     }
 })
 
 export default filterSlice.reducer
-export const { setCity, setCountry, setInstitution, setOperation, setSubOperation, setTown, setListFilters } = filterSlice.actions
+export const { setCity, setCountry, setInstitution, setOperation, setSubOperation, setTown, setListFilters, resetFilters } = filterSlice.actions
