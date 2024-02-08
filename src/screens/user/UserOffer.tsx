@@ -24,7 +24,7 @@ const UserOffer = () => {
 
     useEffect(() => {
         Post("/api/Offers/CurrentOffers", {
-            "userID": user?.id ?? 157
+            "userID": user?.id
         }).then(res => {
             if (res.data.code === "100") {
                 setMyOffers(res.data.object)
@@ -50,9 +50,13 @@ const UserOffer = () => {
                 <View className='flex-row items-center justify-between w-[80%] mb-3'>
                     <Text className='font-poppins text-sm font-medium text-customGray'>Teklif ID: <Text className='font-normal'>{selectedRequest?.offerID}</Text> </Text>
                     <Text className='font-poppins text-sm font-medium text-customGray'>Tarih: <Text className='font-normal'>{selectedRequest?.createdDate}</Text> </Text>
-                    <Pressable onPress={() => setSelectedRequest(null)}>
-                        <BackIcon />
-                    </Pressable>
+                    {
+                        activeTab == 1 && (
+                            <Pressable onPress={() => setSelectedRequest(null)}>
+                                <BackIcon />
+                            </Pressable>
+                        )
+                    }
                 </View>
             }
 
@@ -74,6 +78,20 @@ const UserOffer = () => {
             {
                 selectedRequest && activeTab == 1 && (
                     <HandleData data={selectedRequest?.incomingOffers} loading={loading} title={"Talebinize Gelen Teklif Bulunamadı"}>
+                        <FlatList
+                            contentContainerStyle={{ display: "flex", gap: 15, paddingBottom: 20 }}
+                            data={selectedRequest?.incomingOffers}
+                            renderItem={({ item, index }) => (
+                                <OfferComp key={index} item={item} offerID={selectedRequest?.offerID} />
+                            )
+                            }
+                        />
+                    </HandleData>
+                )
+            }
+            {
+                activeTab == 2 && (
+                    <HandleData data={[]} loading={loading} title={"Kabul Edilen Teklifiniz Bulunamadı"}>
                         <FlatList
                             contentContainerStyle={{ display: "flex", gap: 15, paddingBottom: 20 }}
                             data={selectedRequest?.incomingOffers}

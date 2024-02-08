@@ -1,13 +1,45 @@
 import { View, Text, Image, Pressable } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import { SIZES } from '../constants/constants'
 import CustomInputs from './CustomInputs'
 import LikeIcon from '../assets/svg/common/LikeIcon'
 import StepIndicator from 'react-native-step-indicator';
 import CustomButtons from './CustomButtons'
 import LikeUnlikeComp from './LikeUnlikeComp'
+import { useFormik } from 'formik'
+import { useSelector } from 'react-redux'
+import WebClient from '../utility/WebClient'
+import ModalWrapper from './ModalWrapper'
+
+
 
 const AppointmentComp = ({ item }: { item: any }) => {
+
+    const [visible, setVisible] = useState(false)
+    const { Post, loading } = WebClient()
+    const { user } = useSelector((state: any) => state.user)
+
+
+    const formik = useFormik({
+        initialValues: {
+            title: "",
+            content: ""
+        },
+        onSubmit: (values) => {
+            Post("/api/Appointments/AskQuestionAppointment", {
+                "userID": user?.id,
+                "appointmentID": item?.appointmentID,
+                "companyID": item?.companyModel?.companyID,
+                "companyOfficeID": item?.companyModel?.companyOfficeID,
+                "title": values.title,
+                "content": values.content
+            }, true, true).then(res => {
+                if (res.data.code == "100") {
+                    setVisible(false)
+                }
+            })
+        }
+    })
 
 
 
@@ -44,10 +76,20 @@ const AppointmentComp = ({ item }: { item: any }) => {
                     <Text className='text-customGray font-poppins text-sm '>{item?.serviceName}</Text>
                 </View>
 
-                <View >
-                    <Text className='text-customOrange font-poppins text-sm font-medium '>Teklif Tarih Aralığı: </Text>
-                    <Text className='text-customOrange font-poppins text-sm '>{item?.startDate} - {item?.endDate}</Text>
-                </View>
+                {
+                    item?.operationState == 0 ? (
+                        <View>
+                            <Text className='text-customOrange font-poppins text-sm font-medium '>Teklif Tarih Aralığı: </Text>
+                            <Text className='text-customOrange font-poppins text-sm '>{item?.startDate} - {item?.endDate}</Text>
+                        </View>
+                    ) : (
+                        <View>
+                            <Text className='text-customOrange font-poppins text-sm font-medium '>Randevu Tarihi: </Text>
+                            <Text className='text-customOrange font-poppins text-sm '>{item?.startDate} - {item?.endDate}</Text>
+                        </View>
+                    )
+                }
+
             </View>
 
             <StepIndicator
@@ -78,11 +120,39 @@ const AppointmentComp = ({ item }: { item: any }) => {
                 stepCount={3}
             />
 
-            <CustomButtons type='solid' label='Soru Sor' style={{ width: 100, alignSelf: "center", marginVertical: 20 }} />
+            <CustomButtons onPress={() => setVisible(true)} type='solid' label='Soru Sor' style={{ width: 100, alignSelf: "center", marginVertical: 20 }} />
 
             <Pressable className='bg-customBrown w-full h-[35px] rounded-b-lg flex-row items-center justify-between'>
 
             </Pressable>
+
+
+            {/* modal */}
+            <ModalWrapper visible={visible} setVisible={setVisible}>
+                <View className='max-h-[90%]'>
+
+                    <CustomInputs
+                        type='textareasmall'
+                        value={formik.values.title}
+                        onChangeText={formik.handleChange("title")}
+                    />
+
+                    <CustomInputs
+                        type='textareabig'
+                        title='Soru Metni'
+                        value={formik.values.content}
+                        onChangeText={formik.handleChange("content")}
+                    />
+
+
+                    <View className='flex-row items-center justify-center space-x-2'>
+                        <CustomButtons type='outlined' label='Vazgeç' onPress={() => setVisible(false)} />
+                        <CustomButtons type='solid' label='Gönder' onPress={formik.handleSubmit} />
+                    </View>
+                </View>
+            </ModalWrapper>
+
+
         </View >
     )
 }

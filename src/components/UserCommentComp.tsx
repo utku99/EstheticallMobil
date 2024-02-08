@@ -13,6 +13,7 @@ import ModalWrapper from './ModalWrapper'
 import CustomButtons from './CustomButtons'
 import { Controller, useForm } from 'react-hook-form'
 import LikeUnlikeComp from './LikeUnlikeComp'
+import { useFormik } from 'formik'
 
 
 
@@ -20,32 +21,29 @@ const UserCommentComp = ({ item, setClicked }: any) => {
     const { Post } = WebClient()
     const [seeAll, setSeeAll] = useState(false)
     const [visible, setVisible] = useState(false)
+    const [rating, setRating] = useState(item?.point / 20)
 
 
-    const { control, handleSubmit } = useForm({
-        defaultValues: {
+    const formik = useFormik({
+        initialValues: {
             title: item?.subject,
             content: item?.comment,
-            rating: item?.point / 20
+            rating: rating
         },
+        onSubmit: (values) => {
+            Post("/api/Company/EditUserComment", {
+                "commentID": item?.commentID,
+                "subject": values.title,
+                "content": values.content,
+                "point": values.rating * 20
+            }).then(res => {
+                if (res.data.code === "100") {
+                    setVisible(false)
+                    setClicked(true)
+                }
+            })
+        }
     })
-    const submit = (data: any) => {
-        // Post("/api/Company/EditUserComment", {
-        //     "commentID": item?.commentID,
-        //     "subject": data.title,
-        //     "content": data.content,
-        //     "point": data.rating
-        // }).then(res => {
-        //     console.log(res.data);
-
-        //     if (res.data.code === "100") {
-        //         setVisible(false)
-        //         setClicked(true)
-        //     }
-        // })
-        console.log(data);
-
-    }
 
 
     return (
@@ -135,25 +133,36 @@ const UserCommentComp = ({ item, setClicked }: any) => {
                 <View className='max-h-[90%]'>
                     <Text className='font-semibold text-customGray text-lg font-poppins mb-3'>Yorumu Düzenle</Text>
 
-                    <Controller
-                        control={control}
-                        render={({ field: { onBlur, onChange, value }, fieldState: { error } }) => (
-                            <CustomInputs type='textareasmall' defaultValue={value} onBlur={onBlur} onChangeText={onChange} error={error} />
-                        )}
-                        name='title'
-                        rules={{ required: { value: true, message: "başlık metni gereklidir" }, }}
+
+                    <CustomInputs
+                        type='textareasmall'
+                        value={formik.values.title}
+                        onChangeText={formik.handleChange("title")}
                     />
 
-                    <CustomInputs type='textareabig' title='Yorum Metni' value={item?.comment} />
+                    <CustomInputs
+                        type='textareabig'
+                        title='Soru Metni'
+                        value={formik.values.content}
+                        onChangeText={formik.handleChange("content")}
+                    />
+
+
                     <View className='my-3'>
                         <Text className='font-medium text-customGray text-base font-poppins mb-3'>Puan Ver</Text>
                         <View className='items-start'>
-                            <CustomInputs type='rating' value={item?.point / 20} />
+                            <CustomInputs
+                                type='rating'
+                                value={formik.values.rating}
+                                onChange={(e: any) => setRating(e)}
+                            />
                         </View>
                     </View>
+
+
                     <View className='flex-row items-center justify-center space-x-2'>
                         <CustomButtons type='outlined' label='Vazgeç' onPress={() => setVisible(false)} />
-                        <CustomButtons type='solid' label='Tamam' onPress={handleSubmit(submit)} />
+                        <CustomButtons type='solid' label='Tamam' onPress={formik.handleSubmit} />
                     </View>
                 </View>
             </ModalWrapper>

@@ -11,7 +11,7 @@ import { Rating } from 'react-native-ratings';
 import Tick from '../assets/svg/common/Tick';
 
 
-interface props extends TextInputProps {
+interface props {
     type: "text" | "textarea" | "date" | "dropdown" | "checkbox" | "rating" | "textareasmall" | "textareabig",
     value?: any
     defaultValue?: any
@@ -24,6 +24,7 @@ interface props extends TextInputProps {
     isSearchable?: boolean
     disable?: boolean
     error?: any
+    touched?: any
     title?: string
     style?: any
     dropdownContainerStyle?: any
@@ -42,6 +43,7 @@ const CustomInputs: React.FC<props> = ({
     dropdownData,
     isSearchable,
     error,
+    touched,
     disable = false,
     title,
     style,
@@ -52,10 +54,12 @@ const CustomInputs: React.FC<props> = ({
     const [showDateModal, setShowDateModal] = useState(false);
     const [showSecure, setShowSecure] = useState(secureTextEntry);
 
+
+
     return (
         <>
             {type == "text" && (
-                <View className='w-full mb-3' style={style}>
+                <View className='w-full mb-3' style={style} >
                     <View className='flex-row items-center'>
                         {title && <Text className='text-sm font-poppins font-normal text-customGray w-[40%] text-right pr-3'>{title}</Text>}
                         <View className='h-[40px] flex-1 bg-white rounded-lg border border-customLightGray px-2 flex-row items-center'>
@@ -76,7 +80,7 @@ const CustomInputs: React.FC<props> = ({
                             }
                         </View>
                     </View>
-                    {error && <Text className='text-red-400 text-xs '> {error?.message}</Text>}
+                    {error && touched && <Text className='text-red-400 text-xs '> {error}</Text>}
                 </View>
             )}
             {type == "textareasmall" && (
@@ -86,7 +90,7 @@ const CustomInputs: React.FC<props> = ({
                         className={` border border-customLightGray rounded-xl bg-white max-h-[80px] px-2`}
                         value={value}
                         defaultValue={defaultValue}
-                        onChangeText={onChange}
+                        onChangeText={onChangeText}
                         onBlur={onBlur}
                         textAlignVertical='top'
                         multiline
@@ -102,7 +106,7 @@ const CustomInputs: React.FC<props> = ({
                         className={` border border-customLightGray rounded-xl bg-white min-h-[100px] max-h-[400px] px-2`}
                         value={value}
                         defaultValue={defaultValue}
-                        onChangeText={onChange}
+                        onChangeText={onChangeText}
                         onBlur={onBlur}
                         multiline
                     />
@@ -172,11 +176,11 @@ const CustomInputs: React.FC<props> = ({
                     </Pressable>
                     {title && <Text className='font-normal text-customGray text-sm font-poppins ml-2'>{title}</Text>}
                 </View>
-
             )}
             {type == "rating" && (
                 <Rating
                     startingValue={value}
+                    onFinishRating={onChange}
                     ratingCount={5}
                     imageSize={14}
                     type='custom'

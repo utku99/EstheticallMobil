@@ -1,17 +1,13 @@
-import { Alert, Text, View } from 'react-native'
-import React, { useState } from 'react'
-import AuthWrapper from './AuthWrapper'
-import CustomInputs from '../../components/CustomInputs'
-
 import { useTranslation } from 'react-i18next'
-
-import { Control, Controller, useForm } from "react-hook-form"
-import CustomButtons from '../../components/CustomButtons'
-import ModalWrapper from '../../components/ModalWrapper'
 import { useNavigation } from '@react-navigation/native'
 import WebClient from '../../utility/WebClient'
 import { useDispatch } from 'react-redux'
 import { setLoggedIn, setUser } from '../../redux/slices/user'
+import { useFormik } from 'formik'
+import * as Yup from "yup"
+import AuthWrapper from './AuthWrapper'
+import { Text, View } from 'react-native'
+import CustomInputs from '../../components/CustomInputs'
 
 const Login = () => {
     const { t } = useTranslation()
@@ -20,48 +16,56 @@ const Login = () => {
     const dispatch = useDispatch()
 
 
-    const { control, handleSubmit, } = useForm({
-        defaultValues: {
+    const formik = useFormik({
+        initialValues: {
             email: "",
             password: ""
-        }
-    });
-
-    const onSubmit = (values: any) => {
-        Post("/api/Auth/Login", {
-            username: values.email,
-            password: values.password,
-        }, true, true)
-            .then((res) => {
+        },
+        validationSchema: Yup.object().shape({
+            email: Yup.string().email("geçersiz email").required("email gereklidir"),
+            password: Yup.string().required("şifre gereklidir"),
+        }),
+        onSubmit: (values) => {
+            Post("/api/Auth/Login", {
+                username: values.email,
+                password: values.password,
+            }, true, true).then((res) => {
                 if (res.data.code === "100" && res.data.object.userRoleId === 3) {
                     dispatch(setUser(res.data.object));
                     dispatch(setLoggedIn(true))
                 }
             })
-    }
+        }
+    })
 
 
     return (
-        <AuthWrapper title="Üye Girişi" onPress={handleSubmit(onSubmit)}>
+        <AuthWrapper title="Üye Girişi" onPress={formik.handleSubmit}>
 
             <View className=''>
-                <Controller
-                    control={control}
-                    render={({ field: { value, onChange, onBlur }, fieldState: { error } }) => (
-                        <CustomInputs type='text' placeholder='E-Posta' value={value} onBlur={onBlur} onChangeText={onChange} error={error} />
-                    )}
-                    name='email'
-                    rules={{ required: { value: true, message: "email gereklidir" }, }}
+
+                <CustomInputs
+                    type='text'
+                    placeholder='E-Posta'
+                    value={formik.values.email}
+                    onBlur={formik.handleBlur("email")}
+                    onChangeText={formik.handleChange("email")}
+                    error={formik.errors.email}
+                    touched={formik.touched.email}
                 />
 
-                <Controller
-                    control={control}
-                    render={({ field: { value, onChange, onBlur }, fieldState: { error } }) => (
-                        <CustomInputs type='text' placeholder='Şifre' value={value} onBlur={onBlur} onChangeText={onChange} error={error} secureTextEntry />
-                    )}
-                    name='password'
-                    rules={{ required: { value: true, message: "şifre gereklidir" }, }}
+                <CustomInputs
+                    type='text'
+                    placeholder='Şifre'
+                    value={formik.values.password}
+                    onBlur={formik.handleBlur("password")}
+                    onChangeText={formik.handleChange("password")}
+                    error={formik.errors.password}
+                    touched={formik.touched.password}
+                    secureTextEntry
                 />
+
+
                 <Text className='font-medium text-sm font-poppins text-customOrange self-end'>{t("forgot-password")}</Text>
             </View>
 

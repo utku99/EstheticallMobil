@@ -13,3 +13,9 @@ export const appointmentState = {
     "completed": 5, //
     "failed": 6,
 }
+
+export const genderData = [
+    { value: 0, label: "Erkek" },
+    { value: 1, label: "Kadın" }
+]
+

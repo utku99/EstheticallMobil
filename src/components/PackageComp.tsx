@@ -13,7 +13,9 @@ import ShareIcon from '../assets/svg/homepages/ShareIcon'
 import RenderHTML from 'react-native-render-html'
 import CustomButtons from './CustomButtons'
 import LikeUnlikeComp from './LikeUnlikeComp'
-
+import ModalWrapper from './ModalWrapper'
+import { useFormik } from 'formik'
+import * as Yup from "yup"
 
 
 const PackageComp = ({ item, onClickable = false, setClicked }: { item: any, onClickable?: boolean, setClicked?: any }) => {
@@ -22,8 +24,30 @@ const PackageComp = ({ item, onClickable = false, setClicked }: { item: any, onC
     const [index, setIndex] = useState<any>(0)
     const isCarousel = useRef(null);
     const navigation = useNavigation()
+    const [visible, setVisible] = useState(false)
+    const { Post, loading } = WebClient()
+    const { user } = useSelector((state: any) => state.user)
 
-    console.log(item.isFavorite);
+    const formik = useFormik({
+        initialValues: {
+            title: "",
+            content: ""
+        },
+        onSubmit: (values) => {
+            Post("/api/Package/AskPackageQuestion", {
+                "userID": user?.id,
+                "packageID": item?.packageID,
+                "companyID": item?.companyID,
+                "companyOfficeID": item?.companyOfficeID,
+                "title": values.title,
+                "content": values.content
+            }, true, true).then(res => {
+                if (res.data.code == "100") {
+                    setVisible(false)
+                }
+            })
+        }
+    })
 
 
     return (
@@ -117,7 +141,7 @@ const PackageComp = ({ item, onClickable = false, setClicked }: { item: any, onC
                     </View>
                     <RenderHTML source={{ html: item?.footerModel?.content ?? item?.content }} contentWidth={SIZES.width} />
                     <View className='pb-[30px]'>
-                        <CustomButtons type='iconsolid' label='Soru Sor' style={{ width: 130, alignSelf: "center" }} icon='question' width="w-[150px] self-center" theme='middle' />
+                        <CustomButtons onPress={() => setVisible(true)} type='iconsolid' label='Soru Sor' style={{ width: 130, alignSelf: "center" }} icon='question' theme='middle' />
                     </View>
                 </>
 
@@ -131,6 +155,36 @@ const PackageComp = ({ item, onClickable = false, setClicked }: { item: any, onC
                 </View>
                 <View className='flex-1'></View>
             </Pressable>
+
+
+
+            {/* modal */}
+            <ModalWrapper visible={visible} setVisible={setVisible}>
+                <View className='max-h-[90%]'>
+
+                    <Text className='font-medium text-customGray text-base font-poppins mb-3'>Paket Adı: {item?.packageName}</Text>
+
+
+                    <CustomInputs
+                        type='textareasmall'
+                        value={formik.values.title}
+                        onChangeText={formik.handleChange("title")}
+                    />
+
+                    <CustomInputs
+                        type='textareabig'
+                        title='Soru Metni'
+                        value={formik.values.content}
+                        onChangeText={formik.handleChange("content")}
+                    />
+
+
+                    <View className='flex-row items-center justify-center space-x-2'>
+                        <CustomButtons type='outlined' label='Vazgeç' onPress={() => setVisible(false)} />
+                        <CustomButtons type='solid' label='Gönder' onPress={formik.handleSubmit} />
+                    </View>
+                </View>
+            </ModalWrapper>
 
         </View>
     )

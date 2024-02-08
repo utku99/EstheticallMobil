@@ -23,6 +23,7 @@ const UserAppointment = () => {
     }, [])
 
 
+
     return (
         <UserWrapper>
 
@@ -31,7 +32,7 @@ const UserAppointment = () => {
                 <CustomButtons type="brownoutlined" label='Yeni Randevu' style={{ width: 130 }} onPress={() => navigation.navigate("appointment")} />
             </View>
 
-            <HandleData data={userAppointments} title={"Randevunuz Bulunmamaktadır"} loading={false}>
+            <HandleData data={userAppointments} title={"Randevunuz Bulunmamaktadır"} loading={loading}>
 
                 <FlatList
                     contentContainerStyle={{ display: "flex", gap: 15, paddingBottom: 20 }}

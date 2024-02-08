@@ -8,7 +8,7 @@ import SharingShareIcon from '../assets/svg/homepages/SharingShareIcon'
 import SharingSendMessageIcon from '../assets/svg/homepages/SharingSendMessageIcon'
 
 import Carousel, { Pagination } from 'react-native-snap-carousel';
-import WebClient from '../utility/WebClient'
+import WebClient, { toast } from '../utility/WebClient'
 import { SIZES } from '../constants/constants'
 import HandleData from './HandleData'
 import { useNavigation } from '@react-navigation/native'
@@ -46,6 +46,8 @@ const SharingComp = ({ item, onClickable = false, setClicked, readOnly }: { item
     const navigation = useNavigation()
     const { user, isLoggedIn } = useSelector((state: any) => state.user)
 
+    const [addComment, setAddComment] = useState(null)
+
 
     useEffect(() => {
         Post("/api/Shared/GetSharedDetailAsync", {
@@ -56,6 +58,7 @@ const SharingComp = ({ item, onClickable = false, setClicked, readOnly }: { item
         })
 
     }, [])
+
 
 
     return (
@@ -163,6 +166,8 @@ const SharingComp = ({ item, onClickable = false, setClicked, readOnly }: { item
                     <HandleData data={sharedDetail} loading={loading} title='Aranan Kategoride Paylaşım Yorumu Bulunamadı'>
                         <FlatList
                             data={sharedDetail}
+                            className='max-h-[500]'
+                            contentContainerStyle={{ display: "flex", gap: 15, paddingBottom: 20 }}
                             renderItem={({ item }) => <CommentComp key={item.commentID} item={item} />}
                         />
                     </HandleData>
@@ -173,8 +178,28 @@ const SharingComp = ({ item, onClickable = false, setClicked, readOnly }: { item
                             className='placeholder flex-1 pl-2'
                             placeholder='Yorumunuzu Yazın...'
                             placeholderTextColor={"#4D4A48"}
+                            onChangeText={(e: any) => setAddComment(e)}
                         />
-                        <SharingSendMessageIcon />
+                        <TouchableOpacity onPress={() => {
+                            if (isLoggedIn && addComment) {
+                                Post("/api/Comment/AddComment", {
+                                    "sharedId": item?.sharedID,
+                                    "userId": user?.id,
+                                    "comment": addComment,
+                                    "isActive": true,
+                                    "isDeleted": false
+                                }).then(res => {
+                                    if (res.data.code === "100") {
+                                        setAddComment(null)
+                                        setClicked(true)
+                                    }
+                                })
+                            } else {
+                                toast("Önce Giriş Yapmalısınız")
+                            }
+                        }}>
+                            <SharingSendMessageIcon />
+                        </TouchableOpacity>
                     </View>
                 </View>
             )}

@@ -2,29 +2,11 @@ import { View, Text } from 'react-native'
 import React, { useState } from 'react'
 import AuthWrapper from './AuthWrapper'
 import CustomInputs from '../../components/CustomInputs'
-import { useForm } from 'react-hook-form'
 import LegalTextComp from '../../components/LegalTextComp'
 
 const UserRegister = ({ }) => {
 
-    const { control, handleSubmit } = useForm({
-        defaultValues: {
-            name: "",
-            surname: "",
-            nickname: "",
-            birthdate: "",
-            gender: "",
-            country: "",
-            city: "",
-            email: "",
-            password: "",
-            repassword: ""
-        }
-    })
 
-    const onSubmit = (data: any) => {
-        console.log(data);
-    }
 
     return (
         <AuthWrapper title='Yeni Üyelik'>

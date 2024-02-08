@@ -21,7 +21,7 @@ const LegalTextComp = ({ value, onChange, type, error }: props) => {
                     <View className='flex-row space-x-2'>
                         <CustomInputs type='checkbox' value={value} onChange={onChange} />
 
-                        <Text className='text-sm font-poppins text-customGray'>
+                        <Text className='text-sm font-poppins text-customGray flex-shrink'>
                             <Text onPress={() => setVisible(true)} className='text-customOrange'>Gizlilik ve Kullanım Koşulları </Text>
                             ile
                             <Text onPress={() => setVisible(true)} className='text-customOrange'> Bireysel Üyelik Sözleşmesini </Text>
