@@ -163,7 +163,7 @@ const CustomInputs: React.FC<props> = ({
                             selectedTextStyle={{ fontSize: 14, color: "#4D4A48", }}
                         />
                     </View>
-                    {error && <Text className='text-red-400 text-xs '>{error?.message}</Text>}
+                    {error && <Text className='text-red-400 text-xs '>{error}</Text>}
                 </View>
             )}
             {type == "checkbox" && (

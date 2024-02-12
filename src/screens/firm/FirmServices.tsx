@@ -22,7 +22,7 @@ const FirmServices = ({ route }: props) => {
     const { Post, loading } = WebClient()
     const [subServiceDetails, setSubServiceDetails] = useState<any>([]);
     const [selectedSub, setSelectedSub] = useState<any>(null)
-
+    const [selectedSubId, setSelectedSubId] = useState(null)
 
 
     useEffect(() => {
@@ -31,11 +31,16 @@ const FirmServices = ({ route }: props) => {
             "companyOfficeId": route.params.companyOfficeId,
             "serviceId": route.params.serviceId,
         }).then((res: any) => {
+            const currentSub = res.data.object.find((item: any) => item.serviceSubId == selectedSubId)
             setSubServiceDetails(res.data.object)
-            setSelectedSub(res.data.object[0])
+            if (currentSub) {
+                setSelectedSub(currentSub)
+            } else {
+                setSelectedSub(res.data.object[0])
+            }
         })
 
-    }, [route.params.serviceId,])
+    }, [route.params.serviceId, selectedSubId])
 
 
 
@@ -58,7 +63,7 @@ const FirmServices = ({ route }: props) => {
                             type={selectedSub?.serviceSubId == item.serviceSubId ? "brownsolid" : "brownoutlined"}
                             theme='small'
                             label={item?.serviceSubName}
-                            onPress={() => setSelectedSub(item)}
+                            onPress={() => setSelectedSubId(item?.serviceSubId)}
                         />}
                         horizontal
                         contentContainerStyle={{ gap: 8 }}

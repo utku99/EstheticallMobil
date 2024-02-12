@@ -10,6 +10,8 @@ import CustomButtons from '../../components/CustomButtons'
 import AddPhotoComp from '../../components/AddPhotoComp'
 import LegalTextComp from '../../components/LegalTextComp'
 import { useNavigation } from '@react-navigation/native'
+import { useFormik } from 'formik'
+import { useSelector } from 'react-redux'
 
 interface props {
     route?: any
@@ -20,13 +22,53 @@ const FirmCommunicationQuestion = ({ route }: props) => {
     const { Post, loading } = WebClient()
     const [services, setServices] = useState([])
     const [company, setCompany] = useState<any>(null)
+    const { user } = useSelector((state: any) => state.user)
 
-    const navigation = useNavigation()
+
+    const formik = useFormik({
+        enableReinitialize: true,
+        initialValues: {
+            operation: "",
+            title: "",
+            content: "",
+            checked: false,
+            images: [],
+        } as {
+            operation: any
+            title: any
+            content: any
+            checked: boolean
+            images: any
+        },
+        // validationSchema: Yup.object().shape({
+        //     operation: Yup.object().required("operasyon alanı gereklidir"),
+        //     title: Yup.string().required("başlık alanı gereklidir"),
+        //     content: Yup.string().required("soru metni alanı gereklidir"),
+        //     checked: Yup.boolean().oneOf([true], 'metni onaylamanız gerekmektedir'),
+        // }),
+        onSubmit: (values) => {
+            Post("/api/Company/AddCompanyQuestionWeb", {
+                "companyID": route.params?.companyId,
+                "officeID": route.params?.companyOfficeId,
+                "companyServicesId": values.operation.companyServiceID,
+                "userId": user?.id,
+                "title": values.title,
+                "content": values.content,
+                "images": values.images
+            }, true, true).then(res => {
+                if (res.data.code === "100") {
+                    formik.resetForm()
+                }
+            })
+
+        }
+    })
+
 
     useEffect(() => {
         Post("/api/CompanyServices/WebListCompanyServices", {
-            "companyId": route.params?.companyId ?? 42,
-            "companyOfficeId": route.params?.companyOfficeId ?? 0,
+            "companyId": route.params?.companyId,
+            "companyOfficeId": route.params?.companyOfficeId,
         }).then((res: any) => {
             const newServices = res.data.object.map((item: any) => ({
                 value: item.serviceId,
@@ -37,40 +79,13 @@ const FirmCommunicationQuestion = ({ route }: props) => {
         })
 
         Post("/api/Company/GetCompanyAsync", {
-            "companyId": route.params?.companyId ?? 42,
-            "companyOfficeId": route.params?.companyOfficeId ?? 0,
+            "companyId": route.params?.companyId,
+            "companyOfficeId": route.params?.companyOfficeId,
         }).then((res: any) => {
             setCompany(res.data)
         })
 
     }, [])
-
-
-    const { control, handleSubmit, getValues, setValue } = useForm({
-        defaultValues: {
-            service: "",
-            title: "",
-            content: "",
-            images: [],
-            check: false
-        }
-    });
-
-    const onSubmit = (data: any) => {
-        Post("/api/Company/AddCompanyQuestionWeb", {
-            "companyID": company.value,
-            "officeID": company.officeID,
-            "companyServicesId": data.service.value,
-            "userId": 157,
-            "title": data.title,
-            "content": data.content,
-            "images": data.images
-        },).then(res => {
-            console.log(res.data);
-
-        })
-    }
-
 
 
     return (
@@ -80,54 +95,58 @@ const FirmCommunicationQuestion = ({ route }: props) => {
 
                 <Text className='font-medium text-customGray text-base font-poppins mb-3'>İletişime Geç</Text>
 
-                <CustomInputs type='dropdown' value={company} dropdownData={[company]} style={{ width: "75%", height: 32 }} disable />
+                <CustomInputs
+                    type='dropdown'
+                    value={company}
+                    dropdownData={[company]}
+                    style={{ width: "75%", height: 32 }}
+                    disable />
 
-                <Controller
-                    control={control}
-                    render={({ field: { value, onChange }, fieldState: { error } }) => (
-                        <CustomInputs type='dropdown' value={value} onChange={onChange} dropdownData={services} placeholder='Operasyon Seç' style={{ width: "50%", height: 32 }} error={error} />
-                    )}
-                    name='service'
-                    rules={{ required: { value: true, message: "operasyon alanı gereklidir" }, }}
+
+                <CustomInputs
+                    type='dropdown'
+                    dropdownData={services}
+                    value={formik.values.operation}
+                    onChange={(e: any) => formik.setFieldValue("operation", e)}
+                    placeholder='Operasyon Seç'
+                    style={{ width: "75%", height: 32 }}
                 />
 
-                <Controller
-                    control={control}
-                    render={({ field: { value, onChange }, fieldState: { error } }) => (
-                        <CustomInputs type='textareasmall' value={value} onChange={onChange} error={error} />
-                    )}
-                    name='title'
-                    rules={{ required: { value: true, message: "başlık alanı gereklidir" }, }}
+                <CustomInputs
+                    type='textareasmall'
+                    value={formik.values.title}
+                    onChangeText={formik.handleChange("title")}
                 />
 
-                <Controller
-                    control={control}
-                    render={({ field: { value, onChange }, fieldState: { error } }) => (
-                        <CustomInputs type='textareabig' title='Soru Metni' value={value} onChange={onChange} error={error} />
-                    )}
-                    name='content'
-                    rules={{ required: { value: true, message: "metin alanı gereklidir" }, }}
+                <CustomInputs
+                    type='textareabig'
+                    value={formik.values.content}
+                    onChangeText={formik.handleChange("content")}
+                    title='Soru Metni'
                 />
 
-                <Controller
-                    control={control}
-                    render={({ field: { value, onChange }, fieldState: { error } }) => (
-                        <AddPhotoComp value={value} onChange={onChange} error={error} />
-                    )}
-                    name='images'
-                    rules={{ required: { value: true, message: "resim alanı gereklidir" }, }}
+                <AddPhotoComp
+                    value={formik.values.images}
+                    onChange={(e: any) => formik.setFieldValue("images", e)}
                 />
 
-                <Controller
-                    control={control}
-                    render={({ field: { value, onChange }, fieldState: { error } }) => (
-                        <LegalTextComp value={value} onChange={() => onChange(!value)} type='question' error={error} />
-                    )}
-                    name='check'
-                    rules={{ required: { value: true, message: "metin onayı gereklidir" }, }}
+
+
+                <LegalTextComp
+                    value={formik.values.checked}
+                    onChange={() => formik.setFieldValue("checked", !formik.values.checked)}
+                    type='question'
                 />
 
-                <CustomButtons type='iconsolid' label='Soru Gönder' icon='send' theme='big' style={{ width: 180, alignSelf: "center" }} onPress={handleSubmit(onSubmit)} />
+                <CustomButtons
+                    type='iconsolid'
+                    label='Soru Gönder'
+                    icon='send'
+                    theme='big'
+                    onPress={formik.handleSubmit}
+                    style={{ alignSelf: "center" }}
+                />
+
 
             </View>
 

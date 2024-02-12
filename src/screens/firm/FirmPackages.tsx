@@ -42,7 +42,7 @@ const FirmPackages = ({ route }: props) => {
                     contentContainerStyle={{ display: "flex", gap: 15, paddingBottom: 20 }}
                     data={packages}
                     renderItem={({ item, index }) =>
-                        <PackageComp key={index} item={item} />
+                        <PackageComp key={index} item={item} companyID={route.params.companyId} companyOfficeID={route.params.companyOfficeId} />
                     }
                 />
 

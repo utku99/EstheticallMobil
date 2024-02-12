@@ -18,15 +18,13 @@ const ModalWrapper: React.FC<props> = ({ visible, setVisible, children, title })
             className='bg-black'
             animationType='none'
         >
-            <Pressable className='bg-black/50 w-full h-full justify-center px-[10]' onPress={() => setVisible(false)}>
-                <TouchableWithoutFeedback>
-                    <View className='bg-white rounded-lg p-4  max-h-[70%]' >
-                        <ScrollView className={``} contentContainerStyle={{}}>
-                            {title && <Text className='text-base font-bold text-customGray font-poppins mb-5 text-center'>{title}</Text>}
-                            {children}
-                        </ScrollView>
-                    </View>
-                </TouchableWithoutFeedback>
+            <Pressable className='bg-black/50 w-full h-full justify-center ' onPress={() => setVisible(false)}>
+                <Pressable className='bg-white rounded-lg p-4  max-h-[70%] w-[90%] self-center' onPress={(e) => e.stopPropagation()} >
+                    <ScrollView >
+                        {title && <Text className='text-base font-bold text-customGray font-poppins mb-5 text-center'>{title}</Text>}
+                        {children}
+                    </ScrollView>
+                </Pressable>
             </Pressable>
         </Modal>
     )

@@ -54,7 +54,7 @@ const LikeUnlikeComp = ({ setClicked, readOnly = false, item, isFavorite }: { se
                             setClicked(true)
                         })
                     }}>
-                        {isFavorite ? <LikeIcon /> : <UnLikeIcon />}
+                        {isFavorite ? <LikeIcon width={23} height={23} /> : <UnLikeIcon />}
                     </TouchableOpacity>
             }
         </>

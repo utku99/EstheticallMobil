@@ -7,7 +7,7 @@ import TrashIcon from '../assets/svg/firm/TrashIcon'
 
 
 
-const AddPhotoComp = ({ value, onChange, error }: any) => {
+const AddPhotoComp = ({ value, onChange, error }: { value: any, onChange: any, error?: any }) => {
 
     const openGalery = () => {
         openPicker({
@@ -22,7 +22,7 @@ const AddPhotoComp = ({ value, onChange, error }: any) => {
 
 
     return (
-        <View className='space-y-5 mb-3'>
+        <View className='space-y-5 mb-3 '>
             {
                 value?.length < 5 && (
                     <View>

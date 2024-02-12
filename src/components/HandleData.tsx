@@ -28,8 +28,6 @@ const HandleData = ({ data, loading, title, children }: props) => {
                     <LottieView
                         source={require('../assets/lottie/data.json')}
                         style={{ width: "100%", height: "100%" }}
-                        loop
-                        autoPlay
                     />
                 </View>
             </View>

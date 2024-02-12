@@ -19,3 +19,12 @@ export const genderData = [
     { value: 1, label: "Kadın" }
 ]
 
+export const legalTextType = {
+    "ABOUT": 1,
+    "PRIVACYANDTERMSOFUSE": 2,
+    "IndividualMembershipAgreement": 3,
+    "CorporateMembershipAgreement": 4,
+    "EXPRESSCONSENTTEXT": 5, //açık rıza
+    "DISCLOSURETEXTANDCOOKIEPOLICY": 6, //aydınlatma metni ve çerez
+    "DISTANCESERVICESALESAGREEMENT": 7, //mesafeli hizmet satış 
+}

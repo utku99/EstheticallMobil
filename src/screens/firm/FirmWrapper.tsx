@@ -12,6 +12,7 @@ import { useNavigation, useRoute } from '@react-navigation/native'
 import ModalWrapper from '../../components/ModalWrapper'
 import HandleData from '../../components/HandleData'
 import CustomInputs from '../../components/CustomInputs'
+import LikeUnlikeComp from '../../components/LikeUnlikeComp'
 
 
 
@@ -38,6 +39,7 @@ const FirmWrapper: React.FC<props> = ({ children }) => {
     const route = useRoute<any>()
     const navigation = useNavigation()
     const [visible, setVisible] = useState(false)
+    const [clicked, setClicked] = useState(false)
     const [services, setServices] = useState()
 
 
@@ -63,13 +65,11 @@ const FirmWrapper: React.FC<props> = ({ children }) => {
             ))
             setServices(newServices)
         })
-    }, [])
-
-
+    }, [clicked])
 
 
     return (
-        <ScrollView className='bg-[#FAFAFA] ' contentContainerStyle={{ flexGrow: 1, paddingBottom: 50 }}>
+        <ScrollView className='bg-[#FAFAFA] ' contentContainerStyle={{ flexGrow: 1, paddingBottom: 30 }}>
 
             <HandleData loading={loading} >
 
@@ -82,7 +82,9 @@ const FirmWrapper: React.FC<props> = ({ children }) => {
                             <CommunicationItem />
                         </Pressable>
                         <ShareIcon />
-                        <UnLikeIcon />
+                        <View>
+                            <LikeUnlikeComp isFavorite={firmLeftInfo?.isFavorite} item={firmLeftInfo} setClicked={setClicked} />
+                        </View>
                     </View>
                 </View>
 

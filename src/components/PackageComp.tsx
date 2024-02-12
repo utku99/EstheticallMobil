@@ -18,7 +18,7 @@ import { useFormik } from 'formik'
 import * as Yup from "yup"
 
 
-const PackageComp = ({ item, onClickable = false, setClicked }: { item: any, onClickable?: boolean, setClicked?: any }) => {
+const PackageComp = ({ item, onClickable = false, setClicked, companyID, companyOfficeID }: { item: any, onClickable?: boolean, setClicked?: any, companyID?: number, companyOfficeID?: number }) => {
 
     const [seeAll, setSeeAll] = useState(false)
     const [index, setIndex] = useState<any>(0)
@@ -36,9 +36,9 @@ const PackageComp = ({ item, onClickable = false, setClicked }: { item: any, onC
         onSubmit: (values) => {
             Post("/api/Package/AskPackageQuestion", {
                 "userID": user?.id,
-                "packageID": item?.packageID,
-                "companyID": item?.companyID,
-                "companyOfficeID": item?.companyOfficeID,
+                "packageID": item?.packageID ?? item?.footerModel?.packageID,
+                "companyID": item?.companyID ?? companyID,
+                "companyOfficeID": item?.companyOfficeID ?? companyOfficeID,
                 "title": values.title,
                 "content": values.content
             }, true, true).then(res => {
@@ -162,7 +162,7 @@ const PackageComp = ({ item, onClickable = false, setClicked }: { item: any, onC
             <ModalWrapper visible={visible} setVisible={setVisible}>
                 <View className='max-h-[90%]'>
 
-                    <Text className='font-medium text-customGray text-base font-poppins mb-3'>Paket Adı: {item?.packageName}</Text>
+                    <Text className='font-medium text-customGray text-base font-poppins mb-3'>Paket Adı: {item?.packageName ?? item?.footerModel?.packageName}</Text>
 
 
                     <CustomInputs
