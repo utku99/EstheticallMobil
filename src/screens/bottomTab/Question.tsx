@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native'
+import { View, Text, TextInput } from 'react-native'
 import React from 'react'
 import UserWrapper from '../user/UserWrapper'
 import CustomInputs from '../../components/CustomInputs'
@@ -25,9 +25,12 @@ const Question = () => {
 
                 <AddPhotoComp />
 
-                <LegalTextComp value={false} onChange={() => ""} type='question' />
+                <View className='flex-1 justify-end '>
+                    <LegalTextComp value={false} onChange={() => ""} type='question' />
 
-                <CustomButtons type='iconsolid' label='Soru Gönder' icon='send' theme='big' style={{ width: 180, alignSelf: "center" }} />
+                    <CustomButtons type='iconsolid' label='Soru Gönder' icon='send' theme='big' style={{ width: 180, alignSelf: "center" }} />
+                </View>
+
 
             </View>
 

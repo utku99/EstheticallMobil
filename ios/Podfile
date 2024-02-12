@@ -1,3 +1,5 @@
+
+require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 # Resolve react_native_pods.rb with node to allow for hoisting
 require Pod::Executable.execute_command('node', ['-p',
   'require.resolve(
@@ -25,7 +27,11 @@ if linkage != nil
   use_frameworks! :linkage => linkage.to_sym
 end
 
+
+
 target 'EstheticallMobi' do
+  rn_maps_path = '../node_modules/react-native-maps'
+  pod 'react-native-google-maps', :path => rn_maps_path
   config = use_native_modules!
 
   use_react_native!(

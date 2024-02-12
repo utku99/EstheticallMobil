@@ -3,7 +3,7 @@ import React from 'react'
 import UserWrapper from './UserWrapper'
 import CustomButtons from '../../components/CustomButtons'
 import { useDispatch } from 'react-redux'
-import { setLoggedIn, setUser } from '../../redux/slices/user'
+import { setGuest, setLoggedIn, setUser } from '../../redux/slices/user'
 
 
 
@@ -20,6 +20,7 @@ const UserLogOut = ({ navigation }: any) => {
                     <CustomButtons type='solid' label='Tamam' theme='big' onPress={() => {
                         dispatch(setUser(null));
                         dispatch(setLoggedIn(false));
+                        dispatch(setGuest(false));
                     }} />
                 </View>
             </View>

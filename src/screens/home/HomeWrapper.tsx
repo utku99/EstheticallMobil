@@ -116,7 +116,7 @@ const HomeWrapper: React.FC<props> = ({ children }) => {
                 visible={visible}
                 onDismiss={() => setVisible(false)}
                 style={{ justifyContent: "flex-start" }}
-                contentContainerStyle={{ padding: 30, backgroundColor: "white", width: "70%", top: 50, borderRadius: 10, marginLeft: "3%", justifyContent: "space-evenly" }}>
+                contentContainerStyle={{ padding: 30, backgroundColor: "white", width: "70%", top: -5, borderRadius: 10, marginLeft: "3%", justifyContent: "space-evenly" }}>
 
                 {!country && <CustomInputs type='dropdown' value={country} dropdownData={countries} placeholder='Ülke Seç' isSearchable onChange={(e: any) => dispatch(setCountry(e))} />}
                 {country && !city && <CustomInputs type='dropdown' value={city} dropdownData={cities} placeholder='Şehir Seç' isSearchable onChange={(e: any) => dispatch(setCity(e))} />}

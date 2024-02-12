@@ -188,9 +188,7 @@ const Root = () => {
 
   return (
     <NavigationContainer>
-      <SafeAreaView className='flex-1'>
         {handleAuth()}
-      </SafeAreaView>
     </NavigationContainer>
   )
 }

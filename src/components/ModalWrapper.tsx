@@ -1,6 +1,6 @@
-import { View, Text, ScrollView } from 'react-native'
+import { View, Text, ScrollView, Modal, Pressable, TouchableWithoutFeedback, SafeAreaView } from 'react-native'
 import React from 'react'
-import { Modal, Portal } from 'react-native-paper'
+import { SIZES } from '../constants/constants'
 
 interface props {
     visible: boolean
@@ -11,17 +11,24 @@ interface props {
 
 const ModalWrapper: React.FC<props> = ({ visible, setVisible, children, title }) => {
     return (
-        <Portal>
-            <Modal
-                visible={visible}
-                onDismiss={() => setVisible(false)}
-                contentContainerStyle={{ backgroundColor: "white", marginHorizontal: 20, borderRadius: 8, paddingHorizontal: 20, paddingVertical: 15, maxHeight: "90%" }}>
-                <ScrollView className={` `} >
-                    {title && <Text className='text-base font-bold text-customGray font-poppins mb-5 text-center'>{title}</Text>}
-                    {children}
-                </ScrollView>
-            </Modal>
-        </Portal>
+        <Modal
+            visible={visible}
+            onRequestClose={() => setVisible(false)}
+            transparent
+            className='bg-black'
+            animationType='none'
+        >
+            <Pressable className='bg-black/50 w-full h-full justify-center px-[10]' onPress={() => setVisible(false)}>
+                <TouchableWithoutFeedback>
+                    <View className='bg-white rounded-lg p-4  max-h-[70%]' >
+                        <ScrollView className={``} contentContainerStyle={{}}>
+                            {title && <Text className='text-base font-bold text-customGray font-poppins mb-5 text-center'>{title}</Text>}
+                            {children}
+                        </ScrollView>
+                    </View>
+                </TouchableWithoutFeedback>
+            </Pressable>
+        </Modal>
     )
 }
 

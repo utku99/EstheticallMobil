@@ -37,8 +37,8 @@ const UserComment = () => {
         <UserWrapper title='Yorumlarım'>
 
             <View className='flex-row items-center mb-4 space-x-3'>
-                <CustomButtons type={activeTab == 1 ? "brownsolid" : "brownoutlined"} label='Onay Bekleyenler' style={{ width: 130, marginRight: 2 }} onPress={() => setActiveTab(1)} />
-                <CustomButtons type={activeTab == 2 ? "brownsolid" : "brownoutlined"} label='Onaylananlar' style={{ width: 130 }} onPress={() => setActiveTab(2)} />
+                <CustomButtons type={activeTab == 1 ? "brownsolid" : "brownoutlined"} label='Onay Bekleyenler' style={{ marginRight: 2 }} onPress={() => setActiveTab(1)} />
+                <CustomButtons type={activeTab == 2 ? "brownsolid" : "brownoutlined"} label='Onaylananlar' onPress={() => setActiveTab(2)} />
             </View>
 
 

@@ -16,8 +16,9 @@ function App(): React.JSX.Element {
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
           <PaperProvider theme={MD3LightTheme}>
-            <StatusBar barStyle={'light-content'} />
+            <StatusBar />
             <Root />
+
           </PaperProvider>
         </PersistGate>
       </Provider>

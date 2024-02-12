@@ -14,7 +14,6 @@ import { setListFilters } from '../../redux/slices/filter'
 
 
 
-
 const Map = () => {
 
     const { Post } = WebClient()
@@ -70,10 +69,8 @@ const Map = () => {
                         onRegionChange={() => ""}
                         className='w-full h-full'
                     >
-                        <FlatList
-                            data={companies}
-                            horizontal
-                            renderItem={({ item, index }) =>
+                        {
+                            companies?.map((item: any, index: number) => (
                                 <Marker
                                     key={index}
                                     coordinate={{ latitude: Number(item.latitude), longitude: Number(item.latitude) }}
@@ -81,8 +78,9 @@ const Map = () => {
                                 >
                                     {handleIcon(item.companyTypeID)}
                                 </Marker>
-                            }
-                        />
+                            ))
+                        }
+
 
 
                     </MapView>
