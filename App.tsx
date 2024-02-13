@@ -11,6 +11,8 @@ import { PersistGate } from 'redux-persist/integration/react';
 
 function App(): React.JSX.Element {
 
+
+
   return (
     <SafeAreaProvider initialMetrics={initialWindowMetrics}>
       <Provider store={store}>

@@ -50,6 +50,16 @@ const PackageComp = ({ item, onClickable = false, setClicked, companyID, company
     })
 
 
+    const handlePoint = () => {
+        if (item?.companyPoint) {
+            return (item?.companyPoint?.split("/")[0] / 20)
+        }
+        else {
+            return (item?.doctor?.commentPoint / 20)
+        }
+    }
+
+
     return (
         <View className={`h-fit border border-customLightGray rounded-xl bg-white `} style={{ width: SIZES.width * 0.95 }}>
 
@@ -125,7 +135,7 @@ const PackageComp = ({ item, onClickable = false, setClicked, companyID, company
                             <Text numberOfLines={1} className='text-customGray font-poppins text-xs'>{item?.doctor?.branch ?? item?.doctorBranch}</Text>
                         </View>
                         <View className='items-center'>
-                            <Text className='text-customGray font-poppins text-xs'>{(item?.companyPoint?.split("/")[0] / 20) ?? (item?.doctor?.commentPoint / 20)}/5</Text>
+                            <Text className='text-customGray font-poppins text-xs'>{handlePoint()}/5</Text>
                             <Text className='text-customGray font-poppins text-xs'>Yorumlar</Text>
                         </View>
                         <View className='items-center space-y-2'>
