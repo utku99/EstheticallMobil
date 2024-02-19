@@ -4,24 +4,20 @@ import {
   ImageBackground,
   TouchableOpacity,
   Pressable,
-  FlatList,
   SafeAreaView,
 } from 'react-native';
 import React, {useState} from 'react';
 import {ScrollView} from 'react-native-gesture-handler';
 import EstheticLogo from '../../assets/svg/common/EstheticLogo';
-
-import ArrowDownIcon from '../../assets/svg/auth/ArrowDownIcon';
-import i18next, {languageResources} from '../../locales/i18next';
-import languageList from '../../locales/languageList.json';
 import CustomButtons from '../../components/CustomButtons';
 import ModalWrapper from '../../components/ModalWrapper';
 import {useNavigation} from '@react-navigation/native';
 import {useDispatch} from 'react-redux';
-import {setGuest, setUser} from '../../redux/slices/user';
+import {setGuest} from '../../redux/slices/user';
 import ArrowUpWhiteIcon from '../../assets/svg/auth/ArrowUpWhiteIcon';
 import ArrowDownWhiteIcon from '../../assets/svg/auth/ArrowDownWhiteIcon';
 import {useRoute} from '@react-navigation/native';
+import LangChoiceComp from '../../components/LangChoiceComp';
 
 interface props {
   children?: React.ReactNode;
@@ -30,7 +26,6 @@ interface props {
 }
 
 const AuthWrapper: React.FC<props> = ({children, title, onPress}) => {
-  const [open, setOpen] = useState(false);
   const [visible, setVisible] = useState(false);
   const [dropdown, setDropdown] = useState(false);
   const navigation = useNavigation();
@@ -52,38 +47,12 @@ const AuthWrapper: React.FC<props> = ({children, title, onPress}) => {
             paddingVertical: 20,
             justifyContent: 'space-between',
           }}>
-          {/* lang choice */}
-          <View className="z-50">
-            <View className="self-end -mr-[10%] relative">
-              <Pressable
-                className="flex-row items-center gap-2 "
-                onPress={() => setOpen(!open)}>
-                <Text className="font-poppinsMedium text-xl text-customGray ">
-                  {i18next.language.toLocaleUpperCase()}
-                </Text>
-                <ArrowDownIcon />
-              </Pressable>
-              {open && (
-                <View className="bg-white absolute w-[100px] py-3 top-[35px] justify-between -right-5 z-50 rounded-lg border-[0.5px] border-customGray">
-                  <FlatList
-                    data={Object.keys(languageResources)}
-                    renderItem={({item}) => (
-                      <TouchableOpacity
-                        onPress={() => {
-                          i18next.changeLanguage(item);
-                          setOpen(false);
-                        }}
-                        className="items-center justify-center">
-                        <Text className="text-lg text-customGray">
-                          {languageList[item]?.nativeName}
-                        </Text>
-                      </TouchableOpacity>
-                    )}
-                  />
-                </View>
-              )}
+          {/* top cont */}
+          <View className="relative  w-full items-center">
+            <View className="absolute right-0 -top-5 ">
+              <LangChoiceComp />
             </View>
-            <View className="-z-10">
+            <View className="">
               <EstheticLogo />
             </View>
           </View>

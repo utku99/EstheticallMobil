@@ -103,11 +103,11 @@ const CustomInputs: React.FC<props> = ({
       )}
       {type == 'textareasmall' && (
         <View className="mb-3" style={style}>
-          <Text className="font-medium text-customGray text-base font-poppins mb-3">
+          <Text className="font-poppinsMedium text-customGray text-base  mb-3">
             Başlık Metni
           </Text>
           <TextInput
-            className={` border border-customLightGray rounded-xl bg-white min-h-[40px] max-h-[80px] px-2`}
+            className={` border border-customLightGray rounded-xl bg-white min-h-[40px] max-h-[80px] px-2 text-customGray text-xs font-poppinsRegular`}
             value={value}
             defaultValue={defaultValue}
             onChangeText={onChangeText}
@@ -122,12 +122,12 @@ const CustomInputs: React.FC<props> = ({
       )}
       {type == 'textareabig' && (
         <View className="mb-3" style={style}>
-          <Text className="font-medium text-customGray text-base font-poppins mb-3">
+          <Text className="font-poppinsMedium text-customGray text-base  mb-3">
             {title}
           </Text>
           <TextInput
             textAlignVertical="top"
-            className={` border border-customLightGray rounded-xl bg-white min-h-[100px] max-h-[400px] px-2`}
+            className={` border border-customLightGray rounded-xl bg-white min-h-[100px] max-h-[400px] px-2 text-customGray text-xs font-poppinsRegular`}
             value={value}
             defaultValue={defaultValue}
             onChangeText={onChangeText}
@@ -229,7 +229,7 @@ const CustomInputs: React.FC<props> = ({
             {value && <Tick />}
           </Pressable>
           {title && (
-            <Text className="font-normal text-customGray text-sm font-poppins ml-2">
+            <Text className="font-poppinsRegular text-customGray text-sm  ml-2">
               {title}
             </Text>
           )}

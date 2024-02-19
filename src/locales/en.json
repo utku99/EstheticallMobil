@@ -1,4 +1,6 @@
 {
     "see-comments": "See Comments",
-    "forgot-password": "Forgot My Password"
+    "forgot-password": "Forgot My Password",   
+    "member-login":"User Login",
+    "lang_selection":"Language Selection"
 }

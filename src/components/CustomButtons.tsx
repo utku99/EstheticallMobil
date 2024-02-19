@@ -40,11 +40,11 @@ const CustomButtons: React.FC<props> = ({
   const handleSize = () => {
     if (theme == 'big') return 'h-[46px]';
     else if (theme == 'middle') return 'h-[32px]';
-    else if (theme == 'small') return 'h-[19px]';
+    else if (theme == 'small') return 'h-[20px]';
   };
 
   const handleFontSize = () => {
-    if (theme == 'big') return 'text-xl';
+    if (theme == 'big') return 'text-lg';
     else if (theme == 'middle') return 'text-xs';
     else if (theme == 'small') return 'text-xxs';
   };

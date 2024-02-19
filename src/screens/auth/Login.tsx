@@ -43,7 +43,7 @@ const Login = () => {
   });
 
   return (
-    <AuthWrapper title="Üye Girişi" onPress={formik.handleSubmit}>
+    <AuthWrapper title={t('member-login')} onPress={formik.handleSubmit}>
       <View className="">
         <CustomInputs
           type="text"

@@ -107,7 +107,7 @@ const LegalTextComp = ({value, onChange, type, error}: props) => {
           <View className="flex-row space-x-2">
             <CustomInputs type="checkbox" value={value} onChange={onChange} />
 
-            <Text className="text-sm font-poppins text-customGray flex-shrink">
+            <Text className="text-sm font-poppinsRegular text-customGray flex-shrink">
               Doktorlara sorumu sorarak
               <Text
                 onPress={() => setVisible(true)}

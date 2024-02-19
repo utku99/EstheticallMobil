@@ -16,7 +16,9 @@ const HandleData = ({data, loading, title, children}: props) => {
     return (
       title && (
         <View className="w-full items-center py-2">
-          <Text className="font-poppinsMedium text-customGray ">{title}</Text>
+          <Text className="font-poppinsMedium text-customGray text-xs">
+            {title}
+          </Text>
         </View>
       )
     );
