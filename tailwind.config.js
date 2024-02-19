@@ -10,7 +10,11 @@ module.exports = {
         customBrown: "#8F7A6C",
       },
       fontFamily: {
-        poppins: ["Poppins"]
+        poppinsBold: ["Poppins-Bold"],
+        poppinsSemiBold: ["Poppins-SemiBold"],
+        poppinsItalic: ["Poppins-Italic"],
+        poppinsRegular: ["Poppins-Regular"],
+        poppinsMedium: ["Poppins-Medium"],
       },
       fontSize: {
         xxs: ["10px", "15px"]
