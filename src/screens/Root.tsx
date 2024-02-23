@@ -6,7 +6,6 @@ import {
   NavigationContainer,
   useNavigation,
 } from '@react-navigation/native';
-import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import Sharings from './home/Sharings';
 import HeaderBackIcon from '../assets/svg/homepages/HeaderBackIcon';
 import EstheticLogo from '../assets/svg/common/EstheticLogo';
@@ -66,10 +65,9 @@ function DrawerMenu() {
 }
 
 function BottomTabs() {
-  const insets = useSafeAreaInsets();
   return (
     <Tab.Navigator
-      tabBar={props => <BottomTab {...props} insets={insets} />}
+      tabBar={props => <BottomTab />}
       screenOptions={{headerShown: false}}>
       <Tab.Screen name="home2" component={UserStack} />
     </Tab.Navigator>
