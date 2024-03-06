@@ -108,6 +108,17 @@ const AppointmentComp = ({item}: {item: any}) => {
           </Text>
         </View>
 
+        <View>
+          <Text className="text-customGray text-sm font-poppinsMedium ">
+            Kurum Açıklaması:{' '}
+          </Text>
+          <Text
+            numberOfLines={3}
+            className="text-customGray  text-sm font-poppinsRegular">
+            {item?.description ? item?.description : 'Açıklama yapılmadı'}
+          </Text>
+        </View>
+
         {item?.operationState == 0 ? (
           <View>
             <Text className="text-customOrange text-sm font-poppinsMedium ">

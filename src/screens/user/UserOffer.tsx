@@ -15,9 +15,9 @@ const UserOffer = () => {
 
   const {Post, loading} = WebClient();
   const {user} = useSelector((state: any) => state.user);
-  const [activeComments, setActiveComments] = useState([]);
   const [selectedRequest, setSelectedRequest] = useState<any>(null);
   const [myOffers, setMyOffers] = useState<any>([]);
+  const [completedOffers, setCompletedOffers] = useState<any>([]);
 
   const [clicked, setClicked] = useState(false);
 
@@ -27,6 +27,14 @@ const UserOffer = () => {
     }).then(res => {
       if (res.data.code === '100') {
         setMyOffers(res.data.object);
+      }
+    });
+
+    Post('/api/Offers/CompletedOffersWeb', {
+      userID: user?.id,
+    }).then(res => {
+      if (res.data.code === '100') {
+        setCompletedOffers(res.data.object);
       }
     });
 
@@ -117,7 +125,7 @@ const UserOffer = () => {
       )}
       {activeTab == 2 && (
         <HandleData
-          data={[]}
+          data={completedOffers}
           loading={loading}
           title={'Kabul Edilen Teklifiniz Bulunamadı'}>
           <FlatList
@@ -126,7 +134,7 @@ const UserOffer = () => {
               gap: 15,
               paddingBottom: 20,
             }}
-            data={selectedRequest?.incomingOffers}
+            data={completedOffers}
             renderItem={({item, index}) => (
               <OfferComp key={index} item={item} />
             )}

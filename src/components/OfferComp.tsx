@@ -179,6 +179,15 @@ const OfferComp = ({item, offerID}: {item?: any; offerID?: number}) => {
             </View>
 
             <View>
+              <Text className="text-customGray font-poppinsMedium text-sm ">
+                Kurum Açıklaması:{' '}
+              </Text>
+              <Text className="text-customGray font-poppinsRegular text-sm ">
+                {item?.description}
+              </Text>
+            </View>
+
+            <View>
               <Text className="text-customOrange font-poppinsMedium text-sm ">
                 Teklif Tarih Aralığı:{' '}
               </Text>
