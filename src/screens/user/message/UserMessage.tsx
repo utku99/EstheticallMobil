@@ -7,7 +7,7 @@ import {
   Image,
   Pressable,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import UserWrapper from '../UserWrapper';
 import HandleData from '../../../components/HandleData';
 import MessageComp from '../../../components/MessageComp';
@@ -18,9 +18,15 @@ import AddPhotoIcon from '../../../assets/svg/userMenu/AddPhotoIcon';
 import {SIZES} from '../../../constants/constants';
 import {openPicker} from 'react-native-image-crop-picker';
 import TrashIcon from '../../../assets/svg/firm/TrashIcon';
+import WebClient from '../../../utility/WebClient';
+import {useSelector} from 'react-redux';
+import {useFormik} from 'formik';
 
-const UserMessage = () => {
+const UserMessage = ({route}: {route?: any}) => {
   const [images, setImages] = useState<any>([]);
+  const {Post, loading} = WebClient();
+  const {user} = useSelector((state: any) => state.user);
+  const [messages, setMessages] = useState<any>([]);
 
   const openGalery = () => {
     openPicker({
@@ -33,15 +39,95 @@ const UserMessage = () => {
     });
   };
 
+  const formik = useFormik({
+    initialValues: {
+      images: [],
+      message: '',
+    } as {
+      images?: any;
+      message: string;
+    },
+    onSubmit: (values, {resetForm, setFieldValue}) => {
+      if (values.images.length == 0) {
+        Post(
+          '/api/Chatting/SendMessage',
+          {
+            roomID: route.params?.selectedUser?.roomID,
+            senderId: user?.id,
+            senderType: 1,
+            message: values.message,
+            messagesType: route.params?.selectedUser?.messagesType,
+            receiverId: route.params?.selectedUser?.correspondentID,
+            receiverType: route.params?.selectedUser?.correspondentType,
+            serviceID: messages[0]?.serviceID,
+          },
+          false,
+          false,
+        ).then(res => {
+          if (res.data.code == '100') {
+            resetForm();
+            setFieldValue('images', []);
+            let temp = messages;
+            temp.push(res.data.object);
+            setMessages(temp);
+          }
+        });
+      } else {
+        Post(
+          '/api/Chatting/SendMessage',
+          {
+            roomID: route.params?.selectedUser?.roomID,
+            senderId: user?.id,
+            senderType: 1,
+            message: '',
+            image: values.images[0].split(',')[1],
+            messagesType: route.params?.selectedUser?.messagesType,
+            receiverId: route.params?.selectedUser?.correspondentID,
+            receiverType: route.params?.selectedUser?.correspondentType,
+            serviceID: messages[0]?.serviceID,
+          },
+          false,
+          false,
+        ).then(res => {
+          if (res.data.code == '100') {
+            resetForm();
+            setFieldValue('images', []);
+            let temp = messages;
+            temp.push({
+              ...res.data.object,
+              imageUrl: res.data.object.message,
+              message: '',
+            });
+            setMessages(temp);
+          }
+        });
+      }
+    },
+  });
+
+  useEffect(() => {
+    Post('/api/Chatting/GetMessages', {
+      roomID: route.params?.selectedUser?.roomID,
+      companyID: 0,
+      companyOfficeID: 0,
+      userID: user?.id,
+    }).then(res => {
+      setMessages(res.data.object);
+    });
+  }, []);
+
   return (
     <UserWrapper title="Mesajlar">
-      <HandleData title={'Mesajınız Bulunmamaktadır'} loading={false}>
-        <View className="flex-1">
+      <HandleData
+        title={'Mesajınız Bulunmamaktadır'}
+        loading={loading}
+        data={messages}>
+        <View className="flex-1" style={{width: SIZES.width * 0.95}}>
           <FlatList
             className="mb-5 "
             contentContainerStyle={{gap: 15}}
-            data={['', '', '', '', '']}
-            renderItem={({item}) => <DoctorMessageComp />}
+            data={messages}
+            renderItem={({item}) => <DoctorMessageComp item={item} />}
           />
 
           <View className="space-y-1">

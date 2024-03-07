@@ -5,32 +5,56 @@ import NotificationIcon from '../assets/svg/userMenu/NotificationIcon';
 import {useNavigation} from '@react-navigation/native';
 import BlueTick from '../assets/svg/common/BlueTick';
 
-const MessageComp = () => {
+const messagesType: any = [
+  {value: 1, label: 'Randevu'},
+  {value: 2, label: 'Teklif'},
+  {value: 3, label: 'Paket'},
+  {value: 4, label: 'Genel'},
+];
+
+const MessageComp = ({item}: any) => {
   const navigation = useNavigation();
+
   return (
     <TouchableOpacity
-      onPress={() => navigation.navigate('usermessage')}
+      onPress={() => navigation.navigate('usermessage', {selectedUser: item})}
       className={` border border-customLightGray rounded-xl bg-white p-[10px] flex-row items-center space-x-3 `}
       style={{width: SIZES.width * 0.95}}>
       <View className="relative">
         <Image
-          source={require('../assets/images/authBg/auth.jpg')}
+          source={{uri: item?.correspondentLogo ?? ''}}
           className=" w-[80px] h-[80px] rounded-full border-[0.6px] border-customGray"
           resizeMode="cover"
         />
-        <View className="absolute right-0 bg-white rounded-full">
+        {/* <View className="absolute right-0 bg-white rounded-full">
           <BlueTick width={20} height={20} />
-        </View>
+        </View> */}
       </View>
       <View className="flex-1">
         <Text className="text-customGray font-poppinsSemiBold text-sm ">
-          Prof. Dr. Erkan Vural
+          {item?.correspondentName}
         </Text>
-        <Text className="text-customGray font-poppinsRegular text-sm">
-          TR, İstanbul, Ataşehir
+        <Text
+          numberOfLines={1}
+          className="text-customGray font-poppinsSemiBold text-sm ">
+          Mesaj Tipi:{' '}
+          <Text className="font-poppinsMedium">
+            {
+              messagesType.find((type: any) => type.value == item.messagesType)
+                .label
+            }
+          </Text>
+        </Text>
+        <Text
+          numberOfLines={1}
+          className="text-customGray font-poppinsRegular text-sm">
+          {item?.message}
         </Text>
       </View>
-      <NotificationIcon />
+      <Text className="text-customGray font-medium text-sm ">
+        {item?.createdDate}
+      </Text>
+      {/* <NotificationIcon /> */}
     </TouchableOpacity>
   );
 };

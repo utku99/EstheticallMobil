@@ -1,5 +1,5 @@
 import {Pressable} from 'react-native';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {
   DrawerActions,
@@ -40,7 +40,7 @@ import UserSaved from './user/UserSaved';
 import UserSettings from './user/UserSettings';
 import UserLogOut from './user/UserLogOut';
 import Login from './auth/Login';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import UserRegister from './auth/UserRegister';
 import FirmRegister from './auth/FirmRegister';
 import WelcomePage from './auth/WelcomePage';
@@ -49,6 +49,13 @@ import Offer from './bottomTab/Offer';
 import Appointment from './bottomTab/Appointment';
 import FirmAppointmentPayment from './firm/FirmAppointmentPayment';
 import UserIncomingMessage from './user/message/UserIncomingMessage';
+import * as signalR from '@microsoft/signalr';
+import {
+  setConnection,
+  setConnectionId,
+  setMessage,
+  setTotalUsers,
+} from '../redux/slices/hubConnection';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -172,6 +179,55 @@ const AuthStack = () => {
 
 const Root = () => {
   const {user, isLoggedIn, isGuest} = useSelector((state: any) => state.user);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const temp = new signalR.HubConnectionBuilder()
+      .withUrl('https://estheticallv2-api.ranna.com.tr/chathub')
+      .configureLogging(signalR.LogLevel.None)
+      .build();
+
+    dispatch(setConnection(temp));
+
+    temp.on('forceDisconnect', message => {
+      temp.stop();
+    });
+
+    temp.on('GetConnectionId', message => {
+      dispatch(setConnectionId(message));
+      console.log(message);
+    });
+
+    temp.on('MessageReceived', message => {
+      const now = new Date();
+      const createdDate = `${now.getHours()}:${
+        (now.getMinutes() < 10 ? '0' : '') + now.getMinutes()
+      }`;
+      if (message.includes('https://estheticallv2-api.ranna.com.tr/wwwroot')) {
+        dispatch(
+          setMessage({
+            message: '',
+            createdDate: createdDate,
+            imageUrl: message,
+          }),
+        );
+      } else {
+        dispatch(
+          setMessage({
+            message: message,
+            createdDate: createdDate,
+            imageUrl: null,
+          }),
+        );
+      }
+    });
+
+    temp.on('updateTotals', data => {
+      dispatch(setTotalUsers(data));
+    });
+
+    temp.start();
+  }, []);
 
   const handleAuth = () => {
     if (user && isLoggedIn) {
