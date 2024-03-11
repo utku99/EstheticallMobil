@@ -136,7 +136,7 @@ const UserOffer = () => {
             }}
             data={completedOffers}
             renderItem={({item, index}) => (
-              <OfferComp key={index} item={item} />
+              <OfferComp key={index} item={item} completed />
             )}
           />
         </HandleData>

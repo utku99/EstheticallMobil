@@ -79,14 +79,14 @@ export default WebClient;
 
 
 
-export const toast = (message) => {
+export const toast = (message,delay=0) => {
   Toast.show(message, {
     duration: Toast.durations.SHORT,
     position: Toast.positions.BOTTOM,
     shadow: true,
     animation: true,
     hideOnPress: true,
-    delay: 0,
+    delay: delay,
     onShow: () => {
       // calls on toast\`s appear animation start
     },

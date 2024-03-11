@@ -7,7 +7,7 @@ import {
   Image,
   Pressable,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import UserWrapper from '../UserWrapper';
 import HandleData from '../../../components/HandleData';
 import MessageComp from '../../../components/MessageComp';
@@ -19,14 +19,16 @@ import {SIZES} from '../../../constants/constants';
 import {openPicker} from 'react-native-image-crop-picker';
 import TrashIcon from '../../../assets/svg/firm/TrashIcon';
 import WebClient from '../../../utility/WebClient';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {useFormik} from 'formik';
+import {addMessage, setMessage} from '../../../redux/slices/hubConnection';
 
 const UserMessage = ({route}: {route?: any}) => {
-  const [images, setImages] = useState<any>([]);
+  const scrollRef = useRef<any>(null);
+  const dispatch = useDispatch();
   const {Post, loading} = WebClient();
   const {user} = useSelector((state: any) => state.user);
-  const [messages, setMessages] = useState<any>([]);
+  const {connection, message} = useSelector((state: any) => state.hub);
 
   const openGalery = () => {
     openPicker({
@@ -35,7 +37,7 @@ const UserMessage = ({route}: {route?: any}) => {
       multiple: true,
     }).then((image: any) => {
       let temp = image.map((img: any) => img.data);
-      setImages(temp);
+      formik.setFieldValue('images', temp);
     });
   };
 
@@ -59,7 +61,7 @@ const UserMessage = ({route}: {route?: any}) => {
             messagesType: route.params?.selectedUser?.messagesType,
             receiverId: route.params?.selectedUser?.correspondentID,
             receiverType: route.params?.selectedUser?.correspondentType,
-            serviceID: messages[0]?.serviceID,
+            serviceID: message[0]?.serviceID,
           },
           false,
           false,
@@ -67,9 +69,7 @@ const UserMessage = ({route}: {route?: any}) => {
           if (res.data.code == '100') {
             resetForm();
             setFieldValue('images', []);
-            let temp = messages;
-            temp.push(res.data.object);
-            setMessages(temp);
+            dispatch(addMessage(res.data.object));
           }
         });
       } else {
@@ -80,11 +80,11 @@ const UserMessage = ({route}: {route?: any}) => {
             senderId: user?.id,
             senderType: 1,
             message: '',
-            image: values.images[0].split(',')[1],
+            image: values.images,
             messagesType: route.params?.selectedUser?.messagesType,
             receiverId: route.params?.selectedUser?.correspondentID,
             receiverType: route.params?.selectedUser?.correspondentType,
-            serviceID: messages[0]?.serviceID,
+            serviceID: message[0]?.serviceID,
           },
           false,
           false,
@@ -92,13 +92,7 @@ const UserMessage = ({route}: {route?: any}) => {
           if (res.data.code == '100') {
             resetForm();
             setFieldValue('images', []);
-            let temp = messages;
-            temp.push({
-              ...res.data.object,
-              imageUrl: res.data.object.message,
-              message: '',
-            });
-            setMessages(temp);
+            dispatch(addMessage(res.data.object));
           }
         });
       }
@@ -112,30 +106,40 @@ const UserMessage = ({route}: {route?: any}) => {
       companyOfficeID: 0,
       userID: user?.id,
     }).then(res => {
-      setMessages(res.data.object);
+      dispatch(setMessage(res.data.object));
     });
+
+    return () => {
+      connection.invoke('LeaveRoom');
+    };
   }, []);
 
   return (
-    <UserWrapper title="Mesajlar">
+    <UserWrapper title="Mesajlar" scrollEnabled={false}>
       <HandleData
         title={'Mesajınız Bulunmamaktadır'}
         loading={loading}
-        data={messages}>
-        <View className="flex-1" style={{width: SIZES.width * 0.95}}>
+        data={message}>
+        <View
+          className="flex-1"
+          style={{width: SIZES.width * 0.95, height: SIZES.height * 0.69}}>
           <FlatList
+            ref={scrollRef}
+            onContentSizeChange={() =>
+              scrollRef.current?.scrollToEnd({animated: false})
+            }
             className="mb-5 "
             contentContainerStyle={{gap: 15}}
-            data={messages}
+            data={message}
             renderItem={({item}) => <DoctorMessageComp item={item} />}
           />
 
           <View className="space-y-1">
-            {images?.length !== 0 && (
+            {formik.values.images?.length !== 0 && (
               <View>
                 <FlatList
                   horizontal
-                  data={images}
+                  data={formik.values.images}
                   contentContainerStyle={{gap: 10}}
                   renderItem={({item, index}) => (
                     <View className="relative">
@@ -147,10 +151,9 @@ const UserMessage = ({route}: {route?: any}) => {
                       </View>
                       <Pressable
                         onPress={() => {
-                          const updatedImages = images.filter(
-                            (_: any, i: number) => i !== index,
-                          );
-                          setImages(updatedImages);
+                          let a = formik.values.images;
+                          a.splice(index, 1);
+                          formik.setFieldValue('images', a);
                         }}
                         className="absolute bottom-1 right-1 bg-customOrange rounded-md w-[24px] h-[24px] items-center justify-center">
                         <TrashIcon width={14} height={17} />
@@ -168,11 +171,13 @@ const UserMessage = ({route}: {route?: any}) => {
 
               <View className="rounded-xl border border-customLightGray bg-white h-[40px] overflow-hidden flex-row items-center flex-1">
                 <TextInput
-                  className=" flex-1 pl-2 text-sm text-customGray font-poppinsRegular"
+                  value={formik.values.message}
+                  onChangeText={formik.handleChange('message')}
+                  className=" flex-1 text-sm text-customGray font-poppinsRegular  p-0 pl-2 h-full"
                   placeholder="Yorumunuzu Yazın..."
                   placeholderTextColor={'#4D4A48'}
                 />
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => formik.handleSubmit()}>
                   <SharingSendMessageIcon />
                 </TouchableOpacity>
               </View>

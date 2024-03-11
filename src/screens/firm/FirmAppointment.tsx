@@ -27,13 +27,14 @@ const FirmAppointment = ({route}: props) => {
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
+      institution: company ?? '',
       operation: '',
       suboperation: '',
       doctor: '',
       title: '',
       content: '',
-      startDate: '',
-      endDate: '',
+      startDate: null,
+      endDate: null,
     } as {
       operation: any;
       suboperation: any;
@@ -49,7 +50,35 @@ const FirmAppointment = ({route}: props) => {
     //     content: Yup.string().required("soru metni alanı gereklidir"),
     //     checked: Yup.boolean().oneOf([true], 'metni onaylamanız gerekmektedir'),
     // }),
-    onSubmit: values => {},
+    onSubmit: values => {
+      Post(
+        '/api/Appointments/RequestAppointment',
+        {
+          userID: user?.id,
+          companyID: company?.value,
+          companyOfficeID: company?.officeID,
+          serviceID: values.operation.value,
+          serviceSubId: values.suboperation.value ?? 0,
+          doctorId: values.doctor.value ?? 0,
+          title: values.title,
+          content: values.content,
+          startDate: values.startDate,
+          endDate: values.endDate,
+        },
+        true,
+        true,
+      ).then(res => {
+        if (res.data.code == '100') {
+          if (company?.isAppointmentPaid) {
+            navigation.navigate('firmappointmentpayment', {
+              item: formik.values,
+            });
+          } else {
+            navigation.goBack();
+          }
+        }
+      });
+    },
   });
 
   useEffect(() => {
@@ -77,15 +106,12 @@ const FirmAppointment = ({route}: props) => {
       setCompany(res.data);
     });
 
-    Post('/api/CompanyDoctor/CompanyDoctorList', {
+    Post('/api/CompanyDoctor/AppointmentDoctorList', {
+      serviceId: formik.values.operation.value,
       companyId: route.params.companyId,
       companyOfficeId: route.params.companyOfficeId,
     }).then(res => {
-      let temp = res.data.object.map((item: any) => ({
-        value: item.companyDoctorId,
-        label: item.doctorName,
-      }));
-      setDoctors(temp);
+      setDoctors(res.data);
     });
   }, [formik.values.operation.value]);
 
@@ -122,14 +148,16 @@ const FirmAppointment = ({route}: props) => {
           />
         )}
 
-        <CustomInputs
-          type="dropdown"
-          dropdownData={doctors}
-          value={formik.values.doctor}
-          onChange={(e: any) => formik.setFieldValue('doctor', e)}
-          placeholder="Doktor Seç"
-          style={{width: '75%', height: 32}}
-        />
+        {doctors?.length != 0 && (
+          <CustomInputs
+            type="dropdown"
+            dropdownData={doctors}
+            value={formik.values.doctor}
+            onChange={(e: any) => console.log(e)}
+            placeholder="Doktor Seç"
+            style={{width: '75%', height: 32}}
+          />
+        )}
 
         <CustomInputs
           type="textareasmall"
@@ -153,12 +181,14 @@ const FirmAppointment = ({route}: props) => {
               type="date"
               placeholder="Başlangıç Tarihi"
               value={formik.values.startDate}
+              onChange={(e: any) => formik.setFieldValue('startDate', e)}
               style={{width: '75%'}}
             />
             <CustomInputs
               type="date"
               placeholder="Bitiş Tarihi"
               value={formik.values.endDate}
+              onChange={(e: any) => formik.setFieldValue('endDate', e)}
               style={{width: '75%'}}
             />
           </View>

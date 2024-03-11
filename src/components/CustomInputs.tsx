@@ -18,6 +18,8 @@ import DropdownRightUpIcon from '../assets/svg/common/DropdownRightUpIcon';
 import EyeOpen from '../assets/svg/auth/EyeOpen';
 import {Rating} from 'react-native-ratings';
 import Tick from '../assets/svg/common/Tick';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import moment from 'moment';
 
 interface props {
   type:
@@ -74,7 +76,7 @@ const CustomInputs: React.FC<props> = ({
         <View className="w-full mb-3" style={style}>
           <View className="flex-row items-center">
             {title && (
-              <Text className="text-sm font-poppins font-normal text-customGray w-[40%] text-right pr-3">
+              <Text className="text-sm font-poppinsRegular  text-customGray w-[40%] text-right pr-3">
                 {title}
               </Text>
             )}
@@ -141,29 +143,23 @@ const CustomInputs: React.FC<props> = ({
       )}
       {type == 'date' && (
         <View className=" mb-3 w-full" style={style}>
-          <Pressable
-            onPress={() => setShowDateModal(!showDateModal)}
-            className="h-[40px] bg-white rounded-lg border border-customLightGray px-1 placeholder:text-customGray/[.5] flex-row items-center">
-            <TextInput
-              value={value}
-              placeholder={placeholder}
-              editable={false}
-              placeholderTextColor={'background: rgba(77, 74, 72, 0.5)'}
-              className="flex-1 text-customGray text-xs font-poppinsRegular"
-            />
-            {showDateModal && (
-              <DateTimePicker
-                value={value}
-                onChange={(event: DateTimePickerEvent, date: any) =>
-                  onChange(date)
-                }
-                dateFormat="day month year"
-              />
-            )}
-            <TouchableOpacity onPress={() => setShowDateModal(!showDateModal)}>
-              <CalendarIcon />
-            </TouchableOpacity>
-          </Pressable>
+          <TouchableOpacity
+            className="h-[40px] bg-white rounded-lg border border-customLightGray px-1 placeholder:text-customGray/[.5] flex-row items-center"
+            onPress={() => setShowDateModal(true)}>
+            <Text className="flex-1  h-full text-customGray text-xs font-poppinsRegular">
+              {value
+                ? moment(value, 'YYYY-MM-DD').format('DD.MM.YYYY')
+                : placeholder}
+            </Text>
+            <CalendarIcon />
+          </TouchableOpacity>
+          <DateTimePickerModal
+            isVisible={showDateModal}
+            mode="date"
+            date={value ?? new Date()}
+            onConfirm={onChange}
+            onCancel={() => setShowDateModal(false)}
+          />
           {error && (
             <Text className="text-red-400 text-xs ">{error?.message}</Text>
           )}
@@ -173,7 +169,7 @@ const CustomInputs: React.FC<props> = ({
         <View className="mb-3" style={dropdownContainerStyle}>
           <View className="flex-row items-center">
             {title && (
-              <Text className="text-sm font-poppins font-normal text-customGray w-[40%] text-right pr-3">
+              <Text className="text-sm font-poppinsRegular  text-customGray w-[40%] text-right pr-3">
                 {title}
               </Text>
             )}

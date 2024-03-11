@@ -51,6 +51,7 @@ import FirmAppointmentPayment from './firm/FirmAppointmentPayment';
 import UserIncomingMessage from './user/message/UserIncomingMessage';
 import * as signalR from '@microsoft/signalr';
 import {
+  addMessage,
   setConnection,
   setConnectionId,
   setMessage,
@@ -181,53 +182,52 @@ const Root = () => {
   const {user, isLoggedIn, isGuest} = useSelector((state: any) => state.user);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    const temp = new signalR.HubConnectionBuilder()
-      .withUrl('https://estheticallv2-api.ranna.com.tr/chathub')
-      .configureLogging(signalR.LogLevel.None)
-      .build();
+  const temp = new signalR.HubConnectionBuilder()
+    .withUrl(`https://estheticallv2-api.ranna.com.tr/chathub`)
+    .configureLogging(signalR.LogLevel.None)
+    .build();
 
-    dispatch(setConnection(temp));
+  dispatch(setConnection(temp));
 
-    temp.on('forceDisconnect', message => {
-      temp.stop();
-    });
+  temp.on('forceDisconnect', message => {
+    temp.stop();
+  });
 
-    temp.on('GetConnectionId', message => {
-      dispatch(setConnectionId(message));
-      console.log(message);
-    });
+  temp.on('GetConnectionId', message => {
+    dispatch(setConnectionId(message));
+  });
 
-    temp.on('MessageReceived', message => {
-      const now = new Date();
-      const createdDate = `${now.getHours()}:${
-        (now.getMinutes() < 10 ? '0' : '') + now.getMinutes()
-      }`;
-      if (message.includes('https://estheticallv2-api.ranna.com.tr/wwwroot')) {
-        dispatch(
-          setMessage({
-            message: '',
-            createdDate: createdDate,
-            imageUrl: message,
-          }),
-        );
-      } else {
-        dispatch(
-          setMessage({
-            message: message,
-            createdDate: createdDate,
-            imageUrl: null,
-          }),
-        );
-      }
-    });
+  temp.on('MessageReceived', message => {
+    console.log(message);
 
-    temp.on('updateTotals', data => {
-      dispatch(setTotalUsers(data));
-    });
+    const now = new Date();
+    const createdDate = `${now.getHours()}:${
+      (now.getMinutes() < 10 ? '0' : '') + now.getMinutes()
+    }`;
+    if (message.includes('https://estheticallv2-api.ranna.com.tr/wwwroot')) {
+      dispatch(
+        addMessage({
+          message: '',
+          createdDate: createdDate,
+          imageUrl: message,
+        }),
+      );
+    } else {
+      dispatch(
+        addMessage({
+          message: message,
+          createdDate: createdDate,
+          imageUrl: null,
+        }),
+      );
+    }
+  });
 
-    temp.start();
-  }, []);
+  temp.on('updateTotals', data => {
+    dispatch(setTotalUsers(data));
+  });
+
+  temp.start();
 
   const handleAuth = () => {
     if (user && isLoggedIn) {

@@ -12,8 +12,17 @@ import WebClient from '../utility/WebClient';
 import {useSelector} from 'react-redux';
 import {useFormik} from 'formik';
 import ModalWrapper from './ModalWrapper';
+import CommunicationModal from './CommunicationModal';
 
-const OfferComp = ({item, offerID}: {item?: any; offerID?: number}) => {
+const OfferComp = ({
+  item,
+  offerID,
+  completed = false,
+}: {
+  item?: any;
+  offerID?: number;
+  completed?: boolean;
+}) => {
   const [seeAll, setSeeAll] = useState(false);
   const isCarousel = useRef(null);
   const [index, setIndex] = useState<any>(0);
@@ -279,13 +288,15 @@ const OfferComp = ({item, offerID}: {item?: any; offerID?: number}) => {
                 : '€'}
             </Text>
 
-            <CustomButtons
-              type="solid"
-              label="Soru Sor"
-              icon="question"
-              style={{width: 100, alignSelf: 'center'}}
-              onPress={() => setVisible(true)}
-            />
+            {!completed && (
+              <CustomButtons
+                type="solid"
+                label="İletişime Geç"
+                icon="question"
+                style={{alignSelf: 'center'}}
+                onPress={() => setVisible(true)}
+              />
+            )}
           </View>
         </View>
       )}
@@ -317,35 +328,13 @@ const OfferComp = ({item, offerID}: {item?: any; offerID?: number}) => {
       </Pressable>
 
       {/* modal */}
-      <ModalWrapper visible={visible} setVisible={setVisible}>
-        <View className="max-h-[90%]">
-          <CustomInputs
-            type="textareasmall"
-            value={formik.values.title}
-            onChangeText={formik.handleChange('title')}
-          />
-
-          <CustomInputs
-            type="textareabig"
-            title="Soru Metni"
-            value={formik.values.content}
-            onChangeText={formik.handleChange('content')}
-          />
-
-          <View className="flex-row items-center justify-center space-x-2">
-            <CustomButtons
-              type="outlined"
-              label="Vazgeç"
-              onPress={() => setVisible(false)}
-            />
-            <CustomButtons
-              type="solid"
-              label="Gönder"
-              onPress={formik.handleSubmit}
-            />
-          </View>
-        </View>
-      </ModalWrapper>
+      <CommunicationModal
+        visible={visible}
+        setVisible={setVisible}
+        item={item}
+        title={'Teklif Hakkında İletişime Geç'}
+        type="offer"
+      />
     </View>
   );
 };

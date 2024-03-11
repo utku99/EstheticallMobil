@@ -11,14 +11,13 @@ const UserIncomingMessage = () => {
   const {Post, loading} = WebClient();
   const {user} = useSelector((state: any) => state.user);
   const [users, setUsers] = useState([]);
-  const [selectedUser, setSelectedUser] = useState<any>(null);
   const navigation = useNavigation();
   const {connection, message, connectionId, totalUsers} = useSelector(
     (state: any) => state.hub,
   );
 
   useEffect(() => {
-    if (true) {
+    if (connectionId) {
       Post('/api/Chatting/GetUserMessageSenders', {
         roomID: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
         companyID: 0,
@@ -28,7 +27,7 @@ const UserIncomingMessage = () => {
 
       connection.invoke('LoginMessageHub', {UserID: user?.id, TypeID: 1});
     } else {
-      //   navigation.navigate('sharing');
+      navigation.navigate('sharing');
     }
 
     return () => {

@@ -13,9 +13,8 @@ import ShareIcon from '../assets/svg/homepages/ShareIcon';
 import RenderHTML from 'react-native-render-html';
 import CustomButtons from './CustomButtons';
 import LikeUnlikeComp from './LikeUnlikeComp';
-import ModalWrapper from './ModalWrapper';
 import {useFormik} from 'formik';
-import * as Yup from 'yup';
+import CommunicationModal from './CommunicationModal';
 
 const PackageComp = ({
   item,
@@ -35,34 +34,6 @@ const PackageComp = ({
   const isCarousel = useRef(null);
   const navigation = useNavigation();
   const [visible, setVisible] = useState(false);
-  const {Post, loading} = WebClient();
-  const {user} = useSelector((state: any) => state.user);
-
-  const formik = useFormik({
-    initialValues: {
-      title: '',
-      content: '',
-    },
-    onSubmit: values => {
-      Post(
-        '/api/Package/AskPackageQuestion',
-        {
-          userID: user?.id,
-          packageID: item?.packageID ?? item?.footerModel?.packageID,
-          companyID: item?.companyID ?? companyID,
-          companyOfficeID: item?.companyOfficeID ?? companyOfficeID,
-          title: values.title,
-          content: values.content,
-        },
-        true,
-        true,
-      ).then(res => {
-        if (res.data.code == '100') {
-          setVisible(false);
-        }
-      });
-    },
-  });
 
   const handlePoint = () => {
     if (item?.companyPoint) {
@@ -241,8 +212,8 @@ const PackageComp = ({
           <View className="pb-[30px]">
             <CustomButtons
               onPress={() => setVisible(true)}
-              type="iconsolid"
-              label="Soru Sor"
+              type="solid"
+              label="İletişime Geç"
               style={{alignSelf: 'center'}}
               icon="question"
               theme="middle"
@@ -265,39 +236,13 @@ const PackageComp = ({
       </Pressable>
 
       {/* modal */}
-      <ModalWrapper visible={visible} setVisible={setVisible}>
-        <View className="max-h-[90%]">
-          <Text className="font-medium text-customGray text-base font-poppins mb-3">
-            Paket Adı: {item?.packageName ?? item?.footerModel?.packageName}
-          </Text>
-
-          <CustomInputs
-            type="textareasmall"
-            value={formik.values.title}
-            onChangeText={formik.handleChange('title')}
-          />
-
-          <CustomInputs
-            type="textareabig"
-            title="Soru Metni"
-            value={formik.values.content}
-            onChangeText={formik.handleChange('content')}
-          />
-
-          <View className="flex-row items-center justify-center space-x-2">
-            <CustomButtons
-              type="outlined"
-              label="Vazgeç"
-              onPress={() => setVisible(false)}
-            />
-            <CustomButtons
-              type="solid"
-              label="Gönder"
-              onPress={formik.handleSubmit}
-            />
-          </View>
-        </View>
-      </ModalWrapper>
+      <CommunicationModal
+        visible={visible}
+        setVisible={setVisible}
+        item={item}
+        title={'Paket Hakkında İletişime Geç'}
+        type="package"
+      />
     </View>
   );
 };

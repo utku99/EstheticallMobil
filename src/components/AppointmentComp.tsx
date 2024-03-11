@@ -10,6 +10,7 @@ import {useFormik} from 'formik';
 import {useSelector} from 'react-redux';
 import WebClient from '../utility/WebClient';
 import ModalWrapper from './ModalWrapper';
+import CommunicationModal from './CommunicationModal';
 
 const AppointmentComp = ({item}: {item: any}) => {
   const [visible, setVisible] = useState(false);
@@ -171,42 +172,20 @@ const AppointmentComp = ({item}: {item: any}) => {
       <CustomButtons
         onPress={() => setVisible(true)}
         type="solid"
-        label="Soru Sor"
-        style={{width: 100, alignSelf: 'center', marginVertical: 20}}
+        label="İletişime Geç"
+        style={{alignSelf: 'center', marginVertical: 20}}
       />
 
       <View className="bg-customBrown w-full h-[35px] rounded-b-lg flex-row items-center justify-between"></View>
 
       {/* modal */}
-      <ModalWrapper visible={visible} setVisible={setVisible}>
-        <View className="max-h-[90%]">
-          <CustomInputs
-            type="textareasmall"
-            value={formik.values.title}
-            onChangeText={formik.handleChange('title')}
-          />
-
-          <CustomInputs
-            type="textareabig"
-            title="Soru Metni"
-            value={formik.values.content}
-            onChangeText={formik.handleChange('content')}
-          />
-
-          <View className="flex-row items-center justify-center space-x-2">
-            <CustomButtons
-              type="outlined"
-              label="Vazgeç"
-              onPress={() => setVisible(false)}
-            />
-            <CustomButtons
-              type="solid"
-              label="Gönder"
-              onPress={formik.handleSubmit}
-            />
-          </View>
-        </View>
-      </ModalWrapper>
+      <CommunicationModal
+        visible={visible}
+        setVisible={setVisible}
+        title={'Randevu Hakkında İletişime Geç'}
+        type="appointment"
+        item={item}
+      />
     </View>
   );
 };

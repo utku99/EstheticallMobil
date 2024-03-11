@@ -28,3 +28,16 @@ export const legalTextType = {
     "DISCLOSURETEXTANDCOOKIEPOLICY": 6, //aydınlatma metni ve çerez
     "DISTANCESERVICESALESAGREEMENT": 7, //mesafeli hizmet satış 
 }
+
+export const messageTypeEnum ={
+    user:1,
+    company:2,
+    office:3,
+}
+
+export const messageEnum ={
+    appointment:1,
+    offer:2,
+    package:3,
+    general:3,
+}

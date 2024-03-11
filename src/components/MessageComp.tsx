@@ -4,6 +4,7 @@ import {SIZES} from '../constants/constants';
 import NotificationIcon from '../assets/svg/userMenu/NotificationIcon';
 import {useNavigation} from '@react-navigation/native';
 import BlueTick from '../assets/svg/common/BlueTick';
+import {useSelector} from 'react-redux';
 
 const messagesType: any = [
   {value: 1, label: 'Randevu'},
@@ -14,10 +15,22 @@ const messagesType: any = [
 
 const MessageComp = ({item}: any) => {
   const navigation = useNavigation();
+  const {connection} = useSelector((state: any) => state.hub);
+  const {user} = useSelector((state: any) => state.user);
 
   return (
     <TouchableOpacity
-      onPress={() => navigation.navigate('usermessage', {selectedUser: item})}
+      onPress={() => {
+        connection.invoke('LeaveRoom');
+        connection.invoke('JoinRoom', {
+          RoomID: item.roomID,
+          sender_id: user?.id,
+          sender_type: 1,
+          receiver_id: item.correspondentID,
+          receiver_type: item.correspondentType,
+        });
+        navigation.navigate('usermessage', {selectedUser: item});
+      }}
       className={` border border-customLightGray rounded-xl bg-white p-[10px] flex-row items-center space-x-3 `}
       style={{width: SIZES.width * 0.95}}>
       <View className="relative">

@@ -2,7 +2,7 @@ import {View, Text, TextInput} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import FirmWrapper from './FirmWrapper';
 import CustomInputs from '../../components/CustomInputs';
-import WebClient from '../../utility/WebClient';
+import WebClient, {toast} from '../../utility/WebClient';
 import {SIZES} from '../../constants/constants';
 import {Controller, useForm} from 'react-hook-form';
 import CustomButtons from '../../components/CustomButtons';
@@ -10,6 +10,7 @@ import HandleData from '../../components/HandleData';
 import AddPhotoComp from '../../components/AddPhotoComp';
 import {useFormik} from 'formik';
 import {useSelector} from 'react-redux';
+import * as Yup from 'yup';
 
 interface props {
   route?: any;
@@ -35,8 +36,8 @@ const FirmOffer = ({route}: props) => {
       transport: false,
       accomodation: false,
       escort: false,
-      startDate: '',
-      endDate: '',
+      startDate: null,
+      endDate: null,
     } as {
       operation: any;
       suboperation: any;
@@ -56,27 +57,31 @@ const FirmOffer = ({route}: props) => {
     //     checked: Yup.boolean().oneOf([true], 'metni onaylamanız gerekmektedir'),
     // }),
     onSubmit: values => {
-      console.log(values.startDate);
-
-      // Post("/api/Offers/RequestOffer", {
-      //     "userID": user?.id,
-      //     "companyID":  route.params.companyId,
-      //     "companyOfficeID":route.params.companyOfficeId,
-      //     "countryID": values.country.value,
-      //     "cityID": values.city.value,
-      //     "serviceID": values.operation.value,
-      //     "serviceSubID": values.subOperation.value,
-      //     "subject": values.title,
-      //     "content": values.content,
-      //     "extraServices": [values.transport ? 1 : "", values.accomodation ? 2 : "", values.escort ? 3 : ""].filter((item: any) => item !== ""),
-      //     "startDate": values.startDate,
-      //     "endDate": values.endDate,
-      //     "images": values.images.map((item: any) => item.split(",")[1])
-      //   }, true, true).then(res => {
-      //     if (res.data.code === "100") {
-      //       dispatch(setIsVisibleOfferModal(false))
-      //     }
-      //   })
+      Post('/api/Offers/RequestOffer', {
+        userID: user?.id,
+        companyID: route.params.companyId,
+        companyOfficeID: route.params.companyOfficeId,
+        countryID: 0,
+        cityID: 0,
+        serviceID: values.operation.value,
+        serviceSubID: values.suboperation.value,
+        subject: values.title,
+        content: values.content,
+        extraServices: [
+          values.transport ? 1 : '',
+          values.accomodation ? 2 : '',
+          values.escort ? 3 : '',
+        ].filter((item: any) => item !== ''),
+        startDate: values.startDate,
+        endDate: values.endDate,
+        images: values.images,
+      }).then(res => {
+        if (res.data.code === '100') {
+          toast(res.data.message);
+        } else {
+          toast(res.data.message);
+        }
+      });
     },
   });
 
@@ -196,12 +201,14 @@ const FirmOffer = ({route}: props) => {
               type="date"
               placeholder="Başlangıç Tarihi"
               value={formik.values.startDate}
+              onChange={(e: any) => formik.setFieldValue('startDate', e)}
               style={{width: '75%'}}
             />
             <CustomInputs
               type="date"
               placeholder="Bitiş Tarihi"
               value={formik.values.endDate}
+              onChange={(e: any) => formik.setFieldValue('endDate', e)}
               style={{width: '75%'}}
             />
           </View>
