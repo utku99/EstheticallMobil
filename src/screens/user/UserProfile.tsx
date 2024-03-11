@@ -1,266 +1,269 @@
-import { View, Text, Image, Pressable } from 'react-native'
-import React, { useEffect, useState } from 'react'
-import UserWrapper from './UserWrapper'
-import { useSelector } from 'react-redux';
+import {View, Text, Image, Pressable} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import UserWrapper from './UserWrapper';
+import {useSelector} from 'react-redux';
 import WebClient from '../../utility/WebClient';
 import EditIcon from '../../assets/svg/userMenu/EditIcon';
-import { openPicker } from 'react-native-image-crop-picker';
-import { Controller, useForm } from 'react-hook-form';
+import {openPicker} from 'react-native-image-crop-picker';
+import {Controller, useForm} from 'react-hook-form';
 import CustomInputs from '../../components/CustomInputs';
 import CustomButtons from '../../components/CustomButtons';
 import HandleData from '../../components/HandleData';
-import { user } from '../model/user';
-import { useFormik } from 'formik';
-import { genderData } from '../../constants/enum';
-
+import {useFormik} from 'formik';
+import {genderData} from '../../constants/enum';
 
 const UserProfile = () => {
-    const { user } = useSelector((state: any) => state.user);
-    const { Post, loading } = WebClient()
+  const {user} = useSelector((state: any) => state.user);
+  const {Post, loading} = WebClient();
 
-    const [userInfo, setUserInfo] = useState<any>(null)
-    const [selectedImage, setSelectedImage] = useState<any>(null)
-    const [countries, setCountries] = useState([]);
-    const [cities, setCities] = useState([]);
+  const [userInfo, setUserInfo] = useState<any>(null);
+  const [selectedImage, setSelectedImage] = useState<any>(null);
+  const [countries, setCountries] = useState([]);
+  const [cities, setCities] = useState([]);
 
+  const openGalery = () => {
+    openPicker({
+      cropping: false,
+      includeBase64: true,
+      multiple: false,
+    }).then((image: any) => {
+      setSelectedImage(image.data);
+    });
+  };
 
-    const openGalery = () => {
-        openPicker({
-            cropping: false,
-            includeBase64: true,
-            multiple: false
-        }).then((image: any) => {
-            setSelectedImage(image.data)
-        });
-    }
-
-
-    const formik = useFormik({
-        enableReinitialize: true,
-        initialValues: {
-            logo: selectedImage ?? userInfo?.logo,
-            name: userInfo?.name,
-            surname: userInfo?.surname,
-            email: userInfo?.mail,
-            nickname: userInfo?.userName,
-            date: userInfo?.birthDate,
-            gender: genderData.find(item => item.value === userInfo?.gender),
-            country: countries.find((item: any) => item.value === userInfo?.countryId),
-            city: cities.find((item: any) => item.value === userInfo?.cityId),
-        } as {
-            logo?: any;
-            name?: any;
-            surname?: any;
-            email?: any;
-            nickname?: any;
-            date?: any;
-            gender?: any
-            country?: any
-            city?: any
+  const formik = useFormik({
+    enableReinitialize: true,
+    initialValues: {
+      logo: selectedImage ?? userInfo?.logo,
+      name: userInfo?.name,
+      surname: userInfo?.surname,
+      email: userInfo?.mail,
+      nickname: userInfo?.userName,
+      date: userInfo?.birthDate ?? null,
+      gender: genderData.find(item => item.value === userInfo?.gender),
+      country: countries.find(
+        (item: any) => item.value === userInfo?.countryId,
+      ),
+      city: cities.find((item: any) => item.value === userInfo?.cityId),
+    } as {
+      logo?: any;
+      name?: any;
+      surname?: any;
+      email?: any;
+      nickname?: any;
+      date?: any;
+      gender?: any;
+      country?: any;
+      city?: any;
+    },
+    onSubmit: values => {
+      Post(
+        '/api/User/WebEditUser',
+        {
+          userId: user.id,
+          logo: values.logo.split(',')[1] ?? '',
+          name: values.name,
+          surname: values.surname,
+          userName: values.nickname,
+          mail: values.email,
+          birthDate: values.date,
+          gender: values.gender?.value,
+          countryId: values.country?.value,
+          cityId: values.city?.value,
         },
-        onSubmit: (values) => {
-            Post("/api/User/WebEditUser", {
-                "userId": user.id,
-                "logo": values.logo.split(",")[1] ?? "",
-                "name": values.name,
-                "surname": values.surname,
-                "userName": values.nickname,
-                "mail": values.email,
-                "birthDate": values.date,
-                "gender": values.gender?.value,
-                "countryId": values.country?.value,
-                "cityId": values.city?.value,
-            }, false, false).then(res => {
-                if (res.data.code === "100") {
-
-                }
-            })
+        false,
+        false,
+      ).then(res => {
+        if (res.data.code === '100') {
         }
-    })
+      });
+    },
+  });
 
+  useEffect(() => {
+    const getProfilInfo = async () => {
+      await Post(
+        '/api/User/WebGetUser',
+        {
+          userId: user?.id,
+        },
+        false,
+        false,
+      )
+        .then(res => {
+          if (res.data.code === '100') {
+            setUserInfo(res.data.object);
+          }
+        })
+        .finally(() => {
+          GetCountries();
+        });
+    };
+    getProfilInfo();
 
-    useEffect(() => {
-        const getProfilInfo = async () => {
-            await Post("/api/User/WebGetUser", {
-                "userId": user?.id
-            }, false, false).then(res => {
-                if (res.data.code === "100") {
-                    setUserInfo(res.data.object)
-                }
-            }).finally(() => {
-                GetCountries()
-            })
+    const GetCountries = () => {
+      Post('/api/Common/GetCountries', {})
+        .then(res => {
+          if (res.data.code === '100') {
+            const countries = res.data.object.map((item: any) => ({
+              value: item.countryID,
+              label: item.countryName,
+            }));
+            setCountries(countries);
+          }
+        })
+        .finally(() => {
+          getCities();
+        });
+    };
+
+    const getCities = () => {
+      Post('/api/Common/GetCities', {
+        countryID: formik.values.country?.value,
+      }).then(res => {
+        if (res.data.code === '100') {
+          const cities = res.data.object.map((item: any) => ({
+            value: item.cityID,
+            label: item.name,
+          }));
+          setCities(cities);
         }
-        getProfilInfo()
+      });
+    };
+  }, [formik.values.country?.value, user]);
 
-        const GetCountries = () => {
-            Post("/api/Common/GetCountries", {}).then(res => {
-                if (res.data.code === "100") {
-                    const countries = res.data.object.map((item: any) => ({
-                        value: item.countryID,
-                        label: item.countryName
-                    }));
-                    setCountries(countries);
-                }
-            }).finally(() => {
-                getCities()
-            })
-        }
+  return (
+    <UserWrapper>
+      <HandleData loading={loading}>
+        <View className="items-center px-[5%] flex-1">
+          {/* image */}
+          <View className="flex-row space-x-1 mb-6">
+            <View className="w-[80px] h-[80px] overflow-hidden rounded-full ">
+              <Image
+                source={{
+                  uri: selectedImage
+                    ? `data:img/jpeg;base64,` + selectedImage
+                    : formik.values.logo,
+                }}
+                className="w-full h-full"
+                resizeMode="cover"
+              />
+            </View>
+            <Pressable onPress={() => openGalery()} className="self-end">
+              <EditIcon />
+            </Pressable>
+          </View>
 
-        const getCities = () => {
-            Post("/api/Common/GetCities", {
-                "countryID": formik.values.country?.value
-            }).then(res => {
-                if (res.data.code === "100") {
-                    const cities = res.data.object.map((item: any) => ({
-                        value: item.cityID,
-                        label: item.name
-                    }));
-                    setCities(cities);
-                }
-            })
-        }
+          <CustomInputs
+            type="text"
+            defaultValue={formik.values.name}
+            onChangeText={formik.handleChange('name')}
+            placeholder="Ad"
+            onBlur={formik.handleBlur('name')}
+            error={formik.errors.name}
+            touched={formik.touched.name}
+          />
 
-    }, [formik.values.country?.value, user])
+          <CustomInputs
+            type="text"
+            defaultValue={formik.values.surname}
+            onChangeText={formik.handleChange('surname')}
+            placeholder="Soyad"
+            onBlur={formik.handleBlur('surname')}
+            error={formik.errors.surname}
+            touched={formik.touched.surname}
+          />
 
+          <CustomInputs
+            type="text"
+            defaultValue={formik.values.email}
+            onChangeText={formik.handleChange('email')}
+            placeholder="E-Posta"
+            onBlur={formik.handleBlur('email')}
+            error={formik.errors.email}
+            touched={formik.touched.email}
+          />
+          <CustomInputs
+            type="text"
+            defaultValue={formik.values.nickname}
+            onChangeText={formik.handleChange('nickname')}
+            placeholder="Kullanıcı Adı"
+            onBlur={formik.handleBlur('nickname')}
+            error={formik.errors.nickname}
+            touched={formik.touched.nickname}
+          />
 
+          <CustomInputs
+            type="date"
+            value={formik.values.date}
+            onChange={(e: any) => formik.setFieldValue('date', e)}
+            placeholder="Doğum Tarihi"
+            onBlur={formik.handleBlur('date')}
+            error={formik.errors.date}
+          />
 
-    return (
-        <UserWrapper>
+          <View className="w-full">
+            <CustomInputs
+              type="dropdown"
+              value={formik.values.gender}
+              onChange={e => formik.handleChange('gender')(e)}
+              dropdownData={genderData}
+              placeholder="Cinsiyet"
+              onBlur={formik.handleBlur('gender')}
+              error={formik.errors.gender}
+              touched={formik.touched.gender}
+            />
+          </View>
 
-            <HandleData loading={loading}>
+          <View className="flex-row justify-between w-full">
+            <View className=" w-[45%]">
+              <CustomInputs
+                type="dropdown"
+                value={formik.values.country}
+                onChange={formik.handleChange('country')}
+                dropdownData={countries}
+                placeholder="Ülke"
+                onBlur={formik.handleBlur('country')}
+                error={formik.errors.country}
+                touched={formik.touched.country}
+                isSearchable
+              />
+            </View>
+            <View className=" w-[45%]">
+              <CustomInputs
+                type="dropdown"
+                value={formik.values.city}
+                onChange={formik.handleChange('city')}
+                dropdownData={cities}
+                placeholder="Şehir"
+                onBlur={formik.handleBlur('city')}
+                error={formik.errors.city}
+                touched={formik.touched.city}
+                isSearchable
+              />
+            </View>
+          </View>
 
+          <View className="my-6 space-y-3">
+            <CustomButtons
+              type="iconsolid"
+              label="Değişiklikleri Kaydet"
+              icon="send"
+              theme="big"
+              onPress={formik.handleSubmit}
+            />
+            <CustomButtons
+              type="iconoutlined"
+              label="Vazgeç"
+              icon="send"
+              theme="big"
+              onPress={formik.handleReset}
+            />
+          </View>
+        </View>
+      </HandleData>
+    </UserWrapper>
+  );
+};
 
-                <View className='items-center px-[5%] flex-1'>
-
-                    {/* image */}
-                    <View className='flex-row space-x-1 mb-6'>
-                        <View className='w-[80px] h-[80px] overflow-hidden rounded-full '>
-                            <Image source={{ uri: selectedImage ? `data:img/jpeg;base64,` + selectedImage : formik.values.logo }} className='w-full h-full' resizeMode='cover' />
-                        </View>
-                        <Pressable onPress={() => openGalery()} className='self-end'>
-                            <EditIcon />
-                        </Pressable>
-                    </View>
-
-
-
-                    <CustomInputs
-                        type='text'
-                        defaultValue={formik.values.name}
-                        onChangeText={formik.handleChange("name")}
-                        placeholder='Ad'
-                        onBlur={formik.handleBlur("name")}
-                        error={formik.errors.name}
-                        touched={formik.touched.name}
-                    />
-
-                    <CustomInputs
-                        type='text'
-                        defaultValue={formik.values.surname}
-                        onChangeText={formik.handleChange("surname")}
-                        placeholder='Soyad'
-                        onBlur={formik.handleBlur("surname")}
-                        error={formik.errors.surname}
-                        touched={formik.touched.surname}
-                    />
-
-                    <CustomInputs
-                        type='text'
-                        defaultValue={formik.values.email}
-                        onChangeText={formik.handleChange("email")}
-                        placeholder='E-Posta'
-                        onBlur={formik.handleBlur("email")}
-                        error={formik.errors.email}
-                        touched={formik.touched.email}
-                    />
-                    <CustomInputs
-                        type='text'
-                        defaultValue={formik.values.nickname}
-                        onChangeText={formik.handleChange("nickname")}
-                        placeholder='Kullanıcı Adı'
-                        onBlur={formik.handleBlur("nickname")}
-                        error={formik.errors.nickname}
-                        touched={formik.touched.nickname}
-                    />
-
-                    <CustomInputs
-                        type='date'
-                        value={formik.values.date}
-                        onChange={formik.handleChange("date")}
-                        placeholder='Doğum Tarihi'
-                        onBlur={formik.handleBlur("date")}
-                        error={formik.errors.date}
-                        touched={formik.touched.date}
-                    />
-
-                    <View className='w-full'>
-                        <CustomInputs
-                            type='dropdown'
-                            value={formik.values.gender}
-                            onChange={e => formik.handleChange("gender")(e)}
-                            dropdownData={genderData}
-                            placeholder='Cinsiyet'
-                            onBlur={formik.handleBlur("gender")}
-                            error={formik.errors.gender}
-                            touched={formik.touched.gender}
-                        />
-                    </View>
-
-
-                    <View className='flex-row justify-between w-full'>
-                        <View className=' w-[45%]'>
-
-                            <CustomInputs
-                                type='dropdown'
-                                value={formik.values.country}
-                                onChange={formik.handleChange("country")}
-                                dropdownData={countries}
-                                placeholder='Ülke'
-                                onBlur={formik.handleBlur("country")}
-                                error={formik.errors.country}
-                                touched={formik.touched.country}
-                                isSearchable
-                            />
-
-
-                        </View>
-                        <View className=' w-[45%]'>
-
-                            <CustomInputs
-                                type='dropdown'
-                                value={formik.values.city}
-                                onChange={formik.handleChange("city")}
-                                dropdownData={cities}
-                                placeholder='Şehir'
-                                onBlur={formik.handleBlur("city")}
-                                error={formik.errors.city}
-                                touched={formik.touched.city}
-                                isSearchable
-                            />
-
-
-                        </View>
-                    </View>
-
-                    <View className='my-6 space-y-3'>
-                        <CustomButtons type='iconsolid' label='Değişiklikleri Kaydet' icon='send' theme='big' onPress={formik.handleSubmit} />
-                        <CustomButtons type='iconoutlined' label='Vazgeç' icon='send' theme='big' onPress={formik.handleReset} />
-                    </View>
-
-                </View>
-
-
-
-
-
-
-            </HandleData>
-
-
-
-        </UserWrapper >
-    )
-}
-
-export default UserProfile
+export default UserProfile;
