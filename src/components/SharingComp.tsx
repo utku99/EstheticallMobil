@@ -23,10 +23,11 @@ import {useNavigation} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
 import LikeUnlikeComp from './LikeUnlikeComp';
 import SharingSavedIcon from '../assets/svg/homepages/SharingSavedIcon';
+import moment from 'moment';
 
 const CommentComp = ({item}: any) => {
   return (
-    <View className="space-y-2 ">
+    <View className="space-y-2 mb-2">
       <View className="flex-row items-center space-x-3">
         <View className="w-[55px] h-[55px] overflow-hidden rounded-full border-[0.6px] border-customGray">
           <Image
@@ -199,7 +200,7 @@ const SharingComp = ({
           {item?.description}
         </Text>
         <Text className="text-customGray text-xxs font-poppinsRegular">
-          {item?.date}
+          {moment(item?.date, 'YYYY-MM-DD').format('DD.MM.YYYY')}
         </Text>
       </View>
 
@@ -249,11 +250,10 @@ const SharingComp = ({
             title="Aranan Kategoride Paylaşım Yorumu Bulunamadı">
             <FlatList
               data={sharedDetail}
-              className="max-h-[500]"
               contentContainerStyle={{
                 display: 'flex',
-                gap: 15,
                 paddingBottom: 20,
+                maxHeight: 100,
               }}
               renderItem={({item}) => (
                 <CommentComp key={item.commentID} item={item} />

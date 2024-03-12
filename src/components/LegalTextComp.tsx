@@ -118,10 +118,7 @@ const LegalTextComp = ({value, onChange, type, error}: props) => {
               okuyup onayladığımı kabul ederim.
             </Text>
 
-            <ModalWrapper
-              visible={visible}
-              setVisible={setVisible}
-              title={'Özel Nitelikli Kişisel Veri Açık Rıza Metni'}>
+            <ModalWrapper visible={visible} setVisible={setVisible}>
               <RenderHTML
                 contentWidth={SIZES.width}
                 source={{html: legalText?.content}}

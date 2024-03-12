@@ -158,6 +158,7 @@ const Offer = () => {
           <CustomInputs
             type="dropdown"
             dropdownData={services}
+            isSearchable
             placeholder="Operasyon Seç"
             value={formik.values.operation}
             onChange={(e: any) => formik.setFieldValue('operation', e)}
@@ -169,6 +170,7 @@ const Offer = () => {
           <CustomInputs
             type="dropdown"
             dropdownData={subServices}
+            isSearchable
             placeholder="Alt Operasyon Seç"
             value={formik.values.suboperation}
             onChange={(e: any) => formik.setFieldValue('suboperation', e)}
@@ -231,6 +233,9 @@ const Offer = () => {
           <View className="flex-row flex-wrap justify-between">
             <CustomInputs
               type="date"
+              minimumDate={
+                new Date(new Date().setDate(new Date().getDate() + 1))
+              }
               placeholder="Başlangıç Tarihi"
               value={formik.values.startDate}
               onChange={(e: any) => formik.setFieldValue('startDate', e)}
@@ -238,6 +243,9 @@ const Offer = () => {
             />
             <CustomInputs
               type="date"
+              minimumDate={
+                new Date(new Date().setDate(new Date().getDate() + 2))
+              }
               placeholder="Bitiş Tarihi"
               value={formik.values.endDate}
               onChange={(e: any) => formik.setFieldValue('endDate', e)}

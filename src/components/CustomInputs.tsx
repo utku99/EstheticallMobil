@@ -1,15 +1,5 @@
 import React, {useState} from 'react';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  Pressable,
-  TextInputProps,
-  TextInput,
-} from 'react-native';
-import DateTimePicker, {
-  DateTimePickerEvent,
-} from '@react-native-community/datetimepicker';
+import {View, Text, TouchableOpacity, Pressable, TextInput} from 'react-native';
 import {Dropdown} from 'react-native-element-dropdown';
 
 import CalendarIcon from '../assets/svg/common/CalendarIcon';
@@ -46,6 +36,8 @@ interface props {
   title?: string;
   style?: any;
   dropdownContainerStyle?: any;
+  minimumDate?: Date;
+  maximumDate?: Date;
 }
 
 const CustomInputs: React.FC<props> = ({
@@ -65,10 +57,17 @@ const CustomInputs: React.FC<props> = ({
   title,
   style,
   dropdownContainerStyle,
+  minimumDate,
+  maximumDate,
 }) => {
   const [isFocusDropdown, setIsFocusDropdown] = useState(false);
   const [showDateModal, setShowDateModal] = useState(false);
   const [showSecure, setShowSecure] = useState(secureTextEntry);
+
+  const handleDatePicked = (date: any) => {
+    onChange(date);
+    setShowDateModal(false);
+  };
 
   return (
     <>
@@ -146,18 +145,33 @@ const CustomInputs: React.FC<props> = ({
           <TouchableOpacity
             className="h-[40px] bg-white rounded-lg border border-customLightGray px-1 placeholder:text-customGray/[.5] flex-row items-center"
             onPress={() => setShowDateModal(true)}>
-            <Text className="flex-1  h-full text-customGray text-xs font-poppinsRegular">
+            {/* <Text
+              className={`flex-1 text-customGray ${
+                value ? 'text-opacity-100' : 'text-opacity-50'
+              }  text-xs font-poppinsRegular `}>
               {value
                 ? moment(value, 'YYYY-MM-DD').format('DD.MM.YYYY')
                 : placeholder}
-            </Text>
+            </Text> */}
+            <TextInput
+              value={moment(value, 'YYYY-MM-DD').format('DD.MM.YYYY')}
+              placeholder={placeholder}
+              editable={false}
+              placeholderTextColor={'background: rgba(77, 74, 72, 0.5)'}
+              className="flex-1 text-customGray text-xs p-0 font-poppinsRegular"
+            />
             <CalendarIcon />
           </TouchableOpacity>
           <DateTimePickerModal
             isVisible={showDateModal}
             mode="date"
+            minimumDate={minimumDate}
+            maximumDate={maximumDate}
+            locale="Tr"
+            confirmTextIOS="Seç"
+            cancelTextIOS="Çık"
             date={value ?? new Date()}
-            onConfirm={onChange}
+            onConfirm={handleDatePicked}
             onCancel={() => setShowDateModal(false)}
           />
           {error && (

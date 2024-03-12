@@ -11,6 +11,7 @@ import CustomButtons from '../../components/CustomButtons';
 import HandleData from '../../components/HandleData';
 import {useFormik} from 'formik';
 import {genderData} from '../../constants/enum';
+import moment from 'moment';
 
 const UserProfile = () => {
   const {user} = useSelector((state: any) => state.user);
@@ -61,7 +62,7 @@ const UserProfile = () => {
         '/api/User/WebEditUser',
         {
           userId: user.id,
-          logo: values.logo.split(',')[1] ?? '',
+          logo: values.logo,
           name: values.name,
           surname: values.surname,
           userName: values.nickname,
@@ -195,8 +196,10 @@ const UserProfile = () => {
 
           <CustomInputs
             type="date"
-            value={formik.values.date}
-            onChange={(e: any) => formik.setFieldValue('date', e)}
+            value={new Date(formik.values.date)}
+            onChange={(e: any) =>
+              formik.setFieldValue('date', e.toISOString().split('T')[0])
+            }
             placeholder="Doğum Tarihi"
             onBlur={formik.handleBlur('date')}
             error={formik.errors.date}
@@ -206,7 +209,7 @@ const UserProfile = () => {
             <CustomInputs
               type="dropdown"
               value={formik.values.gender}
-              onChange={e => formik.handleChange('gender')(e)}
+              onChange={(e: any) => formik.handleChange('gender')(e)}
               dropdownData={genderData}
               placeholder="Cinsiyet"
               onBlur={formik.handleBlur('gender')}

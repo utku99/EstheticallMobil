@@ -199,6 +199,9 @@ const FirmOffer = ({route}: props) => {
           <View className="flex-row flex-wrap justify-between">
             <CustomInputs
               type="date"
+              minimumDate={
+                new Date(new Date().setDate(new Date().getDate() + 1))
+              }
               placeholder="Başlangıç Tarihi"
               value={formik.values.startDate}
               onChange={(e: any) => formik.setFieldValue('startDate', e)}
@@ -206,6 +209,9 @@ const FirmOffer = ({route}: props) => {
             />
             <CustomInputs
               type="date"
+              minimumDate={
+                new Date(new Date().setDate(new Date().getDate() + 2))
+              }
               placeholder="Bitiş Tarihi"
               value={formik.values.endDate}
               onChange={(e: any) => formik.setFieldValue('endDate', e)}
