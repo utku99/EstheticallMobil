@@ -6,6 +6,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {FlatList} from 'react-native';
 import {setListFilters} from '../../redux/slices/filter';
 import HandleData from '../../components/HandleData';
+import {OneSignal} from 'react-native-onesignal';
 
 const Sharings = () => {
   const {Post, loading} = WebClient();
@@ -25,6 +26,16 @@ const Sharings = () => {
 
   const [shareds, SetShareds] = useState<any>([]);
 
+  OneSignal.initialize('36ba4e67-6a5f-4bae-9269-4ccdededab2d');
+
+  OneSignal.Notifications.requestPermission(true);
+
+  console.log(OneSignal.User.pushSubscription.getPushSubscriptionId());
+
+  OneSignal.Notifications.addEventListener('click', event => {
+    console.log('OneSignal: notification clicked:', event);
+  });
+
   useEffect(() => {
     Post('/api/Shared/GetSharedLists', {
       countryId: country?.value ?? 0,
@@ -38,9 +49,29 @@ const Sharings = () => {
       SetShareds(res.data);
     });
 
+    if (OneSignal.User.pushSubscription.getPushSubscriptionId()) {
+      Post('/api/Notification/SendOneSignalID', {
+        oneSignalID: OneSignal.User.pushSubscription.getPushSubscriptionId(),
+        userID: user?.id,
+        languageId: 1,
+        companyID: 0,
+        companyOfficeID: 0,
+      }).then(res => {
+        if (res.data.resultCode == '100') {
+          console.log('player id sended');
+        } else {
+          console.log('no player id');
+        }
+      });
+    }
+
     dispatch(setListFilters(false));
     setClicked(false);
-  }, [listFilters, clicked]);
+  }, [
+    listFilters,
+    clicked,
+    OneSignal.User.pushSubscription.getPushSubscriptionId(),
+  ]);
 
   return (
     <HomeWrapper>

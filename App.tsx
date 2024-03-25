@@ -10,19 +10,8 @@ import {MD3LightTheme, PaperProvider} from 'react-native-paper';
 import {Provider} from 'react-redux';
 import {persistor, store} from './src/redux/store';
 import {PersistGate} from 'redux-persist/integration/react';
-import {OneSignal} from 'react-native-onesignal';
 
 function App(): React.JSX.Element {
-  OneSignal.initialize('36ba4e67-6a5f-4bae-9269-4ccdededab2d');
-
-  OneSignal.Notifications.requestPermission(true);
-
-  console.log(OneSignal.User.pushSubscription.getPushSubscriptionId());
-
-  OneSignal.Notifications.addEventListener('click', event => {
-    console.log('OneSignal: notification clicked:', event);
-  });
-
   return (
     <SafeAreaProvider initialMetrics={initialWindowMetrics}>
       <Provider store={store}>
