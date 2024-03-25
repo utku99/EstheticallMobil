@@ -1,4 +1,11 @@
-import {View, Text, Image, ScrollView, FlatList} from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  ScrollView,
+  FlatList,
+  TouchableOpacity,
+} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import HomeWrapper from './HomeWrapper';
 import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
@@ -11,10 +18,12 @@ import FirmInfoLocationIcon from '../../assets/svg/homepages/FirmInfoLocationIco
 import PhoneIcon from '../../assets/svg/homepages/PhoneIcon';
 import {useDispatch, useSelector} from 'react-redux';
 import {setListFilters} from '../../redux/slices/filter';
+import {useNavigation} from '@react-navigation/native';
 
 const Map = () => {
   const {Post} = WebClient();
   const dispatch = useDispatch();
+  const navigation = useNavigation();
   const {
     country,
     city,
@@ -61,8 +70,8 @@ const Map = () => {
             region={{
               latitude: 41.015137,
               longitude: 28.97953,
-              latitudeDelta: 1,
-              longitudeDelta: 1,
+              latitudeDelta: 0.5,
+              longitudeDelta: 0.5,
             }}
             onRegionChange={() => ''}
             className="w-full h-full">
@@ -71,7 +80,7 @@ const Map = () => {
                 key={index}
                 coordinate={{
                   latitude: Number(item.latitude),
-                  longitude: Number(item.latitude),
+                  longitude: Number(item.longitude),
                 }}
                 onPress={() => setSelectedCompany(item)}>
                 {handleIcon(item.companyTypeID)}
@@ -82,10 +91,17 @@ const Map = () => {
 
         {selectedCompany && (
           <View className="rounded-lg bg-white border border-customLightGray w-[85%] self-center my-8 p-2 space-y-3">
-            <View className="flex-row items-center space-x-3">
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate('firmprofile', {
+                  companyId: selectedCompany?.companyID,
+                  companyOfficeId: selectedCompany?.companyOfficeID,
+                })
+              }
+              className="flex-row items-center space-x-3">
               <View className="w-[55px] h-[55px] overflow-hidden rounded-full border-[0.6px] border-customGray">
                 <Image
-                  source={require('../../assets/images/authBg/auth.jpg')}
+                  source={{uri: selectedCompany?.logo}}
                   className="w-full h-full"
                   resizeMode="cover"
                 />
@@ -98,7 +114,7 @@ const Map = () => {
                   {selectedCompany?.address}
                 </Text>
               </View>
-            </View>
+            </TouchableOpacity>
             <View className="flex-row items-center space-x-3 text">
               <FirmInfoLocationIcon />
               <Text
