@@ -8,6 +8,7 @@ import * as Yup from 'yup';
 import WebClient, {toast} from '../utility/WebClient';
 import {useSelector} from 'react-redux';
 import {messageEnum, messageTypeEnum} from '../constants/enum';
+import IntLabel from './IntLabel';
 
 interface props {
   item?: any;
@@ -80,7 +81,7 @@ const CommunicationModal = ({
 
         {type == 'package' && (
           <Text className="font-poppinsMedium text-customGray text-base font-poppins mb-3">
-            Paket Adı:{' '}
+            {IntLabel('packet_name')}:{' '}
             <Text className="font-poppinsRegular">
               {item?.packageName ?? item?.footerModel?.packageName}
             </Text>
@@ -95,7 +96,7 @@ const CommunicationModal = ({
 
         <CustomInputs
           type="textareabig"
-          title="Mesaj Metni"
+          title={IntLabel('message_text')}
           value={formik.values.content}
           onChangeText={formik.handleChange('content')}
         />
@@ -103,12 +104,12 @@ const CommunicationModal = ({
         <View className="flex-row items-center justify-center space-x-2">
           <CustomButtons
             type="outlined"
-            label="Vazgeç"
+            label={IntLabel('give_up')}
             onPress={() => setVisible(false)}
           />
           <CustomButtons
             type="solid"
-            label="Gönder"
+            label={IntLabel('send')}
             onPress={formik.handleSubmit}
           />
         </View>

@@ -5,18 +5,19 @@ import NotificationIcon from '../assets/svg/userMenu/NotificationIcon';
 import {useNavigation} from '@react-navigation/native';
 import BlueTick from '../assets/svg/common/BlueTick';
 import {useSelector} from 'react-redux';
-
-const messagesType: any = [
-  {value: 1, label: 'Randevu'},
-  {value: 2, label: 'Teklif'},
-  {value: 3, label: 'Paket'},
-  {value: 4, label: 'Genel'},
-];
+import IntLabel from './IntLabel';
 
 const MessageComp = ({item}: any) => {
   const navigation = useNavigation();
   const {connection} = useSelector((state: any) => state.hub);
   const {user} = useSelector((state: any) => state.user);
+
+  const messagesType: any = [
+    {value: 1, label: IntLabel('question')},
+    {value: 2, label: IntLabel('offer')},
+    {value: 3, label: IntLabel('packet')},
+    {value: 4, label: IntLabel('general')},
+  ];
 
   return (
     <TouchableOpacity
@@ -50,7 +51,7 @@ const MessageComp = ({item}: any) => {
         <Text
           numberOfLines={1}
           className="text-customGray font-poppinsSemiBold text-sm ">
-          Mesaj Tipi:{' '}
+          {IntLabel('message_type')}:{' '}
           <Text className="font-poppinsMedium">
             {
               messagesType.find((type: any) => type.value == item.messagesType)

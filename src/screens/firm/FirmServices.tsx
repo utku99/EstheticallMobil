@@ -9,6 +9,7 @@ import {SIZES} from '../../constants/constants';
 import InstutituonIcon from '../../assets/svg/firm/InstutituonIcon';
 import CustomButtons from '../../components/CustomButtons';
 import RenderHTML from 'react-native-render-html';
+import IntLabel from '../../components/IntLabel';
 
 interface props {
   route?: any;
@@ -50,8 +51,9 @@ const FirmServices = ({route}: props) => {
           <View className="flex-row items-center space-x-3">
             <InstutituonIcon />
             <Text className="font-poppinsMedium text-sm text-customGray">
-              {route.params.type == 4 ? 'Ameliyatsız' : 'Ameliyatlı'}{' '}
-              Operasyonlarımız
+              {route.params.type == 4
+                ? IntLabel('our_esthetic_operations')
+                : IntLabel('our_beauty_operations')}
             </Text>
             <View className="border-b h-1 flex-1"></View>
           </View>

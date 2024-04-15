@@ -14,6 +14,7 @@ import CustomButtons from './CustomButtons';
 import {Controller, useForm} from 'react-hook-form';
 import LikeUnlikeComp from './LikeUnlikeComp';
 import {useFormik} from 'formik';
+import IntLabel from './IntLabel';
 
 const UserCommentComp = ({item, setClicked}: any) => {
   const {Post} = WebClient();
@@ -71,7 +72,7 @@ const UserCommentComp = ({item, setClicked}: any) => {
             <Text
               numberOfLines={1}
               className="text-customGray font-poppinsRegular text-xs">
-              Uygulama: {item?.serviceName}
+              {IntLabel('operation')}: {item?.serviceName}
             </Text>
           </View>
         </View>
@@ -132,7 +133,7 @@ const UserCommentComp = ({item, setClicked}: any) => {
       {/* doctor */}
       <View className="space-y-2">
         <Text className="text-sm font-poppinsMedium text-customGray">
-          Operasyonu gerçekleştiren
+          {IntLabel('performing_the_operation')}
         </Text>
 
         <View className="flex-row items-center justify-between">
@@ -168,7 +169,7 @@ const UserCommentComp = ({item, setClicked}: any) => {
               {item?.doctor?.doctorCommentPoint / 20}/5
             </Text>
             <Text className="text-customGray font-poppinsRegular text-xs">
-              Yorumlar
+              {IntLabel('comments')}
             </Text>
           </View>
           <View className="items-center space-y-2">
@@ -187,7 +188,7 @@ const UserCommentComp = ({item, setClicked}: any) => {
       <ModalWrapper visible={visible} setVisible={setVisible}>
         <View className="max-h-[90%]">
           <Text className="font-poppinsSemiBold text-customGray text-base text-center mb-3">
-            Yorumu Düzenle
+            {IntLabel('edit_comment')}
           </Text>
 
           <CustomInputs
@@ -198,14 +199,14 @@ const UserCommentComp = ({item, setClicked}: any) => {
 
           <CustomInputs
             type="textareabig"
-            title="Soru Metni"
+            title={IntLabel('question_text')}
             value={formik.values.content}
             onChangeText={formik.handleChange('content')}
           />
 
           <View className="my-3">
             <Text className="font-poppinsMedium text-customGray text-base  mb-3">
-              Puan Ver
+              {IntLabel('give_point')}
             </Text>
             <View className="items-start">
               <CustomInputs
@@ -219,12 +220,12 @@ const UserCommentComp = ({item, setClicked}: any) => {
           <View className="flex-row items-center justify-center space-x-2">
             <CustomButtons
               type="outlined"
-              label="Vazgeç"
+              label={IntLabel('give_up')}
               onPress={() => setVisible(false)}
             />
             <CustomButtons
               type="solid"
-              label="Tamam"
+              label={IntLabel('ok')}
               onPress={formik.handleSubmit}
             />
           </View>

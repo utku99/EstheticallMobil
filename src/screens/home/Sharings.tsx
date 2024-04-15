@@ -11,7 +11,7 @@ import {OneSignal} from 'react-native-onesignal';
 const Sharings = () => {
   const {Post, loading} = WebClient();
   const dispatch = useDispatch();
-  const {user} = useSelector((state: any) => state.user);
+  const {user, language} = useSelector((state: any) => state.user);
   const [clicked, setClicked] = useState(false);
 
   const {
@@ -53,7 +53,7 @@ const Sharings = () => {
       Post('/api/Notification/SendOneSignalID', {
         oneSignalID: OneSignal.User.pushSubscription.getPushSubscriptionId(),
         userID: user?.id,
-        languageId: 1,
+        languageId: language?.type,
         companyID: 0,
         companyOfficeID: 0,
       }).then(res => {
@@ -71,6 +71,7 @@ const Sharings = () => {
     listFilters,
     clicked,
     OneSignal.User.pushSubscription.getPushSubscriptionId(),
+    language,
   ]);
 
   return (

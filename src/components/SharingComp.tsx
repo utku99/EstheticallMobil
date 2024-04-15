@@ -24,6 +24,7 @@ import {useSelector} from 'react-redux';
 import LikeUnlikeComp from './LikeUnlikeComp';
 import SharingSavedIcon from '../assets/svg/homepages/SharingSavedIcon';
 import moment from 'moment';
+import IntLabel from './IntLabel';
 
 const CommentComp = ({item}: any) => {
   return (
@@ -122,7 +123,7 @@ const SharingComp = ({
         </TouchableOpacity>
         <View className="items-center">
           <Text className="text-customGray font-poppinsRegular text-xxs">
-            Yorumlar
+            {IntLabel('comments')}
           </Text>
           {item?.companyPoint ? (
             <CustomInputs
@@ -210,7 +211,7 @@ const SharingComp = ({
         <Text
           onPress={() => setSeeComments(!seeComments)}
           className="text-white text-xs font-poppinsRegular flex-1">
-          {seeComments ? 'Yorumları Gizle' : 'Yorumları Gör'}
+          {seeComments ? IntLabel('hide_comments') : IntLabel('see_comments')}
         </Text>
         <View className="flex-row space-x-3 ">
           <TouchableOpacity onPress={() => setSeeComments(!seeComments)}>
@@ -264,7 +265,7 @@ const SharingComp = ({
           <View className="rounded-xl border border-customLightGray bg-white h-[40px] overflow-hidden flex-row items-center">
             <TextInput
               className="placeholder flex-1 pl-2"
-              placeholder="Yorumunuzu Yazın..."
+              placeholder={IntLabel('write_comment')}
               placeholderTextColor={'#4D4A48'}
               onChangeText={(e: any) => setAddComment(e)}
             />

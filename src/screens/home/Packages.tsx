@@ -8,11 +8,12 @@ import {Modal} from 'react-native-paper';
 import FitlerIcon from '../../assets/svg/homepages/FitlerIcon';
 import CustomInputs from '../../components/CustomInputs';
 import CustomButtons from '../../components/CustomButtons';
+import IntLabel from '../../components/IntLabel';
 
 const Packages = () => {
   const {Post, loading} = WebClient();
   const [packages, setPackages] = useState<any>([]);
-  const {user} = useSelector((state: any) => state.user);
+  const {user, language} = useSelector((state: any) => state.user);
 
   const [country, setCountry] = useState<any>(null);
   const [city, setCity] = useState<any>(null);
@@ -94,9 +95,7 @@ const Packages = () => {
           setServiceSubs(temp);
         });
       });
-  }, []);
 
-  useEffect(() => {
     Post('/api/Package/GetPackagesListAsync', {
       countryId: country?.value ?? 0,
       cityId: city?.value ?? 0,
@@ -104,7 +103,7 @@ const Packages = () => {
       companyType: institution?.value ?? 0,
       serviceId: operation?.value ?? 0,
       serviceSubId: suboperation?.value ?? 0,
-      languageID: 1,
+      languageID: language?.type,
       userID: user?.id ?? 0,
     }).then((res: any) => {
       let temp = res.data.map((item: any) => ({
@@ -116,7 +115,7 @@ const Packages = () => {
 
     setClicked(false);
     setClickedLike(false);
-  }, [clicked, clickedLike]);
+  }, [clicked, clickedLike, language]);
 
   return (
     <View className="bg-[#FAFAFA] flex-1 relative">
@@ -168,7 +167,7 @@ const Packages = () => {
             type="dropdown"
             value={country}
             dropdownData={countries}
-            placeholder="Ülke Seç"
+            placeholder={IntLabel('select_country')}
             isSearchable
             onChange={(e: any) => setCountry(e)}
           />
@@ -178,7 +177,7 @@ const Packages = () => {
             type="dropdown"
             value={city}
             dropdownData={cities}
-            placeholder="Şehir Seç"
+            placeholder={IntLabel('select_city')}
             isSearchable
             onChange={(e: any) => setCity(e)}
           />
@@ -188,7 +187,7 @@ const Packages = () => {
             type="dropdown"
             value={town}
             dropdownData={towns}
-            placeholder="İl Seç"
+            placeholder={IntLabel('select_town')}
             isSearchable
             onChange={(e: any) => setTown(e)}
           />
@@ -198,7 +197,7 @@ const Packages = () => {
           type="dropdown"
           value={institution}
           dropdownData={institutionData}
-          placeholder="Hizmet Veren Seç"
+          placeholder={IntLabel('select_institution_type')}
           onChange={(e: any) => setInstitution(e)}
         />
 
@@ -207,7 +206,7 @@ const Packages = () => {
             type="dropdown"
             value={operation}
             dropdownData={services}
-            placeholder="Operasyon Seç"
+            placeholder={IntLabel('select_operation')}
             isSearchable
             onChange={(e: any) => setOperation(e)}
           />
@@ -217,7 +216,7 @@ const Packages = () => {
             type="dropdown"
             value={suboperation}
             dropdownData={serviceSubs}
-            placeholder="Alt Operasyon Seç"
+            placeholder={IntLabel('select_sub_operation')}
             isSearchable
             onChange={(e: any) => setSuboperation(e)}
           />
@@ -226,7 +225,7 @@ const Packages = () => {
         <View className="flex-row  justify-between">
           <CustomButtons
             type="solid"
-            label="Listele"
+            label={IntLabel('list_filter')}
             theme="middle"
             style={{width: 90}}
             onPress={() => {
@@ -236,7 +235,7 @@ const Packages = () => {
           />
           <CustomButtons
             type="outlined"
-            label="Sıfırla"
+            label={IntLabel('reset')}
             theme="middle"
             style={{width: 90}}
             onPress={() => {

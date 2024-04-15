@@ -14,7 +14,6 @@ import FavoriteIcon from '../assets/svg/userMenu/FavoriteIcon';
 import SavedIcon from '../assets/svg/userMenu/SavedIcon';
 import SettingsIcon from '../assets/svg/userMenu/SettingsIcon';
 import LogOutIcon from '../assets/svg/userMenu/LogOutIcon';
-import {View} from 'react-native';
 
 export class DrawerBar extends Component {
   render() {

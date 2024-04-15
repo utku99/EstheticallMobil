@@ -7,6 +7,7 @@ import ShareIcon from '../assets/svg/homepages/ShareIcon';
 import WebClient, {toast} from '../utility/WebClient';
 import {useSelector} from 'react-redux';
 import moment from 'moment';
+import IntLabel from './IntLabel';
 
 interface props {
   item?: any;
@@ -24,10 +25,10 @@ const NotificationComp: React.FC<props> = ({item, setClicked}) => {
           className={` border border-customLightGray rounded-xl bg-white p-[10px] flex-row items-center justify-between space-x-4`}
           style={{width: SIZES.width * 0.95}}>
           <View className=" flex-1">
-            <View className="flex-row justify-between items-center">
+            <View className="flex-row justify-between items-center ">
               <Text
                 numberOfLines={1}
-                className="text-customGray font-poppins text-sm font-bold flex-shrink">
+                className="text-customGray font-poppins text-sm font-bold w-4/6">
                 {item?.title}
               </Text>
               <Text className="text-customGray font-poppins text-xs">
@@ -85,7 +86,7 @@ const NotificationComp: React.FC<props> = ({item, setClicked}) => {
                 {/* {item?.commentsPoint.split('/')[0] / 20}/5 */}
               </Text>
               <Text className="text-customGray font-poppins text-xs">
-                Yorumlar
+                {IntLabel('comments')}
               </Text>
             </View>
             <View className="items-center space-y-1">

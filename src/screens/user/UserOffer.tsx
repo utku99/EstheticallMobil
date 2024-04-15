@@ -9,6 +9,7 @@ import UserCommentComp from '../../components/UserCommentComp';
 import OfferRequestComp from '../../components/OfferRequestComp';
 import OfferComp from '../../components/OfferComp';
 import BackIcon from '../../assets/svg/userMenu/BackIcon';
+import IntLabel from '../../components/IntLabel';
 
 const UserOffer = () => {
   const [activeTab, setActiveTab] = useState(1);
@@ -46,12 +47,12 @@ const UserOffer = () => {
       <View className="flex-row items-center mb-3 space-x-3">
         <CustomButtons
           type={activeTab == 1 ? 'brownsolid' : 'brownoutlined'}
-          label="Gelen Teklifler"
+          label={IntLabel('incoming_offers')}
           onPress={() => setActiveTab(1)}
         />
         <CustomButtons
           type={activeTab == 2 ? 'brownsolid' : 'brownoutlined'}
-          label="Kabul Edilen Teklifler"
+          label={IntLabel('my_completed_offers')}
           onPress={() => setActiveTab(2)}
         />
       </View>
@@ -59,13 +60,13 @@ const UserOffer = () => {
       {selectedRequest && (
         <View className="flex-row items-center justify-between w-[80%] mb-3">
           <Text className="text-sm font-poppinsMedium text-customGray">
-            Teklif ID:{' '}
+            {IntLabel('offer_id')}:{' '}
             <Text className="font-poppinsRegular">
               {selectedRequest?.offerID}
             </Text>{' '}
           </Text>
           <Text className="text-sm font-poppinsMedium text-customGray">
-            Tarih:{' '}
+            {IntLabel('date')}:{' '}
             <Text className="font-poppinsRegular">
               {selectedRequest?.createdDate}
             </Text>{' '}

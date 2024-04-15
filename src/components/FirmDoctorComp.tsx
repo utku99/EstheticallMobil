@@ -10,6 +10,7 @@ import ArrowDownIcon from '../assets/svg/auth/ArrowDownIcon';
 import DoctorArrowUpIcon from '../assets/svg/firm/DoctorArrowUpIcon';
 import RenderHTML from 'react-native-render-html';
 import DoctorArrowDownIcon from '../assets/svg/firm/DoctorArrowDownIcon';
+import IntLabel from './IntLabel';
 
 interface props {
   item: any;
@@ -49,7 +50,7 @@ const FirmDoctorComp = ({item}: props) => {
               {parseInt(item?.headerModel?.commentPoint) / 20}/5
             </Text>
             <Text className="text-customGray  text-xs font-poppinsRegular">
-              Yorumlar
+              {IntLabel('comments')}
             </Text>
           </View>
           <View className="items-center space-y-2">
@@ -62,7 +63,7 @@ const FirmDoctorComp = ({item}: props) => {
 
         <View className="flex-row flex-wrap">
           <Text className="text-sm font-poppinsSemiBold text-customGray">
-            Operasyonlar:{' '}
+            {IntLabel('operations')}:{' '}
           </Text>
           {/* <FlatList
                         data={item.services}
@@ -87,7 +88,7 @@ const FirmDoctorComp = ({item}: props) => {
             />
             <View>
               <Text className="text-sm font-poppinsSemiBold text-customGray">
-                Doğum Yeri, Tarihi:{' '}
+                {IntLabel('birthplace_date')}:{' '}
               </Text>
               <RenderHTML
                 contentWidth={SIZES.width}
@@ -96,7 +97,7 @@ const FirmDoctorComp = ({item}: props) => {
             </View>
             <View>
               <Text className="text-sm font-poppinsSemiBold text-customGray">
-                Uzmanlık:
+                {IntLabel('expertise')}:
               </Text>
               <RenderHTML
                 contentWidth={SIZES.width}
@@ -105,7 +106,7 @@ const FirmDoctorComp = ({item}: props) => {
             </View>
             <View>
               <Text className="text-sm font-poppinsSemiBold text-customGray">
-                Eğitim:
+                {IntLabel('education')}:
               </Text>
               <RenderHTML
                 contentWidth={SIZES.width}
@@ -114,7 +115,7 @@ const FirmDoctorComp = ({item}: props) => {
             </View>
             <View>
               <Text className="text-sm font-poppinsSemiBold text-customGray">
-                Sertifikalar:
+                {IntLabel('certificates')}:
               </Text>
               <RenderHTML
                 contentWidth={SIZES.width}
@@ -123,7 +124,7 @@ const FirmDoctorComp = ({item}: props) => {
             </View>
             <View>
               <Text className="text-sm font-poppinsSemiBold text-customGray">
-                Ödüller:
+                {IntLabel('awards')}:
               </Text>
               <RenderHTML
                 contentWidth={SIZES.width}
@@ -132,7 +133,7 @@ const FirmDoctorComp = ({item}: props) => {
             </View>
             <View>
               <Text className="text-sm font-poppinsSemiBold text-customGray">
-                Üyelikler:
+                {IntLabel('memberships')}:
               </Text>
               <RenderHTML
                 contentWidth={SIZES.width}
@@ -141,7 +142,7 @@ const FirmDoctorComp = ({item}: props) => {
             </View>
             <View>
               <Text className="text-sm font-poppinsSemiBold text-customGray">
-                Çalıştığı Kurum:
+                {IntLabel('workplace')}:
               </Text>
               <Text className="font-poppins text-sm font-normal text-customGray">
                 {item.doctorInfo.companyName}
@@ -153,7 +154,7 @@ const FirmDoctorComp = ({item}: props) => {
 
       {/* bottom */}
       <View className="">
-        <View className="h-[35px] border-t border-customLightGray flex-row ">
+        {/* <View className="h-[35px] border-t border-customLightGray flex-row ">
           <View className="h-full flex-1 flex-row items-center justify-evenly">
             <DoctorIcon />
             <Text className="font-poppinsRegular text-xs text-customGray">
@@ -172,7 +173,7 @@ const FirmDoctorComp = ({item}: props) => {
               21 Fotoğraf
             </Text>
           </View>
-        </View>
+        </View> */}
         <Pressable
           onPress={() => setSeeAll(!seeAll)}
           className="bg-customBrown w-full h-[35px] rounded-b-lg items-center justify-center">

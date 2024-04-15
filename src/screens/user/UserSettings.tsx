@@ -7,6 +7,7 @@ import SecurityIcon from '../../assets/svg/userMenu/SecurityIcon';
 import AboutIcon from '../../assets/svg/userMenu/AboutIcon';
 import LangChoiceComp from '../../components/LangChoiceComp';
 import {useTranslation} from 'react-i18next';
+import IntLabel from '../../components/IntLabel';
 
 const UserSettings = () => {
   const {t} = useTranslation();
@@ -15,37 +16,31 @@ const UserSettings = () => {
       <View className="space-y-8  w-[75%]">
         <View className="flex-row items-center justify-between ">
           <Text className="font-poppinsMedium text-base text-customGray">
-            Mesaj Bildirimleri
+            {IntLabel('messages')}
           </Text>
           <Switch thumbColor={'#FF8170'} value={false} onChange={() => ''} />
         </View>
         <View className="flex-row items-center justify-between ">
           <Text className="font-poppinsMedium text-base text-customGray ">
-            Teklif Bildirimleri
+            {IntLabel('offers')}
           </Text>
           <Switch thumbColor={'#FF8170'} value={false} onChange={() => ''} />
         </View>
         <View className="flex-row items-center justify-between ">
           <Text className="font-poppinsMedium text-base text-customGray ">
-            Randevu Bildirimleri
-          </Text>
-          <Switch thumbColor={'#FF8170'} value={false} onChange={() => ''} />
-        </View>
-        <View className="flex-row items-center justify-between">
-          <Text className="font-poppinsMedium text-base text-customGray">
-            Satın Alma Bildirimleri
+            {IntLabel('appointments')}
           </Text>
           <Switch thumbColor={'#FF8170'} value={false} onChange={() => ''} />
         </View>
         <View className="flex-row items-center justify-between ">
           <Text className="font-poppinsMedium text-base text-customGray ">
-            Favori Bildirimleri
+            {IntLabel('favorites')}
           </Text>
           <Switch thumbColor={'#FF8170'} value={false} onChange={() => ''} />
         </View>
         <View className="flex-row items-center justify-between ">
           <Text className="font-poppinsMedium text-base text-customGray ">
-            {t('lang_selection')}
+            {IntLabel('lang_selection')}
           </Text>
           <LangChoiceComp />
         </View>
@@ -56,14 +51,14 @@ const UserSettings = () => {
           <View className="flex-row items-center space-x-2">
             <DocumentIcon />
             <Text className=" text-base text-customGray font-sans ">
-              Kullanım Koşulları{' '}
+              {IntLabel('terms_of_use')}{' '}
             </Text>
           </View>
 
           <View className="flex-row items-center space-x-2">
             <SecurityIcon />
             <Text className=" text-base text-customGray font-sans">
-              Gizlilik Politikası
+              {IntLabel('privacy_policy')}{' '}
             </Text>
           </View>
         </View>
@@ -71,12 +66,14 @@ const UserSettings = () => {
         <View className="space-y-4">
           <View className="flex-row items-center space-x-2">
             <HelpIcon />
-            <Text className=" text-base text-customGray font-sans">Yardım</Text>
+            <Text className=" text-base text-customGray font-sans">
+              {IntLabel('help')}{' '}
+            </Text>
           </View>
           <View className="flex-row items-center space-x-2">
             <AboutIcon />
             <Text className=" text-base text-customGray font-sans">
-              Hakkımızda
+              {IntLabel('about_us')}{' '}
             </Text>
           </View>
         </View>

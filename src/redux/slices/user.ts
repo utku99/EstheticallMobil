@@ -6,7 +6,9 @@ const userSlice = createSlice({
     initialState: {
         user: null,
         isLoggedIn: false,
-        isGuest: false
+        isGuest: false,
+        language:null,
+        languages:null,
     },
     reducers: {
         setUser: (state, action) => {
@@ -17,9 +19,15 @@ const userSlice = createSlice({
         },
         setGuest: (state, action) => {
             state.isGuest = action.payload
+        },
+        setLanguage: (state, action) => {
+            state.language = action.payload
+        },
+        setLanguages: (state, action) => {
+            state.languages = action.payload
         }
     }
 })
 
 export default userSlice.reducer
-export const { setUser, setGuest, setLoggedIn } = userSlice.actions
+export const { setUser, setGuest, setLoggedIn,setLanguage,setLanguages } = userSlice.actions

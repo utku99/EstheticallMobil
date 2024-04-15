@@ -11,6 +11,7 @@ import {useSelector} from 'react-redux';
 import WebClient from '../utility/WebClient';
 import ModalWrapper from './ModalWrapper';
 import CommunicationModal from './CommunicationModal';
+import IntLabel from './IntLabel';
 
 const AppointmentComp = ({item}: {item: any}) => {
   const [visible, setVisible] = useState(false);
@@ -77,7 +78,7 @@ const AppointmentComp = ({item}: {item: any}) => {
           </View>
           <View className="items-center">
             <Text className="text-customGray font-poppinsRegular text-xs">
-              Yorumlar
+              {IntLabel('comments')}
             </Text>
             <CustomInputs
               type="rating"
@@ -93,16 +94,16 @@ const AppointmentComp = ({item}: {item: any}) => {
 
         <View className="">
           <Text className="text-customGray text-sm font-poppinsMedium ">
-            Kategori:{' '}
+            {IntLabel('category')}:{' '}
           </Text>
           <Text className="text-customGray  text-sm font-poppinsRegular">
-            Hastane
+            Hastane (sabit??)
           </Text>
         </View>
 
         <View>
           <Text className="text-customGray text-sm font-poppinsMedium ">
-            Operasyonlar:{' '}
+            {IntLabel('operations')}:{' '}
           </Text>
           <Text className="text-customGray  text-sm font-poppinsRegular">
             {item?.serviceName}
@@ -111,7 +112,7 @@ const AppointmentComp = ({item}: {item: any}) => {
 
         <View>
           <Text className="text-customGray text-sm font-poppinsMedium ">
-            Kurum Açıklaması:{' '}
+            {IntLabel('company_desc')}:{' '}
           </Text>
           <Text
             numberOfLines={3}
@@ -123,7 +124,7 @@ const AppointmentComp = ({item}: {item: any}) => {
         {item?.operationState == 0 ? (
           <View>
             <Text className="text-customOrange text-sm font-poppinsMedium ">
-              Teklif Tarih Aralığı:{' '}
+              {IntLabel('offer_date_range')}:{' '}
             </Text>
             <Text className="text-customOrange  text-sm font-poppinsRegular">
               {item?.startDate} - {item?.endDate}
@@ -132,7 +133,7 @@ const AppointmentComp = ({item}: {item: any}) => {
         ) : (
           <View>
             <Text className="text-customOrange text-sm font-poppinsMedium ">
-              Randevu Tarihi:{' '}
+              {IntLabel('offer_date')}:{' '}
             </Text>
             <Text className="text-customOrange  text-sm font-poppinsRegular">
               {item?.startDate} - {item?.endDate}
@@ -172,7 +173,7 @@ const AppointmentComp = ({item}: {item: any}) => {
       <CustomButtons
         onPress={() => setVisible(true)}
         type="solid"
-        label="İletişime Geç"
+        label={IntLabel('contact')}
         style={{alignSelf: 'center', marginVertical: 20}}
       />
 
@@ -182,7 +183,7 @@ const AppointmentComp = ({item}: {item: any}) => {
       <CommunicationModal
         visible={visible}
         setVisible={setVisible}
-        title={'Randevu Hakkında İletişime Geç'}
+        title={IntLabel('contact_about_appointment')}
         type="appointment"
         item={item}
       />

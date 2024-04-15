@@ -10,16 +10,19 @@ import {MD3LightTheme, PaperProvider} from 'react-native-paper';
 import {Provider} from 'react-redux';
 import {persistor, store} from './src/redux/store';
 import {PersistGate} from 'redux-persist/integration/react';
+import InitlProviderComp from './src/utility/InitlProviderComp';
 
 function App(): React.JSX.Element {
   return (
     <SafeAreaProvider initialMetrics={initialWindowMetrics}>
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
-          <PaperProvider theme={MD3LightTheme}>
-            <StatusBar />
-            <Root />
-          </PaperProvider>
+          <InitlProviderComp>
+            <PaperProvider theme={MD3LightTheme}>
+              <StatusBar />
+              <Root />
+            </PaperProvider>
+          </InitlProviderComp>
         </PersistGate>
       </Provider>
     </SafeAreaProvider>

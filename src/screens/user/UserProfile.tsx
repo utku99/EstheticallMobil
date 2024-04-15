@@ -12,6 +12,7 @@ import HandleData from '../../components/HandleData';
 import {useFormik} from 'formik';
 import {genderData} from '../../constants/enum';
 import moment from 'moment';
+import IntLabel from '../../components/IntLabel';
 
 const UserProfile = () => {
   const {user} = useSelector((state: any) => state.user);
@@ -159,7 +160,7 @@ const UserProfile = () => {
             type="text"
             defaultValue={formik.values.name}
             onChangeText={formik.handleChange('name')}
-            placeholder="Ad"
+            placeholder={IntLabel('name')}
             onBlur={formik.handleBlur('name')}
             error={formik.errors.name}
             touched={formik.touched.name}
@@ -169,7 +170,7 @@ const UserProfile = () => {
             type="text"
             defaultValue={formik.values.surname}
             onChangeText={formik.handleChange('surname')}
-            placeholder="Soyad"
+            placeholder={IntLabel('surname')}
             onBlur={formik.handleBlur('surname')}
             error={formik.errors.surname}
             touched={formik.touched.surname}
@@ -179,7 +180,7 @@ const UserProfile = () => {
             type="text"
             defaultValue={formik.values.email}
             onChangeText={formik.handleChange('email')}
-            placeholder="E-Posta"
+            placeholder={IntLabel('email')}
             onBlur={formik.handleBlur('email')}
             error={formik.errors.email}
             touched={formik.touched.email}
@@ -188,7 +189,7 @@ const UserProfile = () => {
             type="text"
             defaultValue={formik.values.nickname}
             onChangeText={formik.handleChange('nickname')}
-            placeholder="Kullanıcı Adı"
+            placeholder={IntLabel('nickname')}
             onBlur={formik.handleBlur('nickname')}
             error={formik.errors.nickname}
             touched={formik.touched.nickname}
@@ -200,7 +201,7 @@ const UserProfile = () => {
             onChange={(e: any) =>
               formik.setFieldValue('date', e.toISOString().split('T')[0])
             }
-            placeholder="Doğum Tarihi"
+            placeholder={IntLabel('birtdhay')}
             onBlur={formik.handleBlur('date')}
             error={formik.errors.date}
           />
@@ -211,7 +212,7 @@ const UserProfile = () => {
               value={formik.values.gender}
               onChange={(e: any) => formik.handleChange('gender')(e)}
               dropdownData={genderData}
-              placeholder="Cinsiyet"
+              placeholder={IntLabel('gender')}
               onBlur={formik.handleBlur('gender')}
               error={formik.errors.gender}
               touched={formik.touched.gender}
@@ -225,7 +226,7 @@ const UserProfile = () => {
                 value={formik.values.country}
                 onChange={formik.handleChange('country')}
                 dropdownData={countries}
-                placeholder="Ülke"
+                placeholder={IntLabel('country')}
                 onBlur={formik.handleBlur('country')}
                 error={formik.errors.country}
                 touched={formik.touched.country}
@@ -238,7 +239,7 @@ const UserProfile = () => {
                 value={formik.values.city}
                 onChange={formik.handleChange('city')}
                 dropdownData={cities}
-                placeholder="Şehir"
+                placeholder={IntLabel('city')}
                 onBlur={formik.handleBlur('city')}
                 error={formik.errors.city}
                 touched={formik.touched.city}
@@ -250,14 +251,14 @@ const UserProfile = () => {
           <View className="my-6 space-y-3">
             <CustomButtons
               type="iconsolid"
-              label="Değişiklikleri Kaydet"
+              label={IntLabel('save')}
               icon="send"
               theme="big"
               onPress={formik.handleSubmit}
             />
             <CustomButtons
               type="iconoutlined"
-              label="Vazgeç"
+              label={IntLabel('give_up')}
               icon="send"
               theme="big"
               onPress={formik.handleReset}

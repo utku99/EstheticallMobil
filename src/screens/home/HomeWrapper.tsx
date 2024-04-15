@@ -18,6 +18,7 @@ import {
   setTown,
 } from '../../redux/slices/filter';
 import {SIZES} from '../../constants/constants';
+import IntLabel from '../../components/IntLabel';
 
 interface props {
   children?: React.ReactNode;
@@ -123,7 +124,7 @@ const HomeWrapper: React.FC<props> = ({children}) => {
           }}>
           <CustomButtons
             type={route.name == 'sharing' ? 'solid' : 'outlined'}
-            label="Paylaşımlar"
+            label={IntLabel('sharings')}
             style={{width: 110}}
             onPress={() => {
               navigation.navigate('sharing', {tab: 1});
@@ -131,7 +132,7 @@ const HomeWrapper: React.FC<props> = ({children}) => {
           />
           <CustomButtons
             type={route.name == 'comment' ? 'solid' : 'outlined'}
-            label="Yorumlar"
+            label={IntLabel('comments')}
             style={{width: 110}}
             onPress={() => {
               navigation.navigate('comment', {tab: 2});
@@ -139,7 +140,7 @@ const HomeWrapper: React.FC<props> = ({children}) => {
           />
           <CustomButtons
             type={route.name == 'list' ? 'solid' : 'outlined'}
-            label="Liste"
+            label={IntLabel('list')}
             style={{width: 110}}
             onPress={() => {
               navigation.navigate('list', {tab: 3});
@@ -148,7 +149,7 @@ const HomeWrapper: React.FC<props> = ({children}) => {
           <CustomButtons
             type={route.name == 'map' ? 'iconsolid' : 'iconoutlined'}
             icon="location"
-            label="Harita"
+            label={IntLabel('map')}
             style={{width: 110}}
             onPress={() => {
               navigation.navigate('map', {tab: 4});
@@ -177,7 +178,7 @@ const HomeWrapper: React.FC<props> = ({children}) => {
             type="dropdown"
             value={country}
             dropdownData={countries}
-            placeholder="Ülke Seç"
+            placeholder={IntLabel('select_country')}
             isSearchable
             onChange={(e: any) => dispatch(setCountry(e))}
           />
@@ -187,7 +188,7 @@ const HomeWrapper: React.FC<props> = ({children}) => {
             type="dropdown"
             value={city}
             dropdownData={cities}
-            placeholder="Şehir Seç"
+            placeholder={IntLabel('select_city')}
             isSearchable
             onChange={(e: any) => dispatch(setCity(e))}
           />
@@ -197,7 +198,7 @@ const HomeWrapper: React.FC<props> = ({children}) => {
             type="dropdown"
             value={town}
             dropdownData={towns}
-            placeholder="İl Seç"
+            placeholder={IntLabel('select_town')}
             isSearchable
             onChange={(e: any) => dispatch(setTown(e))}
           />
@@ -207,7 +208,7 @@ const HomeWrapper: React.FC<props> = ({children}) => {
           type="dropdown"
           value={institution}
           dropdownData={institutionData}
-          placeholder="Hizmet Veren Seç"
+          placeholder={IntLabel('select_institution_type')}
           onChange={(e: any) => dispatch(setInstitution(e))}
         />
 
@@ -216,7 +217,7 @@ const HomeWrapper: React.FC<props> = ({children}) => {
             type="dropdown"
             value={operation}
             dropdownData={services}
-            placeholder="Operasyon Seç"
+            placeholder={IntLabel('select_operation')}
             isSearchable
             onChange={(e: any) => dispatch(setOperation(e))}
           />
@@ -226,7 +227,7 @@ const HomeWrapper: React.FC<props> = ({children}) => {
             type="dropdown"
             value={suboperation}
             dropdownData={serviceSubs}
-            placeholder="Alt Operasyon Seç"
+            placeholder={IntLabel('select_sub_operation')}
             isSearchable
             onChange={(e: any) => dispatch(setSubOperation(e))}
           />
@@ -235,7 +236,7 @@ const HomeWrapper: React.FC<props> = ({children}) => {
         <View className="flex-row  justify-between">
           <CustomButtons
             type="solid"
-            label="Listele"
+            label={IntLabel('list_filter')}
             theme="middle"
             style={{width: 90}}
             onPress={() => {
@@ -245,7 +246,7 @@ const HomeWrapper: React.FC<props> = ({children}) => {
           />
           <CustomButtons
             type="outlined"
-            label="Sıfırla"
+            label={IntLabel('reset')}
             theme="middle"
             style={{width: 90}}
             onPress={() => {

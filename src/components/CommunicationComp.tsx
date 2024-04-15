@@ -6,6 +6,7 @@ import CustomButtons from './CustomButtons';
 import FirmInfoLocationIcon from '../assets/svg/homepages/FirmInfoLocationIcon';
 import PhoneIcon from '../assets/svg/homepages/PhoneIcon';
 import {useNavigation} from '@react-navigation/native';
+import IntLabel from './IntLabel';
 
 interface props {
   item: any;
@@ -80,7 +81,7 @@ const CommunicationComp = ({item}: props) => {
 
       <CustomButtons
         type="iconsolid"
-        label="Soru Sor"
+        label={IntLabel('ask_question')}
         icon="question"
         style={{width: 130, alignSelf: 'center', marginBottom: 20}}
         onPress={() =>

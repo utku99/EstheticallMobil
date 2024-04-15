@@ -6,6 +6,7 @@ import MessageComp from '../../../components/MessageComp';
 import {useSelector} from 'react-redux';
 import WebClient from '../../../utility/WebClient';
 import {useNavigation} from '@react-navigation/native';
+import IntLabel from '../../../components/IntLabel';
 
 const UserIncomingMessage = () => {
   const {Post, loading} = WebClient();
@@ -36,7 +37,7 @@ const UserIncomingMessage = () => {
   }, []);
 
   return (
-    <UserWrapper title="Mesajlar">
+    <UserWrapper title={IntLabel('messages')}>
       <HandleData
         data={users}
         title={'Mesajınız Bulunmamaktadır'}

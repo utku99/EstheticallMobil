@@ -5,6 +5,7 @@ import {SIZES} from '../constants/constants';
 import NotificationIcon from '../assets/svg/userMenu/NotificationIcon';
 import CustomInputs from './CustomInputs';
 import WebClient from '../utility/WebClient';
+import IntLabel from './IntLabel';
 
 const OfferRequestComp = ({item, setClicked, setSelectedRequest}: any) => {
   const {Post} = WebClient();
@@ -16,7 +17,7 @@ const OfferRequestComp = ({item, setClicked, setSelectedRequest}: any) => {
       <View className="flex-row items-center justify-between">
         <View className="">
           <Text className="text-customGray  text-sm font-poppinsMedium ">
-            Teklif ID:{' '}
+            {IntLabel('offer_id')}:{' '}
           </Text>
           <Text className="text-customGray text-sm font-poppinsRegular">
             {item?.offerID}
@@ -25,7 +26,7 @@ const OfferRequestComp = ({item, setClicked, setSelectedRequest}: any) => {
         <NotificationIcon />
         <View className="">
           <Text className="text-customGray  text-sm font-poppinsMedium ">
-            Tarih:{' '}
+            {IntLabel('date')}:{' '}
           </Text>
           <Text className="text-customGray text-sm font-poppinsRegular">
             {item?.createdDate}
@@ -35,7 +36,7 @@ const OfferRequestComp = ({item, setClicked, setSelectedRequest}: any) => {
 
       <View className="">
         <Text className="text-customGray  text-sm font-poppinsMedium ">
-          Konum:{' '}
+          {IntLabel('location')}:{' '}
         </Text>
         <Text className="text-customGray text-sm font-poppinsRegular">
           {item?.location}
@@ -44,7 +45,7 @@ const OfferRequestComp = ({item, setClicked, setSelectedRequest}: any) => {
 
       <View>
         <Text className="text-customGray  text-sm font-poppinsMedium ">
-          Operasyonlar:{' '}
+          {IntLabel('operations')}:{' '}
         </Text>
         <Text className="text-customGray text-sm font-poppinsRegular">
           {item?.serviceName}
@@ -53,7 +54,7 @@ const OfferRequestComp = ({item, setClicked, setSelectedRequest}: any) => {
 
       <View>
         <Text className="text-customGray  text-sm font-poppinsMedium ">
-          Teklif Tarih Aralığı:{' '}
+          {IntLabel('offer_date_range')}:{' '}
         </Text>
         <Text className="text-customGray text-sm font-poppinsRegular">
           {item?.dateInterval}
@@ -62,25 +63,22 @@ const OfferRequestComp = ({item, setClicked, setSelectedRequest}: any) => {
 
       <View>
         <Text className="text-customGray  text-sm font-poppinsMedium ">
-          Özel Servisler:{' '}
+          {IntLabel('special_services')}:{' '}
         </Text>
         <View className="flex-row items-center justify-between ">
           <CustomInputs
             type="checkbox"
-            title="Ulaşım"
-            readOnly
+            title={IntLabel('transport')}
             value={item?.extraServices.some((item: number) => item === 1)}
           />
           <CustomInputs
             type="checkbox"
-            title="Konaklama"
-            readOnly
+            title={IntLabel('accomodation')}
             value={item?.extraServices.some((item: number) => item === 2)}
           />
           <CustomInputs
             type="checkbox"
-            title="Refakatçi"
-            readOnly
+            title={IntLabel('companion')}
             value={item?.extraServices.some((item: number) => item === 3)}
           />
         </View>
@@ -91,7 +89,7 @@ const OfferRequestComp = ({item, setClicked, setSelectedRequest}: any) => {
         className="h-[1px] bg-customLightGray self-center"></View>
 
       <Text className="text-customGray font-poppinsRegular text-lg text-center mb-3">
-        Gelen Teklif:{' '}
+        {IntLabel('incoming_offer')}:{' '}
         <Text className="font-poppinsSemiBold text-customGray">
           {item?.incomingOffersCount?.split('-')[0]} -
         </Text>
@@ -103,7 +101,7 @@ const OfferRequestComp = ({item, setClicked, setSelectedRequest}: any) => {
       <View className="flex-row items-center justify-center mb-3 space-x-3">
         <CustomButtons
           type="outlined"
-          label="Teklif Talebini Sil"
+          label={IntLabel('delete')}
           onPress={() => {
             Post('/api/Offers/DeleteRequestedOffer', {
               offerID: item?.offerID,
@@ -116,7 +114,7 @@ const OfferRequestComp = ({item, setClicked, setSelectedRequest}: any) => {
         />
         <CustomButtons
           type="solid"
-          label="Teklifleri İncele"
+          label={IntLabel('review_offers')}
           onPress={() => setSelectedRequest(item)}
         />
       </View>

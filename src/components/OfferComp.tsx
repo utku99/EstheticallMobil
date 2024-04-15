@@ -13,6 +13,7 @@ import {useSelector} from 'react-redux';
 import {useFormik} from 'formik';
 import ModalWrapper from './ModalWrapper';
 import CommunicationModal from './CommunicationModal';
+import IntLabel from './IntLabel';
 
 const OfferComp = ({
   item,
@@ -88,7 +89,7 @@ const OfferComp = ({
           </View>
           <View className="items-center">
             <Text className="text-customGray font-poppinsRegular text-xs">
-              Yorumlar
+              {IntLabel('comments')}
             </Text>
             <CustomInputs type="rating" value={item?.commentsPoint / 20} />
           </View>
@@ -143,7 +144,7 @@ const OfferComp = ({
             <View className="flex-row items-center justify-between">
               <View className="flex-1">
                 <Text className="text-customGray font-poppinsMedium text-sm ">
-                  Teklif ID:{' '}
+                  {IntLabel('offer_id')}:{' '}
                 </Text>
                 <Text className="text-customGray font-poppinsRegular text-sm ">
                   {item?.offerInfoID}
@@ -151,7 +152,7 @@ const OfferComp = ({
               </View>
               <View className="flex-1">
                 <Text className="text-customGray font-poppinsMedium text-sm ">
-                  Tarih:{' '}
+                  {IntLabel('date')}:{' '}
                 </Text>
                 <Text className="text-customGray font-poppinsRegular text-sm ">
                   {item?.offerInfoCreatedDate}
@@ -162,7 +163,7 @@ const OfferComp = ({
             <View className="flex-row items-center justify-between">
               <View className="flex-1">
                 <Text className="text-customGray font-poppinsMedium text-sm ">
-                  Konum:{' '}
+                  {IntLabel('location')}:{' '}
                 </Text>
                 <Text className="text-customGray font-poppinsRegular text-sm ">
                   {item?.location}
@@ -170,17 +171,17 @@ const OfferComp = ({
               </View>
               <View className="flex-1">
                 <Text className="text-customGray font-poppinsMedium text-sm ">
-                  Kategori:{' '}
+                  {IntLabel('category')}:{' '}
                 </Text>
                 <Text className="text-customGray font-poppinsRegular text-sm ">
-                  Hastane,klinik
+                  Hastane,klinik (sabit??)
                 </Text>
               </View>
             </View>
 
             <View>
               <Text className="text-customGray font-poppinsMedium text-sm ">
-                Operasyonlar:{' '}
+                {IntLabel('operations')}:{' '}
               </Text>
               <Text className="text-customGray font-poppinsRegular text-sm ">
                 {item?.serviceName}
@@ -189,7 +190,7 @@ const OfferComp = ({
 
             <View>
               <Text className="text-customGray font-poppinsMedium text-sm ">
-                Kurum Açıklaması:{' '}
+                {IntLabel('company_desc')}:{' '}
               </Text>
               <Text className="text-customGray font-poppinsRegular text-sm ">
                 {item?.description}
@@ -198,7 +199,7 @@ const OfferComp = ({
 
             <View>
               <Text className="text-customOrange font-poppinsMedium text-sm ">
-                Teklif Tarih Aralığı:{' '}
+                {IntLabel('offer_date_range')}:{' '}
               </Text>
               <Text className="text-customOrange font-poppinsRegular text-sm ">
                 {item?.offerInfoDate}
@@ -207,26 +208,26 @@ const OfferComp = ({
 
             <View>
               <Text className=" font-poppinsMedium text-sm text-customGray">
-                Özel Servisler:{' '}
+                {IntLabel('special_services')}:{' '}
               </Text>
               <View className="flex-row items-center justify-between ">
                 <CustomInputs
                   type="checkbox"
-                  title="Ulaşım"
+                  title={IntLabel('transport')}
                   value={item?.extraServices?.some(
                     (item: number) => item === 1,
                   )}
                 />
                 <CustomInputs
                   type="checkbox"
-                  title="Konaklama"
+                  title={IntLabel('accomodation')}
                   value={item?.extraServices?.some(
                     (item: number) => item === 2,
                   )}
                 />
                 <CustomInputs
                   type="checkbox"
-                  title="Refakatçi"
+                  title={IntLabel('companion')}
                   value={item?.extraServices?.some(
                     (item: number) => item === 3,
                   )}
@@ -235,7 +236,7 @@ const OfferComp = ({
             </View>
             <View className="flex-row">
               <Text className=" font-poppinsMedium text-sm text-customGray">
-                İlgili Doktor:{' '}
+                {IntLabel('related_doctor')}:{' '}
               </Text>
               <View className="h-[0.5px] bg-black/[.5] w-full self-center"></View>
             </View>
@@ -269,7 +270,7 @@ const OfferComp = ({
                   {item?.doctorCommentPoint / 20}/5
                 </Text>
                 <Text className="text-customGray font-poppinsRegular text-xs">
-                  Yorumlar
+                  {IntLabel('comments')}
                 </Text>
               </View>
               <LikeUnlikeComp
@@ -280,7 +281,7 @@ const OfferComp = ({
             </View>
 
             <Text className="text-customOrange font-poppinsSemiBold text-base text-center mb-3">
-              Teklif Fiyatı: {item?.price}{' '}
+              {IntLabel('offer_price')}: {item?.price}{' '}
               {item?.currencyType === 1
                 ? '₺'
                 : item?.currencyType === 2
@@ -291,7 +292,7 @@ const OfferComp = ({
             {!completed && (
               <CustomButtons
                 type="solid"
-                label="İletişime Geç"
+                label={IntLabel('contact')}
                 icon="question"
                 style={{alignSelf: 'center'}}
                 onPress={() => setVisible(true)}
@@ -309,7 +310,7 @@ const OfferComp = ({
           <Text
             numberOfLines={1}
             className="font-poppinsRegular text-xs text-white flex-1">
-            Teklif Fiyatı:{item?.price}
+            {IntLabel('offer_price')}: {item?.price}
             {item?.currencyType === 1
               ? '₺'
               : item?.currencyType === 2
@@ -322,7 +323,7 @@ const OfferComp = ({
         </View>
         {!seeAll && (
           <Text className="font-poppinsBold  text-sm text-white flex-1 text-right">
-            Detayları Gör
+            {IntLabel('see_details')}
           </Text>
         )}
       </Pressable>
@@ -332,7 +333,7 @@ const OfferComp = ({
         visible={visible}
         setVisible={setVisible}
         item={item}
-        title={'Teklif Hakkında İletişime Geç'}
+        title={IntLabel('contact_about_offer')}
         type="offer"
       />
     </View>

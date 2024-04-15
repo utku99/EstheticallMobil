@@ -10,6 +10,7 @@ import * as Yup from 'yup';
 import UnLikeIcon from '../../assets/svg/common/UnLikeIcon';
 import moment from 'moment';
 import {useNavigation} from '@react-navigation/core';
+import IntLabel from '../../components/IntLabel';
 
 const FirmAppointmentPayment = ({route}: any) => {
   const {Post} = WebClient();
@@ -86,7 +87,7 @@ const FirmAppointmentPayment = ({route}: any) => {
           paddingHorizontal: '5%',
         }}>
         <Text className="text-base font-poppinsMedium  text-customGray text-center">
-          Ödeme Yap
+          {IntLabel('pay')}
         </Text>
 
         {/* header */}
@@ -116,7 +117,7 @@ const FirmAppointmentPayment = ({route}: any) => {
           </View>
           <View className="items-center">
             <Text className="text-customGray font-poppinsRegular text-xs">
-              Yorumlar
+              {IntLabel('comments')}
             </Text>
             <CustomInputs
               type="rating"
@@ -128,7 +129,7 @@ const FirmAppointmentPayment = ({route}: any) => {
 
         <View className="">
           <Text className="text-customGray font-poppinsMedium text-sm  ">
-            Kategori:{' '}
+            {IntLabel('category')}:{' '}
           </Text>
           <Text className="text-customGray font-poppinsRegular text-sm ">
             {paymentInfo?.companyType}
@@ -137,7 +138,7 @@ const FirmAppointmentPayment = ({route}: any) => {
 
         <View>
           <Text className="text-customGray font-poppinsMedium text-sm  ">
-            Operasyonlar:{' '}
+            {IntLabel('operations')}:{' '}
           </Text>
           <Text className="text-customGray font-poppinsRegular text-sm ">
             {paymentInfo?.serviceName}
@@ -146,7 +147,7 @@ const FirmAppointmentPayment = ({route}: any) => {
 
         <View>
           <Text className="text-customOrange font-poppinsMedium text-sm ">
-            Teklif Tarih Aralığı:{' '}
+            {IntLabel('offer_date_range')}:{' '}
           </Text>
           <Text className="text-customOrange font-poppinsRegular text-sm ">
             {moment(paymentInfo?.startDate, 'DD.MM.YYYY HH:mm:ss').format(
@@ -161,16 +162,16 @@ const FirmAppointmentPayment = ({route}: any) => {
 
         <View>
           <Text className="text-base font-poppinsMedium text-customGray text-center">
-            Randevu Talebi
+            {IntLabel('appointment_request')}
           </Text>
           <Text className="text-base  font-poppinsMedium text-customGray text-center">
-            Ödenecek Tutar: {paymentInfo?.price}₺
+            {IntLabel('amount_to_paid')}: {paymentInfo?.price}₺
           </Text>
         </View>
 
         <CustomInputs
           type="dropdown"
-          placeholder="Banka Hesabı Seç"
+          placeholder={IntLabel('select_bank_account')}
           dropdownContainerStyle={{width: 200}}
           value={formik.values.bank}
           onChange={(e: any) => formik.setFieldValue('bank', e)}
@@ -190,7 +191,7 @@ const FirmAppointmentPayment = ({route}: any) => {
 
         <CustomButtons
           type="iconsolid"
-          label="Ödeme Yap"
+          label={IntLabel('pay')}
           icon="send"
           theme="big"
           style={{width: 170, alignSelf: 'center'}}

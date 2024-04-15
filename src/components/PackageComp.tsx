@@ -15,6 +15,7 @@ import CustomButtons from './CustomButtons';
 import LikeUnlikeComp from './LikeUnlikeComp';
 import {useFormik} from 'formik';
 import CommunicationModal from './CommunicationModal';
+import IntLabel from './IntLabel';
 
 const PackageComp = ({
   item,
@@ -80,7 +81,7 @@ const PackageComp = ({
         </TouchableOpacity>
         <View className="items-center">
           <Text className="text-customGray font-poppinsRegular text-xxs">
-            Yorumlar
+            {IntLabel('comments')}
           </Text>
           <CustomInputs
             type="rating"
@@ -143,7 +144,8 @@ const PackageComp = ({
       <Text
         numberOfLines={seeAll ? 20 : 1}
         className="text-customGray text-xs font-poppinsRegular p-[10px]">
-        Paket Adı: {item?.footerModel?.packageName ?? item?.packageName}
+        {IntLabel('packet_name')}:{' '}
+        {item?.footerModel?.packageName ?? item?.packageName}
       </Text>
 
       <Text
@@ -156,7 +158,7 @@ const PackageComp = ({
         <>
           <View className="px-[10px] space-y-3 flex-row">
             <Text className="font-poppinsMedium text-sm text-customGray">
-              İlgili Doktor:{' '}
+              {IntLabel('related_doctor')}:{' '}
             </Text>
             <View className="h-[0.5px] bg-black/[.5] w-full"></View>
           </View>
@@ -185,7 +187,7 @@ const PackageComp = ({
                 {handlePoint()}/5
               </Text>
               <Text className="text-customGray font-poppinsRegular text-xs">
-                Yorumlar
+                {IntLabel('comments')}
               </Text>
             </View>
             <View className="items-center space-y-2">
@@ -201,7 +203,7 @@ const PackageComp = ({
           </View>
           <View className="px-[10px] space-y-3 flex-row">
             <Text className="font-poppinsMedium text-sm text-customGray">
-              Paket İçeriği{' '}
+              {IntLabel('packet_content')}{' '}
             </Text>
             <View className="h-[0.5px] bg-black/[.5] w-full"></View>
           </View>
@@ -213,7 +215,7 @@ const PackageComp = ({
             <CustomButtons
               onPress={() => setVisible(true)}
               type="solid"
-              label="İletişime Geç"
+              label={IntLabel('contact')}
               style={{alignSelf: 'center'}}
               icon="question"
               theme="middle"
@@ -227,7 +229,7 @@ const PackageComp = ({
         onPress={() => setSeeAll(!seeAll)}
         className="bg-customBrown w-full h-[35px] rounded-b-lg flex-row items-center justify-between px-[10px]">
         <Text className="font-poppinsRegular  text-xs text-white flex-1">
-          Paket Fiyatı: {item?.footerModel?.price ?? item?.price}₺
+          {IntLabel('packet_price')}: {item?.footerModel?.price ?? item?.price}₺
         </Text>
         <View className="flex-1 items-center">
           {seeAll ? <DoctorArrowUpIcon /> : <DoctorArrowDownIcon />}
@@ -240,7 +242,7 @@ const PackageComp = ({
         visible={visible}
         setVisible={setVisible}
         item={item}
-        title={'Paket Hakkında İletişime Geç'}
+        title={IntLabel('contact_us_about_packet')}
         type="package"
       />
     </View>

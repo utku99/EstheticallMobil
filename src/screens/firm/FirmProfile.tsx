@@ -7,6 +7,7 @@ import WebClient from '../../utility/WebClient';
 import HandleData from '../../components/HandleData';
 import Carousel from 'react-native-snap-carousel';
 import RenderHTML from 'react-native-render-html';
+import IntLabel from '../../components/IntLabel';
 
 interface props {
   route?: any;
@@ -39,7 +40,7 @@ const FirmProfile = ({route}: props) => {
           <View className="flex-row items-center space-x-3">
             <InstutituonIcon />
             <Text className="font-poppinsMedium text-sm text-customGray">
-              Kurumsal
+              {IntLabel('institutional')}
             </Text>
             <View className="border-b h-1 flex-1"></View>
           </View>

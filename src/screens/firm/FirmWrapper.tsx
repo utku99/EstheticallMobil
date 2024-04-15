@@ -14,26 +14,16 @@ import HandleData from '../../components/HandleData';
 import CustomInputs from '../../components/CustomInputs';
 import LikeUnlikeComp from '../../components/LikeUnlikeComp';
 import {setSelectedService} from '../../redux/slices/common';
+import IntLabel from '../../components/IntLabel';
 
 interface props {
   children?: React.ReactNode;
 }
 
-const buttonData = [
-  {id: 1, label: 'Profil', name: 'firmprofile'},
-  {id: 2, label: 'Paylaşımlar', name: 'firmsharings'},
-  {id: 3, label: 'Yorumlar', name: 'firmcomments'},
-  {id: 4, label: 'Hizmetler', name: 'firmservices'},
-  {id: 5, label: 'Doktorlar', name: 'firmdoctors'},
-  {id: 6, label: 'Randevu Al', name: 'firmappointment'},
-  {id: 7, label: 'Teklif Al', name: 'firmoffer'},
-  {id: 8, label: 'Paketler', name: 'firmpackages'},
-];
-
 const FirmWrapper: React.FC<props> = ({children}) => {
   const {Post, loading} = WebClient();
   const dispatch = useDispatch();
-  const {user} = useSelector((state: any) => state.user);
+  const {user, language} = useSelector((state: any) => state.user);
   const {selectedService} = useSelector((state: any) => state.common);
   const [firmLeftInfo, setFirmLeftInfo] = useState<any>();
   const route = useRoute<any>();
@@ -41,6 +31,17 @@ const FirmWrapper: React.FC<props> = ({children}) => {
   const [visible, setVisible] = useState(false);
   const [clicked, setClicked] = useState(false);
   const [services, setServices] = useState();
+
+  const buttonData = [
+    {id: 1, label: IntLabel('profile'), name: 'firmprofile'},
+    {id: 2, label: IntLabel('sharings'), name: 'firmsharings'},
+    {id: 3, label: IntLabel('comments'), name: 'firmcomments'},
+    {id: 4, label: IntLabel('operations'), name: 'firmservices'},
+    {id: 5, label: IntLabel('doctors'), name: 'firmdoctors'},
+    {id: 6, label: IntLabel('take_appointment'), name: 'firmappointment'},
+    {id: 7, label: IntLabel('take_offer'), name: 'firmoffer'},
+    {id: 8, label: IntLabel('packages'), name: 'firmpackages'},
+  ];
 
   useEffect(() => {
     Post('/api/Company/GetCompanyInfoWeb', {
@@ -126,7 +127,7 @@ const FirmWrapper: React.FC<props> = ({children}) => {
             </View>
             <View className="items-center ">
               <Text className="text-customGray font-poppinsRegular text-xs">
-                Yorumlar
+                {IntLabel('comments')}
               </Text>
               {/* <CustomInputs type='rating' value={firmLeftInfo?.commentsPoint / 20} /> */}
               <CustomInputs type="rating" value={3} />
@@ -166,7 +167,7 @@ const FirmWrapper: React.FC<props> = ({children}) => {
       <ModalWrapper visible={visible} setVisible={setVisible}>
         <View className="py-5 space-y-2 ">
           <Text className="font-poppinsSemiBold text-customGray text-base">
-            Ameliyatsız Operasyonlarımız
+            {IntLabel('our_esthetic_operations')}
           </Text>
           <FlatList
             data={services}
@@ -199,7 +200,7 @@ const FirmWrapper: React.FC<props> = ({children}) => {
             contentContainerStyle={{gap: 5}}
           />
           <Text className="font-poppinsSemiBold text-customGray text-base">
-            Ameliyatlı Operasyonlarımız
+            {IntLabel('our_beauty_operations')}
           </Text>
           <FlatList
             data={services}

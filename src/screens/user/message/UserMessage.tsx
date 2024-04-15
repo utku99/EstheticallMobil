@@ -22,6 +22,7 @@ import WebClient from '../../../utility/WebClient';
 import {useDispatch, useSelector} from 'react-redux';
 import {useFormik} from 'formik';
 import {addMessage, setMessage} from '../../../redux/slices/hubConnection';
+import IntLabel from '../../../components/IntLabel';
 
 const UserMessage = ({route}: {route?: any}) => {
   const scrollRef = useRef<any>(null);
@@ -115,7 +116,7 @@ const UserMessage = ({route}: {route?: any}) => {
   }, []);
 
   return (
-    <UserWrapper title="Mesajlar" scrollEnabled={false}>
+    <UserWrapper title={IntLabel('messages')} scrollEnabled={false}>
       <HandleData
         title={'Mesajınız Bulunmamaktadır'}
         loading={loading}
@@ -174,7 +175,7 @@ const UserMessage = ({route}: {route?: any}) => {
                   value={formik.values.message}
                   onChangeText={formik.handleChange('message')}
                   className=" flex-1 text-sm text-customGray font-poppinsRegular  p-0 pl-2 h-full"
-                  placeholder="Yorumunuzu Yazın..."
+                  placeholder={IntLabel('write_message')}
                   placeholderTextColor={'#4D4A48'}
                 />
                 <TouchableOpacity onPress={() => formik.handleSubmit()}>

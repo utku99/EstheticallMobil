@@ -3,17 +3,22 @@ import React, {useState} from 'react';
 import AuthWrapper from './AuthWrapper';
 import CustomInputs from '../../components/CustomInputs';
 import LegalTextComp from '../../components/LegalTextComp';
+import IntLabel from '../../components/IntLabel';
 
 const UserRegister = ({}) => {
   return (
-    <AuthWrapper title="Yeni Üyelik">
-      <CustomInputs type="text" placeholder="Adınız" />
-      <CustomInputs type="text" placeholder="Soyadınız" />
-      <CustomInputs type="text" placeholder="Kullanııcı Adı" />
-      <CustomInputs type="date" placeholder="Doğum Tarihi" value={null} />
+    <AuthWrapper title={IntLabel('new_user')}>
+      <CustomInputs type="text" placeholder={IntLabel('name')} />
+      <CustomInputs type="text" placeholder={IntLabel('surname')} />
+      <CustomInputs type="text" placeholder={IntLabel('nickname')} />
+      <CustomInputs
+        type="date"
+        placeholder={IntLabel('birthday')}
+        value={null}
+      />
       <CustomInputs
         type="dropdown"
-        placeholder="Cinsiyet"
+        placeholder={IntLabel('gender')}
         value={''}
         dropdownData={[
           {label: 'erkek', value: 1},
@@ -23,7 +28,7 @@ const UserRegister = ({}) => {
       <View className="flex-row items-center justify-between">
         <CustomInputs
           type="dropdown"
-          placeholder="Ülke"
+          placeholder={IntLabel('country')}
           value={''}
           dropdownData={[
             {label: 'erkek', value: 1},
@@ -33,7 +38,7 @@ const UserRegister = ({}) => {
         />
         <CustomInputs
           type="dropdown"
-          placeholder="Şehir"
+          placeholder={IntLabel('city')}
           value={''}
           dropdownData={[
             {label: 'erkek', value: 1},
@@ -42,9 +47,17 @@ const UserRegister = ({}) => {
           dropdownContainerStyle={{width: '45%'}}
         />
       </View>
-      <CustomInputs type="text" placeholder="E-Posta" />
-      <CustomInputs type="text" placeholder="Şifre" secureTextEntry />
-      <CustomInputs type="text" placeholder="Şifre Tekrar" secureTextEntry />
+      <CustomInputs type="text" placeholder={IntLabel('email')} />
+      <CustomInputs
+        type="text"
+        placeholder={IntLabel('password')}
+        secureTextEntry
+      />
+      <CustomInputs
+        type="text"
+        placeholder={IntLabel('re_password')}
+        secureTextEntry
+      />
 
       <LegalTextComp value={true} onChange={() => ''} type="auth" />
     </AuthWrapper>

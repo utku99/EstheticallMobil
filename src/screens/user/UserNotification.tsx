@@ -5,9 +5,10 @@ import NotificationComp from '../../components/NotificationComp';
 import HandleData from '../../components/HandleData';
 import WebClient from '../../utility/WebClient';
 import {useSelector} from 'react-redux';
+import IntLabel from '../../components/IntLabel';
 
 const UserNotification = () => {
-  const {user} = useSelector((state: any) => state.user);
+  const {user, language} = useSelector((state: any) => state.user);
   const {Post, loading} = WebClient();
   const [notifications, setNotifications] = useState<any>();
   const [clicked, setClicked] = useState<any>(false);
@@ -15,16 +16,16 @@ const UserNotification = () => {
   useEffect(() => {
     Post('/api/Notification/GetNotificationsByUserID', {
       userID: user?.id,
-      languageId: 1,
+      languageId: language?.type,
     }).then(res => {
       setNotifications(res.data.object);
     });
 
     setClicked(false);
-  }, [clicked]);
+  }, [clicked, language]);
 
   return (
-    <UserWrapper title="Bildirimler" showBellIcon>
+    <UserWrapper title={IntLabel('notifications')} showBellIcon>
       <HandleData
         data={notifications}
         title={'Bildiriminiz Bulunmamaktadır'}

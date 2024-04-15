@@ -11,6 +11,7 @@ import WebClient from '../../utility/WebClient';
 import {useSelector} from 'react-redux';
 import * as Yup from 'yup';
 import {legalTextType} from '../../constants/enum';
+import IntLabel from '../../components/IntLabel';
 
 const Question = () => {
   const {Post} = WebClient();
@@ -89,7 +90,7 @@ const Question = () => {
     <UserWrapper>
       <View className=" h-full w-full" style={{width: SIZES.width * 0.95}}>
         <Text className="font-poppinsMedium text-customGray text-base  mb-3">
-          Soru Sor
+          {IntLabel('ask_question')}
         </Text>
 
         <CustomInputs
@@ -97,7 +98,7 @@ const Question = () => {
           dropdownData={allCompanies}
           value={formik.values.institution}
           onChange={(e: any) => formik.setFieldValue('institution', e)}
-          placeholder="Kurum Seç"
+          placeholder={IntLabel('select_institution')}
           style={{width: '75%', height: 32}}
           isSearchable
         />
@@ -107,21 +108,21 @@ const Question = () => {
           dropdownData={services}
           value={formik.values.operation}
           onChange={(e: any) => formik.setFieldValue('operation', e)}
-          placeholder="Operasyon Seç"
+          placeholder={IntLabel('select_operation')}
           style={{width: '75%', height: 32}}
         />
 
-        <CustomInputs
+        {/* <CustomInputs
           type="textareasmall"
           value={formik.values.title}
           onChangeText={formik.handleChange('title')}
-        />
+        /> */}
 
         <CustomInputs
           type="textareabig"
           value={formik.values.content}
           onChangeText={formik.handleChange('content')}
-          title="Soru Metni"
+          title={IntLabel('question_text')}
         />
 
         <AddPhotoComp
@@ -139,7 +140,7 @@ const Question = () => {
 
         <CustomButtons
           type="iconsolid"
-          label="Soru Gönder"
+          label={IntLabel('send')}
           icon="send"
           theme="big"
           onPress={formik.handleSubmit}

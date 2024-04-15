@@ -4,28 +4,19 @@ import {Dropdown} from 'react-native-element-dropdown';
 import DropdownSingleDownIcon from '../assets/svg/common/DropdownSingleDownIcon';
 import DropdownSingleUpIcon from '../assets/svg/common/DropdownSingleUpIcon';
 import languageList from '../locales/languageList.json';
+import {useDispatch, useSelector} from 'react-redux';
+import {setLanguage} from '../redux/slices/user';
 
 const LangChoiceComp = () => {
   const [isFocusDropdown, setIsFocusDropdown] = useState(false);
-  const [languages] = useState(
-    Object.keys(languageResources)?.map(item => ({
-      label: item,
-      value: item == 'tr' ? 1 : 2,
-    })),
-  );
-
-  console.log(Object.keys(languageResources), '-');
-  console.log(i18next.language.toLocaleUpperCase());
-  console.log(languageList['tr']?.nativeName);
+  const {language, languages} = useSelector((state: any) => state.user);
+  const dispatch = useDispatch();
 
   return (
     <Dropdown
       data={languages}
-      value={{
-        label: i18next.language.toLocaleUpperCase(),
-        value: i18next.language == 'tr' ? 1 : 2,
-      }}
-      onChange={e => i18next.changeLanguage(e.label)}
+      value={language}
+      onChange={e => dispatch(setLanguage(e))}
       mode="default"
       labelField="label"
       valueField="value"
@@ -42,6 +33,7 @@ const LangChoiceComp = () => {
         fontSize: 20,
         color: '#4D4A48',
         fontFamily: 'Poppins-Medium',
+        textTransform: 'uppercase',
       }}
       itemTextStyle={{
         fontSize: 14,

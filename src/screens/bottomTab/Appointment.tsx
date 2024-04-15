@@ -9,6 +9,7 @@ import WebClient from '../../utility/WebClient';
 import {useFormik} from 'formik';
 import * as Yup from 'yup';
 import {useNavigation} from '@react-navigation/core';
+import IntLabel from '../../components/IntLabel';
 
 const Appointment = () => {
   const dispatch = useDispatch();
@@ -166,20 +167,18 @@ const Appointment = () => {
     formik.values.operation.value,
   ]);
 
-  console.log(formik.values.institution);
-
   return (
     <UserWrapper>
       <View className=" h-full w-full" style={{width: SIZES.width * 0.95}}>
         <Text className="font-poppinsMedium text-customGray text-base  mb-3">
-          Randevu Al
+          {IntLabel('take_offer')}
         </Text>
 
         {!formik.values.country.value && (
           <CustomInputs
             type="dropdown"
             dropdownData={countries}
-            placeholder="Ülke"
+            placeholder={IntLabel('country')}
             isSearchable
             value={formik.values.country}
             onChange={(e: any) => formik.setFieldValue('country', e)}
@@ -191,7 +190,7 @@ const Appointment = () => {
           <CustomInputs
             type="dropdown"
             dropdownData={cities}
-            placeholder="Şehir"
+            placeholder={IntLabel('city')}
             isSearchable
             value={formik.values.city}
             onChange={(e: any) => formik.setFieldValue('city', e)}
@@ -203,7 +202,7 @@ const Appointment = () => {
           <CustomInputs
             type="dropdown"
             dropdownData={towns}
-            placeholder="İlçe"
+            placeholder={IntLabel('town')}
             isSearchable
             value={formik.values.town}
             onChange={(e: any) => formik.setFieldValue('town', e)}
@@ -214,7 +213,7 @@ const Appointment = () => {
         <CustomInputs
           type="dropdown"
           dropdownData={company}
-          placeholder="Kurum Seç"
+          placeholder={IntLabel('select_institution')}
           isSearchable
           value={formik.values.institution}
           onChange={(e: any) => formik.setFieldValue('institution', e)}
@@ -225,7 +224,7 @@ const Appointment = () => {
           <CustomInputs
             type="dropdown"
             dropdownData={services}
-            placeholder="Operasyon Seç"
+            placeholder={IntLabel('select_operation')}
             value={formik.values.operation}
             onChange={(e: any) => formik.setFieldValue('operation', e)}
             style={{width: '75%', height: 32}}
@@ -236,7 +235,7 @@ const Appointment = () => {
           <CustomInputs
             type="dropdown"
             dropdownData={subServices}
-            placeholder="Alt Operasyon Seç"
+            placeholder={IntLabel('select_sub_operation')}
             value={formik.values.suboperation}
             onChange={(e: any) => formik.setFieldValue('suboperation', e)}
             style={{width: '75%', height: 32}}
@@ -263,7 +262,7 @@ const Appointment = () => {
 
         <CustomInputs
           type="textareabig"
-          title="Randevu Metni"
+          title={IntLabel('appointment_text')}
           value={formik.values.content}
           onChangeText={formik.handleChange('content')}
           error={formik.errors.content}
@@ -271,7 +270,7 @@ const Appointment = () => {
 
         <View className="my-3">
           <Text className="font-poppinsMedium text-customGray text-base  mb-3">
-            Uygun Tarih Aralığını Seçin
+            {IntLabel('select_date_range')}
           </Text>
           <View className="flex-row flex-wrap justify-between">
             <CustomInputs
@@ -279,7 +278,7 @@ const Appointment = () => {
               minimumDate={
                 new Date(new Date().setDate(new Date().getDate() + 1))
               }
-              placeholder="Başlangıç Tarihi"
+              placeholder={IntLabel('start_date')}
               value={formik.values.startDate}
               onChange={(e: any) => formik.setFieldValue('startDate', e)}
               style={{width: '75%'}}
@@ -289,7 +288,7 @@ const Appointment = () => {
               minimumDate={
                 new Date(new Date().setDate(new Date().getDate() + 2))
               }
-              placeholder="Bitiş Tarihi"
+              placeholder={IntLabel('end_date')}
               value={formik.values.endDate}
               onChange={(e: any) => formik.setFieldValue('endDate', e)}
               style={{width: '75%'}}
@@ -299,7 +298,7 @@ const Appointment = () => {
 
         <CustomButtons
           type="iconsolid"
-          label="Talep Gönder"
+          label={IntLabel('send')}
           icon="send"
           theme="big"
           style={{width: 180, alignSelf: 'center'}}

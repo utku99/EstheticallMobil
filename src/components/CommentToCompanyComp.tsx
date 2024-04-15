@@ -7,6 +7,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import SeeAllArrow from '../assets/svg/homepages/SeeAllArrow';
 import {SIZES} from '../constants/constants';
 import LikeUnlikeComp from './LikeUnlikeComp';
+import IntLabel from './IntLabel';
 
 const CommentToCompanyComp = ({item}: any) => {
   const [seeAll, setSeeAll] = useState(false);
@@ -56,7 +57,7 @@ const CommentToCompanyComp = ({item}: any) => {
             <Text
               numberOfLines={1}
               className="text-customGray font-poppinsRegular text-xxs  flex-1   pl-3">
-              Uygulama: {item?.serviceName}
+              {IntLabel('operation')}: {item?.serviceName}
             </Text>
           </View>
         </View>
@@ -91,7 +92,7 @@ const CommentToCompanyComp = ({item}: any) => {
       {/* doctor */}
       <View className="space-y-2">
         <Text className="text-base font-poppinsRegular text-customGray">
-          Operasyonu gerçekleştiren
+          {IntLabel('performing_the_operation')}
         </Text>
         <View className="flex-row items-center justify-between">
           <View className="w-[60px] h-[60px] overflow-hidden rounded-full border-[0.6px] border-customGray">
@@ -123,7 +124,7 @@ const CommentToCompanyComp = ({item}: any) => {
               {item?.doctorPoint.split('.')[0] / 20}/5
             </Text>
             <Text className="text-customGray font-poppinsRegular text-xs">
-              Yorumlar
+              {IntLabel('comments')}
             </Text>
           </View>
           <View className="items-center space-y-2">

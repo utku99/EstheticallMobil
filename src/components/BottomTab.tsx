@@ -7,6 +7,7 @@ import BuyIcon from '../assets/svg/bottomTab/BuyIcon';
 import OfferIcon from '../assets/svg/bottomTab/OfferIcon';
 import {useNavigation} from '@react-navigation/native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import IntLabel from './IntLabel';
 
 const BottomTab = () => {
   const navigation = useNavigation();
@@ -21,7 +22,7 @@ const BottomTab = () => {
         onPress={() => navigation.navigate('sharing')}>
         <HomeIcon />
         <Text className="font-poppinsMedium text-xxs text-customGray">
-          Ana Sayfa
+          {IntLabel('home_page')}
         </Text>
       </Pressable>
 
@@ -30,7 +31,7 @@ const BottomTab = () => {
         onPress={() => navigation.navigate('question')}>
         <QuestionIcon />
         <Text className="font-poppinsMedium text-xxs text-customGray">
-          Soru Sor
+          {IntLabel('ask_question')}
         </Text>
       </Pressable>
 
@@ -39,7 +40,7 @@ const BottomTab = () => {
         onPress={() => navigation.navigate('offer')}>
         <OfferIcon />
         <Text className="font-poppinsMedium text-xxs text-customGray">
-          Tekfil Al
+          {IntLabel('take_offer')}
         </Text>
       </Pressable>
 
@@ -48,7 +49,7 @@ const BottomTab = () => {
         onPress={() => navigation.navigate('package')}>
         <BuyIcon />
         <Text className="font-poppinsMedium text-xxs text-customGray">
-          Paketler
+          {IntLabel('packages')}
         </Text>
       </Pressable>
 
@@ -57,7 +58,7 @@ const BottomTab = () => {
         onPress={() => navigation.navigate('appointment')}>
         <AppointmentIcon />
         <Text className="font-poppinsMedium text-xxs text-customGray">
-          Randevu
+          {IntLabel('appointment')}
         </Text>
       </Pressable>
     </View>

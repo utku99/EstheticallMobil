@@ -18,6 +18,7 @@ import ArrowUpWhiteIcon from '../../assets/svg/auth/ArrowUpWhiteIcon';
 import ArrowDownWhiteIcon from '../../assets/svg/auth/ArrowDownWhiteIcon';
 import {useRoute} from '@react-navigation/native';
 import LangChoiceComp from '../../components/LangChoiceComp';
+import IntLabel from '../../components/IntLabel';
 
 interface props {
   children?: React.ReactNode;
@@ -69,23 +70,20 @@ const AuthWrapper: React.FC<props> = ({children, title, onPress}) => {
               onPress={() => dispatch(setGuest(true))}
               className="flex-row items-center space-x-6 justify-center">
               <Text className="text-customGray font-poppinsMedium text-sm ">
-                Üye olmadan{' '}
-              </Text>
-              <Text className="text-customOrange font-poppinsMedium  text-sm ">
-                Devam et
+                {IntLabel('continue_without_membership')}
               </Text>
             </Pressable>
             {route.name == 'login' ? (
               <>
                 <CustomButtons
                   type="solid"
-                  label="Giriş Yap"
+                  label={IntLabel('login')}
                   onPress={onPress}
                   theme="big"
                 />
                 <CustomButtons
                   type="outlined"
-                  label="Üye Ol"
+                  label={IntLabel('register')}
                   onPress={() => setVisible(true)}
                   theme="big"
                 />
@@ -94,13 +92,13 @@ const AuthWrapper: React.FC<props> = ({children, title, onPress}) => {
               <>
                 <CustomButtons
                   type="solid"
-                  label="Üye Ol"
+                  label={IntLabel('register')}
                   onPress={() => ''}
                   theme="big"
                 />
                 <CustomButtons
                   type="outlined"
-                  label="Giriş Yap"
+                  label={IntLabel('login')}
                   onPress={() => navigation.navigate('login')}
                   theme="big"
                 />
@@ -112,11 +110,11 @@ const AuthWrapper: React.FC<props> = ({children, title, onPress}) => {
 
       <ModalWrapper visible={visible} setVisible={setVisible}>
         <Text className="text-xl text-customGray font-poppinsMedium text-center mb-6">
-          Yeni Üyelik
+          {IntLabel('new_user')}
         </Text>
         <CustomButtons
           type="solid"
-          label="Bireysel Üye Ol"
+          label={IntLabel('individual_register')}
           theme="big"
           style={{marginBottom: 24}}
           onPress={() => {
@@ -131,7 +129,7 @@ const AuthWrapper: React.FC<props> = ({children, title, onPress}) => {
             <View className="w-[20px]"></View>
             <Text
               className={`font-poppinsMedium text-white  text-xl  text-center `}>
-              Kurumsal Üye Ol
+              {IntLabel('company_register')}
             </Text>
             <View className="">
               {dropdown ? <ArrowUpWhiteIcon /> : <ArrowDownWhiteIcon />}
@@ -146,7 +144,7 @@ const AuthWrapper: React.FC<props> = ({children, title, onPress}) => {
                   navigation.navigate('firmregister', {type: 4});
                 }}>
                 <Text className="font-poppinsMedium text-white  text-lg  text-center ">
-                  Doktor
+                  {IntLabel('doctor')}
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
@@ -156,7 +154,7 @@ const AuthWrapper: React.FC<props> = ({children, title, onPress}) => {
                   navigation.navigate('firmregister', {type: 3});
                 }}>
                 <Text className="font-poppinsMedium text-white  text-lg text-center ">
-                  Klinik
+                  {IntLabel('clinic')}
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
@@ -166,7 +164,7 @@ const AuthWrapper: React.FC<props> = ({children, title, onPress}) => {
                   navigation.navigate('firmregister', {type: 1});
                 }}>
                 <Text className="font-poppinsMedium text-white  text-lg text-center ">
-                  Hastane
+                  {IntLabel('hospital')}
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
@@ -176,7 +174,7 @@ const AuthWrapper: React.FC<props> = ({children, title, onPress}) => {
                   navigation.navigate('firmregister', {type: 2});
                 }}>
                 <Text className="font-poppinsMedium text-white  text-lg  text-center ">
-                  Güzellik Merkezi
+                  {IntLabel('beauty_center')}
                 </Text>
               </TouchableOpacity>
             </View>

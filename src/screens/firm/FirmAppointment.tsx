@@ -8,6 +8,7 @@ import {useNavigation} from '@react-navigation/native';
 import {useFormik} from 'formik';
 import {useSelector} from 'react-redux';
 import WebClient from '../../utility/WebClient';
+import IntLabel from '../../components/IntLabel';
 
 interface props {
   route?: any;
@@ -132,7 +133,7 @@ const FirmAppointment = ({route}: props) => {
             dropdownData={services}
             value={formik.values.operation}
             onChange={(e: any) => formik.setFieldValue('operation', e)}
-            placeholder="Operasyon Seç"
+            placeholder={IntLabel('select_operation')}
             style={{width: '75%', height: 32}}
           />
         )}
@@ -143,7 +144,7 @@ const FirmAppointment = ({route}: props) => {
             dropdownData={subServices}
             value={formik.values.suboperation}
             onChange={(e: any) => formik.setFieldValue('suboperation', e)}
-            placeholder="Alt Operasyon Seç"
+            placeholder={IntLabel('select_sub_operation')}
             style={{width: '75%', height: 32}}
           />
         )}
@@ -154,7 +155,7 @@ const FirmAppointment = ({route}: props) => {
             dropdownData={doctors}
             value={formik.values.doctor}
             onChange={(e: any) => console.log(e)}
-            placeholder="Doktor Seç"
+            placeholder={IntLabel('select_doctor')}
             style={{width: '75%', height: 32}}
           />
         )}
@@ -169,12 +170,12 @@ const FirmAppointment = ({route}: props) => {
           type="textareabig"
           value={formik.values.content}
           onChangeText={formik.handleChange('content')}
-          title="Randevu Metni"
+          title={IntLabel('appointment_text')}
         />
 
         <View className="my-3">
           <Text className="font-poppinsMedium text-customGray text-base  mb-3">
-            Uygun Tarih Aralığını Seçin
+            {IntLabel('select_date_range')}
           </Text>
           <View className="flex-row flex-wrap justify-between">
             <CustomInputs
@@ -182,7 +183,7 @@ const FirmAppointment = ({route}: props) => {
               minimumDate={
                 new Date(new Date().setDate(new Date().getDate() + 1))
               }
-              placeholder="Başlangıç Tarihi"
+              placeholder={IntLabel('start_date')}
               value={formik.values.startDate}
               onChange={(e: any) => formik.setFieldValue('startDate', e)}
               style={{width: '75%'}}
@@ -192,7 +193,7 @@ const FirmAppointment = ({route}: props) => {
               minimumDate={
                 new Date(new Date().setDate(new Date().getDate() + 2))
               }
-              placeholder="Bitiş Tarihi"
+              placeholder={IntLabel('end_date')}
               value={formik.values.endDate}
               onChange={(e: any) => formik.setFieldValue('endDate', e)}
               style={{width: '75%'}}
@@ -202,7 +203,7 @@ const FirmAppointment = ({route}: props) => {
 
         <CustomButtons
           type="iconsolid"
-          label="Talep Gönder"
+          label={IntLabel('send')}
           icon="send"
           theme="big"
           style={{alignSelf: 'center'}}

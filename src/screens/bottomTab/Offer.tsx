@@ -9,6 +9,7 @@ import {useFormik} from 'formik';
 import * as Yup from 'yup';
 import WebClient, {toast} from '../../utility/WebClient';
 import {useSelector} from 'react-redux';
+import IntLabel from '../../components/IntLabel';
 
 const Offer = () => {
   const {Post} = WebClient();
@@ -127,14 +128,14 @@ const Offer = () => {
     <UserWrapper>
       <View className=" h-full w-full" style={{width: SIZES.width * 0.95}}>
         <Text className="font-poppinsMedium text-customGray text-base  mb-3">
-          Teklif Al
+          {IntLabel('take_offer')}
         </Text>
 
         {!formik.values.country.value && (
           <CustomInputs
             type="dropdown"
             dropdownData={countries}
-            placeholder="Ülke"
+            placeholder={IntLabel('country')}
             isSearchable
             value={formik.values.country}
             onChange={(e: any) => formik.setFieldValue('country', e)}
@@ -146,7 +147,7 @@ const Offer = () => {
           <CustomInputs
             type="dropdown"
             dropdownData={cities}
-            placeholder="Şehir"
+            placeholder={IntLabel('city')}
             isSearchable
             value={formik.values.city}
             onChange={(e: any) => formik.setFieldValue('city', e)}
@@ -159,7 +160,7 @@ const Offer = () => {
             type="dropdown"
             dropdownData={services}
             isSearchable
-            placeholder="Operasyon Seç"
+            placeholder={IntLabel('select_operation')}
             value={formik.values.operation}
             onChange={(e: any) => formik.setFieldValue('operation', e)}
             style={{width: '75%', height: 32}}
@@ -171,7 +172,7 @@ const Offer = () => {
             type="dropdown"
             dropdownData={subServices}
             isSearchable
-            placeholder="Alt Operasyon Seç"
+            placeholder={IntLabel('select_sub_operation')}
             value={formik.values.suboperation}
             onChange={(e: any) => formik.setFieldValue('suboperation', e)}
             style={{width: '75%', height: 32}}
@@ -188,17 +189,17 @@ const Offer = () => {
           type="textareabig"
           value={formik.values.content}
           onChangeText={formik.handleChange('content')}
-          title="Teklif Metni"
+          title={IntLabel('offer_text')}
         />
 
         <View className="my-3">
           <Text className="font-poppinsMedium text-customGray text-base  mb-3">
-            Özel Servisler
+            {IntLabel('special_services')}
           </Text>
           <View className="flex-row flex-wrap justify-between">
             <CustomInputs
               type="checkbox"
-              title="Ulaşım"
+              title={IntLabel('transport')}
               value={formik.values.transport}
               onChange={() =>
                 formik.setFieldValue('transport', !formik.values.transport)
@@ -206,7 +207,7 @@ const Offer = () => {
             />
             <CustomInputs
               type="checkbox"
-              title="Konaklama"
+              title={IntLabel('accomodation')}
               value={formik.values.accomodation}
               onChange={() =>
                 formik.setFieldValue(
@@ -217,7 +218,7 @@ const Offer = () => {
             />
             <CustomInputs
               type="checkbox"
-              title="Refakatçi"
+              title={IntLabel('companion')}
               value={formik.values.escort}
               onChange={() =>
                 formik.setFieldValue('escort', !formik.values.escort)
@@ -228,7 +229,7 @@ const Offer = () => {
 
         <View className="my-3">
           <Text className="font-poppinsMedium text-customGray text-base  mb-3">
-            Uygun Tarih Aralığını Seçin
+            {IntLabel('select_date_range')}
           </Text>
           <View className="flex-row flex-wrap justify-between">
             <CustomInputs
@@ -236,7 +237,7 @@ const Offer = () => {
               minimumDate={
                 new Date(new Date().setDate(new Date().getDate() + 1))
               }
-              placeholder="Başlangıç Tarihi"
+              placeholder={IntLabel('start_date')}
               value={formik.values.startDate}
               onChange={(e: any) => formik.setFieldValue('startDate', e)}
               style={{width: '75%'}}
@@ -246,7 +247,7 @@ const Offer = () => {
               minimumDate={
                 new Date(new Date().setDate(new Date().getDate() + 2))
               }
-              placeholder="Bitiş Tarihi"
+              placeholder={IntLabel('end_date')}
               value={formik.values.endDate}
               onChange={(e: any) => formik.setFieldValue('endDate', e)}
               style={{width: '75%'}}
@@ -261,7 +262,7 @@ const Offer = () => {
 
         <CustomButtons
           type="iconsolid"
-          label="Talep Gönder"
+          label={IntLabel('send')}
           icon="send"
           theme="big"
           style={{width: 180, alignSelf: 'center'}}

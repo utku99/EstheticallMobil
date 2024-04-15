@@ -10,6 +10,7 @@ import {Rating} from 'react-native-ratings';
 import Tick from '../assets/svg/common/Tick';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import moment from 'moment';
+import IntLabel from './IntLabel';
 
 interface props {
   type:
@@ -105,7 +106,7 @@ const CustomInputs: React.FC<props> = ({
       {type == 'textareasmall' && (
         <View className="mb-3" style={style}>
           <Text className="font-poppinsMedium text-customGray text-base  mb-3">
-            Başlık Metni
+            {IntLabel('title_text')}
           </Text>
           <TextInput
             className={` border border-customLightGray rounded-xl bg-white min-h-[40px] max-h-[80px] px-2 text-customGray text-xs font-poppinsRegular`}
@@ -235,11 +236,11 @@ const CustomInputs: React.FC<props> = ({
         <View className="flex-row items-center mb-3" style={style}>
           <Pressable
             onPress={onChange}
-            className="w-[32px] h-[32px] rounded-lg border border-customLightGray bg-white items-center justify-center">
+            className="w-[30px] h-[30px] rounded-lg border border-customLightGray bg-white items-center justify-center">
             {value && <Tick />}
           </Pressable>
           {title && (
-            <Text className="font-poppinsRegular text-customGray text-sm  ml-2">
+            <Text className="font-poppinsRegular text-customGray text-xs  ml-2">
               {title}
             </Text>
           )}

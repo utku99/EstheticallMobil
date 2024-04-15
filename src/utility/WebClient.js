@@ -7,14 +7,14 @@ import { useSelector } from "react-redux";
 
 const WebClient = () => {
   const [loading, setLoading] = useState(false);
-  const { user } = useSelector(state => state.user)
+  const { user ,language} = useSelector(state => state.user)
 
 
   const defaultConfig = {
     baseURL: "https://estheticallv2-api.ranna.com.tr",
     headers: {
       'Content-Type': 'application/json',
-      "LanguageId": 1
+      "LanguageId": language?.type 
     },
   };
 
