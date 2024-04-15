@@ -16,18 +16,22 @@ import {useNavigation} from '@react-navigation/native';
 const data = [
   {
     key: 1,
-    image: require('../../assets/images/authBg/image1.jpg'),
-    text: 'Kullanıcı yorumlarını inceleyin, en uygun çözümlere ulaşın.',
+    image: require('../../assets/images/authBg/image1.jpeg'),
+    text: 'Yorumları İnceleyin',
+    text2: 'Kullanıcı yorumlarını inceleyin, en uygun çözümlere ulaşın.',
   },
   {
     key: 2,
-    image: require('../../assets/images/authBg/image2.jpg'),
-    text: 'Konaklama, ulaşım gibi seçeneklere sahip hazır paketler ile yenilenme sürecinizi kolayca planlayın.',
+    image: require('../../assets/images/authBg/image2.jpeg'),
+    text: 'Hazır Paketler',
+    text2:
+      'Konaklama, ulaşım gibi seçeneklere sahip hazır paketleri inceleyin.',
   },
   {
     key: 3,
-    image: require('../../assets/images/authBg/image3.jpg'),
-    text: 'Profesyonellerle iletişim kurun, tüm sorularınıza cevap bulun.',
+    image: require('../../assets/images/authBg/image3.jpeg'),
+    text: 'Uzmanlara Ulaşın',
+    text2: 'Profesyonellerle iletişim kurun, tüm sorularınıza cevap bulun.',
   },
 ];
 
@@ -58,11 +62,8 @@ const WelcomePage = () => {
           }
         }}
         renderItem={({item}) => (
-          <ImageBackground
-            source={item.image}
-            imageStyle={{opacity: 0.5}}
-            style={{width: SIZES.width}}>
-            <SafeAreaView className="flex-1 items-center justify-between z-50">
+          <ImageBackground source={item.image} style={{width: SIZES.width}}>
+            <SafeAreaView className="flex-1 items-center justify-between z-50 py-4">
               <View className="">
                 <EstheticLogo />
               </View>
