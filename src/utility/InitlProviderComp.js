@@ -38,7 +38,7 @@ const InitlProviderComp = ({ children }) => {
 
 
     return (
-        <IntlProvider locale={language?.flag_code ?? "tr"} messages={appParameter} defaultLocale='tr' >
+        <IntlProvider locale={language?.flag_code ?? "tr"} messages={appParameter } defaultLocale='tr' >
             {children}
         </IntlProvider>
     )

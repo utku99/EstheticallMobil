@@ -5,17 +5,13 @@ import CustomInputs from '../../components/CustomInputs';
 import WebClient, {toast} from '../../utility/WebClient';
 import {SIZES} from '../../constants/constants';
 import CustomButtons from '../../components/CustomButtons';
-import HandleData from '../../components/HandleData';
 import AddPhotoComp from '../../components/AddPhotoComp';
 import {useFormik} from 'formik';
 import {useSelector} from 'react-redux';
 import * as Yup from 'yup';
+import IntLabel from '../../components/IntLabel';
 
-interface props {
-  route?: any;
-}
-
-const FirmOffer = ({route}: props) => {
+const FirmOffer = () => {
   const {Post, loading} = WebClient();
   const {user} = useSelector((state: any) => state.user);
 
@@ -35,20 +31,9 @@ const FirmOffer = ({route}: props) => {
       transport: false,
       accomodation: false,
       escort: false,
-      startDate: null,
-      endDate: null,
-    } as {
-      operation: any;
-      suboperation: any;
-      title: any;
-      content: any;
-      images: any;
-      transport: any;
-      accomodation: any;
-      escort: any;
-      startDate: any;
-      endDate: any;
-    },
+      startDate: new Date(),
+      endDate: new Date(),
+    } as any,
     // validationSchema: Yup.object().shape({
     //     operation: Yup.object().required("operasyon alanı gereklidir"),
     //     title: Yup.string().required("başlık alanı gereklidir"),
@@ -84,31 +69,31 @@ const FirmOffer = ({route}: props) => {
     },
   });
 
-  useEffect(() => {
-    Post('/api/Common/CompanyServicesFilters', {
-      companyID: route.params.companyId,
-      companyOfficeID: route.params.companyOfficeId,
-    })
-      .then(res => {
-        setServices(res.data);
-      })
-      .finally(() => {
-        Post('/api/Common/CompanySubServicesFilters', {
-          companyID: route.params.companyId,
-          companyOfficeID: route.params.companyOfficeId,
-          serviceID: formik.values.operation.value,
-        }).then(res => {
-          setSubServices(res.data);
-        });
-      });
+  // useEffect(() => {
+  //   Post('/api/Common/CompanyServicesFilters', {
+  //     companyID: route.params.companyId,
+  //     companyOfficeID: route.params.companyOfficeId,
+  //   })
+  //     .then(res => {
+  //       setServices(res.data);
+  //     })
+  //     .finally(() => {
+  //       Post('/api/Common/CompanySubServicesFilters', {
+  //         companyID: route.params.companyId,
+  //         companyOfficeID: route.params.companyOfficeId,
+  //         serviceID: formik.values.operation.value,
+  //       }).then(res => {
+  //         setSubServices(res.data);
+  //       });
+  //     });
 
-    Post('/api/Company/GetCompanyAsync', {
-      companyId: route.params.companyId,
-      companyOfficeId: route.params.companyOfficeId,
-    }).then((res: any) => {
-      setCompany(res.data);
-    });
-  }, [formik.values.operation.value]);
+  //   Post('/api/Company/GetCompanyAsync', {
+  //     companyId: route.params.companyId,
+  //     companyOfficeId: route.params.companyOfficeId,
+  //   }).then((res: any) => {
+  //     setCompany(res.data);
+  //   });
+  // }, []);
 
   return (
     <FirmWrapper>
@@ -125,10 +110,12 @@ const FirmOffer = ({route}: props) => {
           <CustomInputs
             type="dropdown"
             dropdownData={services}
+            isSearchable
+            placeholder={IntLabel('select_operation')}
             value={formik.values.operation}
             onChange={(e: any) => formik.setFieldValue('operation', e)}
-            placeholder="Operasyon Seç"
             style={{width: '75%', height: 32}}
+            error={formik.errors.operation}
           />
         )}
 
@@ -136,9 +123,10 @@ const FirmOffer = ({route}: props) => {
           <CustomInputs
             type="dropdown"
             dropdownData={subServices}
+            isSearchable
+            placeholder={IntLabel('select_sub_operation')}
             value={formik.values.suboperation}
             onChange={(e: any) => formik.setFieldValue('suboperation', e)}
-            placeholder="Alt Operasyon Seç"
             style={{width: '75%', height: 32}}
           />
         )}
@@ -147,23 +135,25 @@ const FirmOffer = ({route}: props) => {
           type="textareasmall"
           value={formik.values.title}
           onChangeText={formik.handleChange('title')}
+          error={formik.errors.title}
         />
 
         <CustomInputs
           type="textareabig"
           value={formik.values.content}
           onChangeText={formik.handleChange('content')}
-          title="Teklif Metni"
+          title={IntLabel('offer_text')}
+          error={formik.errors.content}
         />
 
         <View className="my-3">
           <Text className="font-poppinsMedium text-customGray text-base  mb-3">
-            Özel Servisler
+            {IntLabel('special_services')}
           </Text>
           <View className="flex-row flex-wrap justify-between">
             <CustomInputs
               type="checkbox"
-              title="Ulaşım"
+              title={IntLabel('transport')}
               value={formik.values.transport}
               onChange={() =>
                 formik.setFieldValue('transport', !formik.values.transport)
@@ -171,7 +161,7 @@ const FirmOffer = ({route}: props) => {
             />
             <CustomInputs
               type="checkbox"
-              title="Konaklama"
+              title={IntLabel('accomodation')}
               value={formik.values.accomodation}
               onChange={() =>
                 formik.setFieldValue(
@@ -182,7 +172,7 @@ const FirmOffer = ({route}: props) => {
             />
             <CustomInputs
               type="checkbox"
-              title="Refakatçi"
+              title={IntLabel('companion')}
               value={formik.values.escort}
               onChange={() =>
                 formik.setFieldValue('escort', !formik.values.escort)
@@ -193,7 +183,7 @@ const FirmOffer = ({route}: props) => {
 
         <View className="my-3">
           <Text className="font-poppinsMedium text-customGray text-base  mb-3">
-            Uygun Tarih Aralığını Seçin
+            {IntLabel('select_date_range')}
           </Text>
           <View className="flex-row flex-wrap justify-between">
             <CustomInputs
@@ -201,7 +191,7 @@ const FirmOffer = ({route}: props) => {
               minimumDate={
                 new Date(new Date().setDate(new Date().getDate() + 1))
               }
-              placeholder="Başlangıç Tarihi"
+              placeholder={IntLabel('start_date')}
               value={formik.values.startDate}
               onChange={(e: any) => formik.setFieldValue('startDate', e)}
               style={{width: '75%'}}
@@ -211,7 +201,7 @@ const FirmOffer = ({route}: props) => {
               minimumDate={
                 new Date(new Date().setDate(new Date().getDate() + 2))
               }
-              placeholder="Bitiş Tarihi"
+              placeholder={IntLabel('end_date')}
               value={formik.values.endDate}
               onChange={(e: any) => formik.setFieldValue('endDate', e)}
               style={{width: '75%'}}
@@ -222,11 +212,12 @@ const FirmOffer = ({route}: props) => {
         <AddPhotoComp
           value={formik.values.images}
           onChange={(e: any) => formik.setFieldValue('images', e)}
+          error={formik.errors.images}
         />
 
         <CustomButtons
           type="iconsolid"
-          label="Talep Gönder"
+          label={IntLabel('send')}
           icon="send"
           theme="big"
           style={{width: 180, alignSelf: 'center'}}

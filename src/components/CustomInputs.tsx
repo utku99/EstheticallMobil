@@ -115,9 +115,7 @@ const CustomInputs: React.FC<props> = ({
             textAlignVertical="top"
             multiline
           />
-          {error && (
-            <Text className="text-red-400 text-xs "> {error?.message}</Text>
-          )}
+          {error && <Text className="text-red-400 text-xs "> {error}</Text>}
         </View>
       )}
       {type == 'textareabig' && (

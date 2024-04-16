@@ -36,15 +36,28 @@ const Offer = () => {
       startDate: new Date(),
       endDate: new Date(),
     } as any,
-    // validationSchema: Yup.object().shape({
-    //   operation: Yup.object().required('operasyon alanı gereklidir'),
-    //   subOperation: Yup.object().required('alt operasyon alanı gereklidir'),
-    //   title: Yup.string().required('başlık alanı gereklidir'),
-    //   content: Yup.string().required('teklif metni alanı gereklidir'),
-    //   startDate: Yup.string().required('başlangıç tarihi gereklidir'),
-    //   endDate: Yup.string().required('bitiş tarihi gereklidir'),
-    // }),
-    onSubmit: values => {
+    validationSchema: Yup.object().shape({
+      country: Yup.object().required(
+        IntLabel('validation_message_this_field_is_required'),
+      ),
+      operation: Yup.object().required(
+        IntLabel('validation_message_this_field_is_required'),
+      ),
+      title: Yup.string().required(
+        IntLabel('validation_message_this_field_is_required'),
+      ),
+      content: Yup.string().required(
+        IntLabel('validation_message_this_field_is_required'),
+      ),
+      images: Yup.array().min(1, IntLabel('photo_required')),
+      startDate: Yup.string().required(
+        IntLabel('validation_message_this_field_is_required'),
+      ),
+      endDate: Yup.string().required(
+        IntLabel('validation_message_this_field_is_required'),
+      ),
+    }),
+    onSubmit: (values, {resetForm}) => {
       Post('/api/Offers/RequestOffer', {
         userID: user?.id,
         companyID: 0,
@@ -65,6 +78,7 @@ const Offer = () => {
         images: values.images,
       }).then(res => {
         if (res.data.code === '100') {
+          resetForm();
           toast(res.data.message);
         } else {
           toast(res.data.message);
@@ -127,6 +141,7 @@ const Offer = () => {
             value={formik.values.country}
             onChange={(e: any) => formik.setFieldValue('country', e)}
             style={{width: '75%', height: 32}}
+            error={formik.errors.country}
           />
         )}
 
@@ -139,6 +154,7 @@ const Offer = () => {
             value={formik.values.city}
             onChange={(e: any) => formik.setFieldValue('city', e)}
             style={{width: '75%', height: 32}}
+            error={formik.errors.city}
           />
         )}
 
@@ -151,6 +167,7 @@ const Offer = () => {
             value={formik.values.operation}
             onChange={(e: any) => formik.setFieldValue('operation', e)}
             style={{width: '75%', height: 32}}
+            error={formik.errors.operation}
           />
         )}
 
@@ -170,6 +187,7 @@ const Offer = () => {
           type="textareasmall"
           value={formik.values.title}
           onChangeText={formik.handleChange('title')}
+          error={formik.errors.title}
         />
 
         <CustomInputs
@@ -177,6 +195,7 @@ const Offer = () => {
           value={formik.values.content}
           onChangeText={formik.handleChange('content')}
           title={IntLabel('offer_text')}
+          error={formik.errors.content}
         />
 
         <View className="my-3">
@@ -245,6 +264,7 @@ const Offer = () => {
         <AddPhotoComp
           value={formik.values.images}
           onChange={(e: any) => formik.setFieldValue('images', e)}
+          error={formik.errors.images}
         />
 
         <CustomButtons
