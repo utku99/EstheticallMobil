@@ -12,33 +12,14 @@ import {SIZES} from '../../constants/constants';
 import CustomButtons from '../../components/CustomButtons';
 import EstheticLogo from '../../assets/svg/common/EstheticLogo';
 import {useNavigation} from '@react-navigation/native';
-
-const data = [
-  {
-    key: 1,
-    image: require('../../assets/images/authBg/image1.jpeg'),
-    text: 'Yorumları İnceleyin',
-    text2: 'Kullanıcı yorumlarını inceleyin, en uygun çözümlere ulaşın.',
-  },
-  {
-    key: 2,
-    image: require('../../assets/images/authBg/image2.jpeg'),
-    text: 'Hazır Paketler',
-    text2:
-      'Konaklama, ulaşım gibi seçeneklere sahip hazır paketleri inceleyin.',
-  },
-  {
-    key: 3,
-    image: require('../../assets/images/authBg/image3.jpeg'),
-    text: 'Uzmanlara Ulaşın',
-    text2: 'Profesyonellerle iletişim kurun, tüm sorularınıza cevap bulun.',
-  },
-];
+import IntLabel from '../../components/IntLabel';
+import {useIntl} from 'react-intl';
 
 const WelcomePage = () => {
   const navigation = useNavigation();
   const [currentPage, setCurrentPage] = useState<any>(0);
   const flatListRef = useRef<any>(null);
+  const intl = useIntl();
 
   const handleNextPage = () => {
     if (currentPage < data.length - 1) {
@@ -48,6 +29,27 @@ const WelcomePage = () => {
       navigation.navigate('login');
     }
   };
+
+  const data = [
+    {
+      key: 1,
+      image: require('../../assets/images/authBg/image1.jpeg'),
+      text: IntLabel('welcome_title_1'),
+      text2: IntLabel('welcome_title_2'),
+    },
+    {
+      key: 2,
+      image: require('../../assets/images/authBg/image2.jpeg'),
+      text: IntLabel('welcome_title_3'),
+      text2: IntLabel('welcome_title_4'),
+    },
+    {
+      key: 3,
+      image: require('../../assets/images/authBg/image3.jpeg'),
+      text: IntLabel('welcome_title_5'),
+      text2: IntLabel('welcome_title_6'),
+    },
+  ];
 
   return (
     <View className="flex-1 relative">
@@ -67,13 +69,14 @@ const WelcomePage = () => {
               <View className="">
                 <EstheticLogo />
               </View>
-              <View className="">
-                <Text className="text-center font-poppinsMedium  text-xl text-customGray">
+              <View className="w-[85%]">
+                <Text className="font-poppinsBold text-4xl text-white mb-[20px]">
                   {item.text}
                 </Text>
-              </View>
-              <View className=" w-[85%] ">
-                <View className=" justify-center flex-row mb-[30px] space-x-3">
+                <Text className="font-poppinsMedium text-base text-white mb-[20px]">
+                  {item.text2}
+                </Text>
+                <View className="justify-center flex-row mb-[30px] space-x-3">
                   {data.map(dataItem => (
                     <Pressable
                       onPress={handleNextPage}
@@ -82,20 +85,26 @@ const WelcomePage = () => {
                         currentPage === dataItem.key - 1
                           ? 'bg-customOrange'
                           : ''
-                      } border border-customGray rounded-full`}
+                      } border border-white rounded-full`}
                     />
                   ))}
                 </View>
                 <CustomButtons
                   type="solid"
-                  label="Devam"
+                  label={intl.formatMessage({
+                    id: 'continue',
+                    defaultMessage: 'continue',
+                  })}
                   style={{marginBottom: 20}}
                   onPress={handleNextPage}
                   theme="big"
                 />
                 <CustomButtons
                   type="outlined"
-                  label="Atla"
+                  label={intl.formatMessage({
+                    id: 'skip',
+                    defaultMessage: 'skip',
+                  })}
                   onPress={() => navigation.navigate('login')}
                   theme="big"
                 />

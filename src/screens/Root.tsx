@@ -57,6 +57,7 @@ import {
   setMessage,
   setTotalUsers,
 } from '../redux/slices/hubConnection';
+import VideoPlayer from './auth/VideoPlayer';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -170,6 +171,7 @@ const UserStack = () => {
 const AuthStack = () => {
   return (
     <Stack.Navigator screenOptions={{headerShown: false}}>
+      <Stack.Screen name="video" component={VideoPlayer} />
       <Stack.Screen name="welcome" component={WelcomePage} />
       <Stack.Screen name="login" component={Login} />
       <Stack.Screen name="userregister" component={UserRegister} />

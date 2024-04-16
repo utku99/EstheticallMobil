@@ -6,11 +6,9 @@ import HelpIcon from '../../assets/svg/userMenu/HelpIcon';
 import SecurityIcon from '../../assets/svg/userMenu/SecurityIcon';
 import AboutIcon from '../../assets/svg/userMenu/AboutIcon';
 import LangChoiceComp from '../../components/LangChoiceComp';
-import {useTranslation} from 'react-i18next';
 import IntLabel from '../../components/IntLabel';
 
 const UserSettings = () => {
-  const {t} = useTranslation();
   return (
     <UserWrapper title="Ayarlar">
       <View className="space-y-8  w-[75%]">

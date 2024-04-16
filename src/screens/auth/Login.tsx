@@ -1,4 +1,3 @@
-import {useTranslation} from 'react-i18next';
 import {useNavigation} from '@react-navigation/native';
 import WebClient from '../../utility/WebClient';
 import {useDispatch} from 'react-redux';
@@ -8,11 +7,9 @@ import * as Yup from 'yup';
 import AuthWrapper from './AuthWrapper';
 import {Text, View} from 'react-native';
 import CustomInputs from '../../components/CustomInputs';
-import {FormattedMessage} from 'react-intl';
 import IntLabel from '../../components/IntLabel';
 
 const Login = () => {
-  const {t} = useTranslation();
   const {Post, loading} = WebClient();
   const navigation = useNavigation();
   const dispatch = useDispatch();

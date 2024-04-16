@@ -69,7 +69,7 @@ const AuthWrapper: React.FC<props> = ({children, title, onPress}) => {
             <Pressable
               onPress={() => dispatch(setGuest(true))}
               className="flex-row items-center space-x-6 justify-center">
-              <Text className="text-customGray font-poppinsMedium text-sm ">
+              <Text className="text-customOrange font-poppinsMedium text-sm ">
                 {IntLabel('continue_without_membership')}
               </Text>
             </Pressable>
