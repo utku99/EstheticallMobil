@@ -20,8 +20,12 @@ const Login = () => {
       password: '',
     },
     validationSchema: Yup.object().shape({
-      email: Yup.string().email('geçersiz email').required('email gereklidir'),
-      password: Yup.string().required('şifre gereklidir'),
+      email: Yup.string()
+        .email(IntLabel('invalid_email'))
+        .required(IntLabel('validation_message_this_field_is_required')),
+      password: Yup.string().required(
+        IntLabel('validation_message_this_field_is_required'),
+      ),
     }),
     onSubmit: values => {
       Post(

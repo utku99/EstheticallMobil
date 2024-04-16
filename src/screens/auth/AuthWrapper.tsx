@@ -36,7 +36,7 @@ const AuthWrapper: React.FC<props> = ({children, title, onPress}) => {
   return (
     <ImageBackground
       className="flex-1 justify-center"
-      source={require('../../assets/images/authBg/auth.jpg')}
+      source={require('../../assets/images/authBg/auth1.jpg')}
       resizeMode="cover">
       <SafeAreaView className="flex-1">
         <ScrollView

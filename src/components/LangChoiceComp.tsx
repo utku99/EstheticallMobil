@@ -1,9 +1,7 @@
 import React, {useState} from 'react';
-import i18next, {languageResources} from '../locales/i18next';
 import {Dropdown} from 'react-native-element-dropdown';
 import DropdownSingleDownIcon from '../assets/svg/common/DropdownSingleDownIcon';
 import DropdownSingleUpIcon from '../assets/svg/common/DropdownSingleUpIcon';
-import languageList from '../locales/languageList.json';
 import {useDispatch, useSelector} from 'react-redux';
 import {setLanguage} from '../redux/slices/user';
 

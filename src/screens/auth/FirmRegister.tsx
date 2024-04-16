@@ -2,7 +2,6 @@ import {View, Text} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import AuthWrapper from './AuthWrapper';
 import CustomInputs from '../../components/CustomInputs';
-import {useForm} from 'react-hook-form';
 import WebClient from '../../utility/WebClient';
 import LegalTextComp from '../../components/LegalTextComp';
 import IntLabel from '../../components/IntLabel';
@@ -15,25 +14,6 @@ const FirmRegister = ({route}: any) => {
   const [cities, setCities] = useState([]);
   const [towns, setTowns] = useState([]);
   const [districts, setDistricts] = useState([]);
-
-  const {control, handleSubmit} = useForm({
-    defaultValues: {
-      name: '',
-      surname: '',
-      nickname: '',
-      birthdate: '',
-      gender: '',
-      country: '',
-      city: '',
-      email: '',
-      password: '',
-      repassword: '',
-    },
-  });
-
-  const onSubmit = (data: any) => {
-    console.log(data);
-  };
 
   useEffect(() => {
     Post('/api/CompanyDoctor/ListTitles', {}).then(res => {
