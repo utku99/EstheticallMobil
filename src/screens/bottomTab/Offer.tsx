@@ -33,22 +33,9 @@ const Offer = () => {
       accomodation: false,
       escort: false,
       images: [],
-      startDate: null,
-      endDate: null,
-    } as {
-      country: any;
-      city: any;
-      operation: any;
-      suboperation: any;
-      title: any;
-      content: any;
-      images: any;
-      startDate: any;
-      endDate: any;
-      transport: any;
-      accomodation: any;
-      escort: any;
-    },
+      startDate: new Date(),
+      endDate: new Date(),
+    } as any,
     // validationSchema: Yup.object().shape({
     //   operation: Yup.object().required('operasyon alanı gereklidir'),
     //   subOperation: Yup.object().required('alt operasyon alanı gereklidir'),

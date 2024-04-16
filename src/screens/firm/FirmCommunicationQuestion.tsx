@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import FirmWrapper from './FirmWrapper';
 import HandleData from '../../components/HandleData';
-import WebClient from '../../utility/WebClient';
+import WebClient, {toast} from '../../utility/WebClient';
 import {Text, TextInput, View} from 'react-native';
 import {SIZES} from '../../constants/constants';
 import CustomInputs from '../../components/CustomInputs';
@@ -12,6 +12,8 @@ import {useNavigation} from '@react-navigation/native';
 import {useFormik} from 'formik';
 import {useSelector} from 'react-redux';
 import IntLabel from '../../components/IntLabel';
+import * as Yup from 'yup';
+import {messageEnum, messageTypeEnum} from '../../constants/enum';
 
 interface props {
   route?: any;
@@ -27,40 +29,41 @@ const FirmCommunicationQuestion = ({route}: props) => {
     enableReinitialize: true,
     initialValues: {
       operation: '',
-      title: '',
       content: '',
       checked: false,
       images: [],
-    } as {
-      operation: any;
-      title: any;
-      content: any;
-      checked: boolean;
-      images: any;
-    },
-    // validationSchema: Yup.object().shape({
-    //     operation: Yup.object().required("operasyon alanı gereklidir"),
-    //     title: Yup.string().required("başlık alanı gereklidir"),
-    //     content: Yup.string().required("soru metni alanı gereklidir"),
-    //     checked: Yup.boolean().oneOf([true], 'metni onaylamanız gerekmektedir'),
-    // }),
-    onSubmit: values => {
-      Post(
-        '/api/Company/AddCompanyQuestionWeb',
-        {
-          companyID: route.params?.companyId,
-          officeID: route.params?.companyOfficeId,
-          companyServicesId: values.operation.companyServiceID,
-          userId: user?.id,
-          title: values.title,
-          content: values.content,
-          images: values.images,
-        },
-        true,
-        true,
-      ).then(res => {
-        if (res.data.code === '100') {
-          formik.resetForm();
+    } as any,
+    validationSchema: Yup.object().shape({
+      operation: Yup.object().required(
+        IntLabel('validation_message_this_field_is_required'),
+      ),
+      content: Yup.string().required(
+        IntLabel('validation_message_this_field_is_required'),
+      ),
+      images: Yup.array().min(1, IntLabel('photo_required')),
+      checked: Yup.bool()
+        .oneOf([true], IntLabel('accept_text_warning'))
+        .required(IntLabel('accept_text_warning')),
+    }),
+    onSubmit: (values, {resetForm}) => {
+      Post('/api/Chatting/FirstMessage', {
+        senderId: user?.id,
+        senderType: messageTypeEnum.user,
+        message: values.content,
+        images: values.images,
+        receiverId: company.officeID == 0 ? company.value : company.officeID,
+        receiverType:
+          company.officeID == 0
+            ? messageTypeEnum.company
+            : messageTypeEnum.office,
+        messageType: messageEnum.general,
+        serviceId: formik.values.operation.value ?? 0,
+      }).then(res => {
+        if (res.data.code == '100') {
+          resetForm();
+          toast(IntLabel('message_created_warning'));
+        } else {
+          toast(res.data.message);
         }
       });
     },
@@ -109,12 +112,7 @@ const FirmCommunicationQuestion = ({route}: props) => {
           onChange={(e: any) => formik.setFieldValue('operation', e)}
           placeholder={IntLabel('select_operation')}
           style={{width: '75%', height: 32}}
-        />
-
-        <CustomInputs
-          type="textareasmall"
-          value={formik.values.title}
-          onChangeText={formik.handleChange('title')}
+          error={formik.errors.operation}
         />
 
         <CustomInputs
@@ -122,11 +120,13 @@ const FirmCommunicationQuestion = ({route}: props) => {
           value={formik.values.content}
           onChangeText={formik.handleChange('content')}
           title={IntLabel('question_text')}
+          error={formik.errors.content}
         />
 
         <AddPhotoComp
           value={formik.values.images}
           onChange={(e: any) => formik.setFieldValue('images', e)}
+          error={formik.errors.images}
         />
 
         <LegalTextComp
@@ -135,6 +135,7 @@ const FirmCommunicationQuestion = ({route}: props) => {
             formik.setFieldValue('checked', !formik.values.checked)
           }
           type="question"
+          error={formik.errors.checked}
         />
 
         <CustomButtons

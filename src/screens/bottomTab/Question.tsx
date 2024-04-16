@@ -7,60 +7,65 @@ import AddPhotoComp from '../../components/AddPhotoComp';
 import LegalTextComp from '../../components/LegalTextComp';
 import CustomButtons from '../../components/CustomButtons';
 import {useFormik} from 'formik';
-import WebClient from '../../utility/WebClient';
+import WebClient, {toast} from '../../utility/WebClient';
 import {useSelector} from 'react-redux';
 import * as Yup from 'yup';
-import {legalTextType} from '../../constants/enum';
 import IntLabel from '../../components/IntLabel';
+import {messageEnum, messageTypeEnum} from '../../constants/enum';
 
 const Question = () => {
   const {Post} = WebClient();
   const {user} = useSelector((state: any) => state.user);
   const [services, setServices] = useState([]);
   const [allCompanies, setAllCompanies] = useState(null);
-  const [legalText, setLegalText] = useState('');
 
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      institution: {},
+      institution: '',
       operation: '',
       title: '',
       content: '',
       checked: false,
       images: [],
-    } as {
-      institution: any;
-      operation: any;
-      title: any;
-      content: any;
-      checked: boolean;
-      images: any;
-    },
-    // validationSchema: Yup.object().shape({
-    //     institution: Yup.object().required("kurum alanı gereklidir"),
-    //     operation: Yup.object().required("operasyon alanı gereklidir"),
-    //     title: Yup.string().required("başlık alanı gereklidir"),
-    //     content: Yup.string().required("soru metni alanı gereklidir"),
-    //     checked: Yup.boolean().oneOf([true], 'metni onaylamanız gerekmektedir'),
-    // }),
-    onSubmit: values => {
-      Post(
-        '/api/Company/AddCompanyQuestionWeb',
-        {
-          companyID: values.institution.value,
-          officeID: values.institution.officeID,
-          companyServicesId: values.operation.companyServiceID,
-          userId: user?.id,
-          title: values.title,
-          content: values.content,
-          images: values.images,
-        },
-        true,
-        true,
-      ).then(res => {
-        if (res.data.code === '100') {
-          formik.resetForm();
+    } as any,
+    validationSchema: Yup.object().shape({
+      institution: Yup.object().required(
+        IntLabel('validation_message_this_field_is_required'),
+      ),
+      operation: Yup.object().required(
+        IntLabel('validation_message_this_field_is_required'),
+      ),
+      content: Yup.string().required(
+        IntLabel('validation_message_this_field_is_required'),
+      ),
+      images: Yup.array().min(1, IntLabel('photo_required')),
+      checked: Yup.bool()
+        .oneOf([true], IntLabel('accept_text_warning'))
+        .required(IntLabel('accept_text_warning')),
+    }),
+    onSubmit: (values, {resetForm}) => {
+      Post('/api/Chatting/FirstMessage', {
+        senderId: user?.id,
+        senderType: messageTypeEnum.user,
+        message: values.content,
+        images: values.images,
+        receiverId:
+          values.institution.officeID == 0
+            ? values.institution.value
+            : values.institution.officeID,
+        receiverType:
+          values.institution.officeID == 0
+            ? messageTypeEnum.company
+            : messageTypeEnum.office,
+        messageType: messageEnum.general,
+        serviceId: formik.values.operation.value ?? 0,
+      }).then(res => {
+        if (res.data.code == '100') {
+          resetForm();
+          toast(IntLabel('message_created_warning'));
+        } else {
+          toast(res.data.message);
         }
       });
     },
@@ -97,10 +102,14 @@ const Question = () => {
           type="dropdown"
           dropdownData={allCompanies}
           value={formik.values.institution}
-          onChange={(e: any) => formik.setFieldValue('institution', e)}
+          onChange={(e: any) => {
+            formik.setFieldValue('institution', e);
+            formik.setFieldValue('operation', '');
+          }}
           placeholder={IntLabel('select_institution')}
           style={{width: '75%', height: 32}}
           isSearchable
+          error={formik.errors.institution}
         />
 
         <CustomInputs
@@ -110,24 +119,21 @@ const Question = () => {
           onChange={(e: any) => formik.setFieldValue('operation', e)}
           placeholder={IntLabel('select_operation')}
           style={{width: '75%', height: 32}}
+          error={formik.errors.operation}
         />
-
-        {/* <CustomInputs
-          type="textareasmall"
-          value={formik.values.title}
-          onChangeText={formik.handleChange('title')}
-        /> */}
 
         <CustomInputs
           type="textareabig"
           value={formik.values.content}
           onChangeText={formik.handleChange('content')}
           title={IntLabel('question_text')}
+          error={formik.errors.content}
         />
 
         <AddPhotoComp
           value={formik.values.images}
           onChange={(e: any) => formik.setFieldValue('images', e)}
+          error={formik.errors.images}
         />
 
         <LegalTextComp
@@ -136,6 +142,7 @@ const Question = () => {
             formik.setFieldValue('checked', !formik.values.checked)
           }
           type="question"
+          error={formik.errors.checked}
         />
 
         <CustomButtons

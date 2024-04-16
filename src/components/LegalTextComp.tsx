@@ -80,7 +80,7 @@ const LegalTextComp = ({value, onChange, type, error}: props) => {
 
             <Text
               onPress={() => setVisible(true)}
-              className="text-sm font-poppinsRegular text-black flex-shrink">
+              className="text-xs font-poppinsRegular text-black flex-shrink">
               {IntLabel('question_text_title')}
             </Text>
 

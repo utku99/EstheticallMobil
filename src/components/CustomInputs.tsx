@@ -8,7 +8,6 @@ import DropdownRightUpIcon from '../assets/svg/common/DropdownRightUpIcon';
 import EyeOpen from '../assets/svg/auth/EyeOpen';
 import {Rating} from 'react-native-ratings';
 import Tick from '../assets/svg/common/Tick';
-import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import moment from 'moment';
 import IntLabel from './IntLabel';
 import DatePicker from 'react-native-date-picker';
@@ -135,9 +134,7 @@ const CustomInputs: React.FC<props> = ({
             onBlur={onBlur}
             multiline
           />
-          {error && (
-            <Text className="text-red-400 text-xs "> {error?.message}</Text>
-          )}
+          {error && <Text className="text-red-400 text-xs "> {error}</Text>}
         </View>
       )}
       {type == 'date' && (
@@ -171,9 +168,7 @@ const CustomInputs: React.FC<props> = ({
             cancelText={IntLabel('cancel')}
             className="w-10 bg-red-400"
           />
-          {error && (
-            <Text className="text-red-400 text-xs ">{error?.message}</Text>
-          )}
+          {error && <Text className="text-red-400 text-xs ">{error}</Text>}
         </View>
       )}
       {type == 'dropdown' && (

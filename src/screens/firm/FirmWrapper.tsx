@@ -1,4 +1,12 @@
-import {View, Text, Image, ScrollView, FlatList, Pressable} from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  ScrollView,
+  FlatList,
+  Pressable,
+  TouchableOpacity,
+} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import WebClient from '../../utility/WebClient';
 import {useDispatch, useSelector} from 'react-redux';
@@ -15,6 +23,7 @@ import CustomInputs from '../../components/CustomInputs';
 import LikeUnlikeComp from '../../components/LikeUnlikeComp';
 import {setSelectedService} from '../../redux/slices/common';
 import IntLabel from '../../components/IntLabel';
+import Clipboard from '@react-native-clipboard/clipboard';
 
 interface props {
   children?: React.ReactNode;
@@ -88,7 +97,10 @@ const FirmWrapper: React.FC<props> = ({children}) => {
               }>
               <CommunicationItem />
             </Pressable>
-            <ShareIcon />
+            <TouchableOpacity
+              onPress={() => Clipboard.setString(firmLeftInfo?.name)}>
+              <ShareIcon />
+            </TouchableOpacity>
             <View>
               <LikeUnlikeComp
                 isFavorite={firmLeftInfo?.isFavorite}

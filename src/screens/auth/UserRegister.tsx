@@ -209,6 +209,7 @@ const UserRegister = () => {
         placeholder={IntLabel('birthday')}
         value={formik.values.date}
         onChange={(e: any) => formik.setFieldValue('date', e)}
+        error={formik.errors.date}
       />
       <CustomInputs
         type="dropdown"
