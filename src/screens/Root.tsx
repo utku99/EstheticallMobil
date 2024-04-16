@@ -58,6 +58,9 @@ import {
   setTotalUsers,
 } from '../redux/slices/hubConnection';
 import VideoPlayer from './auth/VideoPlayer';
+import CustomButtons from '../components/CustomButtons';
+import IntLabel from '../components/IntLabel';
+import {setGuest} from '../redux/slices/user';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -66,7 +69,7 @@ const Tab = createBottomTabNavigator();
 function DrawerMenu() {
   return (
     <Drawer.Navigator
-      drawerContent={props => <DrawerBar {...props} />}
+      drawerContent={props => <DrawerBar />}
       screenOptions={{headerShown: false}}>
       <Drawer.Screen name="home" component={BottomTabs} />
     </Drawer.Navigator>
@@ -85,7 +88,8 @@ function BottomTabs() {
 
 const UserStack = () => {
   const navigation = useNavigation();
-
+  const {isGuest, isLoggedIn} = useSelector((state: any) => state.user);
+  const dispatch = useDispatch();
   return (
     <Stack.Navigator
       screenOptions={{
@@ -99,12 +103,21 @@ const UserStack = () => {
             <EstheticLogo width={133} height={38} />
           </Pressable>
         ),
-        headerRight: () => (
-          <Pressable
-            onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
-            <HeaderMenuIcon />
-          </Pressable>
-        ),
+        headerRight: () =>
+          isLoggedIn && !isGuest ? (
+            <Pressable
+              onPress={() => navigation.dispatch(DrawerActions.openDrawer())}>
+              <HeaderMenuIcon />
+            </Pressable>
+          ) : (
+            <CustomButtons
+              theme="small"
+              label={IntLabel('exit')}
+              type="solid"
+              style={{width: 60, height: 30, marginRight: 40}}
+              onPress={() => dispatch(setGuest(false))}
+            />
+          ),
         headerLeftContainerStyle: {width: '14%', alignItems: 'center'},
         headerTitleContainerStyle: {width: '100%', alignItems: 'center'},
         headerRightContainerStyle: {alignItems: 'center'},

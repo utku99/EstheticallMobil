@@ -11,7 +11,6 @@ import EditUserCommentIcon from '../assets/svg/userMenu/EditUserCommentIcon';
 import WebClient from '../utility/WebClient';
 import ModalWrapper from './ModalWrapper';
 import CustomButtons from './CustomButtons';
-import {Controller, useForm} from 'react-hook-form';
 import LikeUnlikeComp from './LikeUnlikeComp';
 import {useFormik} from 'formik';
 import IntLabel from './IntLabel';

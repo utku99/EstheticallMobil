@@ -42,10 +42,10 @@ const HomeWrapper: React.FC<props> = ({children}) => {
   const [serviceSubs, setServiceSubs] = useState<any>([]);
 
   const institutionData = [
-    {value: 1, label: 'Hastane'},
-    {value: 4, label: 'Doktor'},
-    {value: 2, label: 'Güzellik Merkezi'},
-    {value: 3, label: 'Klinik'},
+    {value: 1, label: IntLabel('hospital')},
+    {value: 4, label: IntLabel('doctor')},
+    {value: 2, label: IntLabel('beauty_center')},
+    {value: 3, label: IntLabel('clinic')},
   ];
 
   useEffect(() => {

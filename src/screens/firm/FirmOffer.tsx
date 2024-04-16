@@ -4,7 +4,6 @@ import FirmWrapper from './FirmWrapper';
 import CustomInputs from '../../components/CustomInputs';
 import WebClient, {toast} from '../../utility/WebClient';
 import {SIZES} from '../../constants/constants';
-import {Controller, useForm} from 'react-hook-form';
 import CustomButtons from '../../components/CustomButtons';
 import HandleData from '../../components/HandleData';
 import AddPhotoComp from '../../components/AddPhotoComp';

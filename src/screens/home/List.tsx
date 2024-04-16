@@ -6,6 +6,7 @@ import WebClient from '../../utility/WebClient';
 import {useDispatch, useSelector} from 'react-redux';
 import {setListFilters} from '../../redux/slices/filter';
 import HandleData from '../../components/HandleData';
+import IntLabel from '../../components/IntLabel';
 
 const List = () => {
   const {Post, loading} = WebClient();
@@ -48,7 +49,7 @@ const List = () => {
       <HandleData
         data={doctors}
         loading={loading}
-        title="Aranan Kategoride Doktor Bulunamadı">
+        title={IntLabel('warning_no_active_record')}>
         <FlatList
           contentContainerStyle={{display: 'flex', gap: 15, paddingBottom: 20}}
           data={doctors}

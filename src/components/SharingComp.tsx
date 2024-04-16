@@ -9,12 +9,10 @@ import {
 } from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
 import CustomInputs from './CustomInputs';
-import LikeIcon from '../assets/svg/common/LikeIcon';
 import SharingMessageIcon from '../assets/svg/homepages/SharingMessageIcon';
 import SharingSaveIcon from '../assets/svg/homepages/SharingSaveIcon';
 import SharingShareIcon from '../assets/svg/homepages/SharingShareIcon';
 import SharingSendMessageIcon from '../assets/svg/homepages/SharingSendMessageIcon';
-
 import Carousel, {Pagination} from 'react-native-snap-carousel';
 import WebClient, {toast} from '../utility/WebClient';
 import {SIZES} from '../constants/constants';
@@ -25,6 +23,7 @@ import LikeUnlikeComp from './LikeUnlikeComp';
 import SharingSavedIcon from '../assets/svg/homepages/SharingSavedIcon';
 import moment from 'moment';
 import IntLabel from './IntLabel';
+import Clipboard from '@react-native-clipboard/clipboard';
 
 const CommentComp = ({item}: any) => {
   return (
@@ -239,7 +238,9 @@ const SharingComp = ({
             <SharingSaveIcon />
           )}
 
-          <SharingShareIcon />
+          <TouchableOpacity onPress={() => Clipboard.setString(item?.name)}>
+            <SharingShareIcon />
+          </TouchableOpacity>
         </View>
       </View>
 
@@ -248,14 +249,11 @@ const SharingComp = ({
           <HandleData
             data={sharedDetail}
             loading={loading}
-            title="Aranan Kategoride Paylaşım Yorumu Bulunamadı">
+            title={IntLabel('warning_no_active_record')}>
             <FlatList
+              showsVerticalScrollIndicator
+              scrollEnabled
               data={sharedDetail}
-              contentContainerStyle={{
-                display: 'flex',
-                paddingBottom: 20,
-                maxHeight: 100,
-              }}
               renderItem={({item}) => (
                 <CommentComp key={item.commentID} item={item} />
               )}
@@ -285,7 +283,7 @@ const SharingComp = ({
                     }
                   });
                 } else {
-                  toast('Önce Giriş Yapmalısınız');
+                  toast(IntLabel('login_required_warning'));
                 }
               }}>
               <SharingSendMessageIcon />

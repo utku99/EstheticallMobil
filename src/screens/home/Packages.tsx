@@ -31,10 +31,10 @@ const Packages = () => {
   const [towns, setTowns] = useState([]);
 
   const institutionData = [
-    {value: 1, label: 'Hastane'},
-    {value: 4, label: 'Doktor'},
-    {value: 2, label: 'Güzellik Merkezi'},
-    {value: 3, label: 'Klinik'},
+    {value: 1, label: IntLabel('hospital')},
+    {value: 4, label: IntLabel('doctor')},
+    {value: 2, label: IntLabel('beauty_center')},
+    {value: 3, label: IntLabel('clinic')},
   ];
   const [services, setServices] = useState<any>([]);
   const [serviceSubs, setServiceSubs] = useState<any>([]);
@@ -128,7 +128,7 @@ const Packages = () => {
       <HandleData
         data={packages}
         loading={loading}
-        title="Aranan Kategoride Paket Bulunamadı">
+        title={IntLabel('warning_no_active_record')}>
         <FlatList
           contentContainerStyle={{
             display: 'flex',

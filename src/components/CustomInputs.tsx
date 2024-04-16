@@ -11,6 +11,9 @@ import Tick from '../assets/svg/common/Tick';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import moment from 'moment';
 import IntLabel from './IntLabel';
+import DatePicker from 'react-native-date-picker';
+import {useSelector} from 'react-redux';
+import {FormattedDate} from 'react-intl';
 
 interface props {
   type:
@@ -64,11 +67,7 @@ const CustomInputs: React.FC<props> = ({
   const [isFocusDropdown, setIsFocusDropdown] = useState(false);
   const [showDateModal, setShowDateModal] = useState(false);
   const [showSecure, setShowSecure] = useState(secureTextEntry);
-
-  const handleDatePicked = (date: any) => {
-    onChange(date);
-    setShowDateModal(false);
-  };
+  const {language} = useSelector((state: any) => state.user);
 
   return (
     <>
@@ -144,36 +143,33 @@ const CustomInputs: React.FC<props> = ({
       {type == 'date' && (
         <View className=" mb-3 w-full" style={style}>
           <TouchableOpacity
-            className="h-[40px] bg-white rounded-lg border border-customLightGray px-1 placeholder:text-customGray/[.5] flex-row items-center"
+            className="h-[40px] bg-white rounded-lg border border-customLightGray px-2 placeholder:text-customGray/[.5] flex-row items-center"
             onPress={() => setShowDateModal(true)}>
-            {/* <Text
+            <Text
               className={`flex-1 text-customGray ${
                 value ? 'text-opacity-100' : 'text-opacity-50'
               }  text-xs font-poppinsRegular `}>
-              {value
-                ? moment(value, 'YYYY-MM-DD').format('DD.MM.YYYY')
-                : placeholder}
-            </Text> */}
-            <TextInput
-              value={moment(value, 'YYYY-MM-DD').format('DD.MM.YYYY')}
-              placeholder={placeholder}
-              editable={false}
-              placeholderTextColor={'background: rgba(77, 74, 72, 0.5)'}
-              className="flex-1 text-customGray text-xs p-0 font-poppinsRegular"
-            />
+              {value ? <FormattedDate value={value} /> : placeholder}
+            </Text>
             <CalendarIcon />
           </TouchableOpacity>
-          <DateTimePickerModal
-            isVisible={showDateModal}
+          <DatePicker
+            modal
             mode="date"
-            minimumDate={minimumDate}
-            maximumDate={maximumDate}
-            locale="Tr"
-            confirmTextIOS="Seç"
-            cancelTextIOS="Çık"
-            date={value ?? new Date()}
-            onConfirm={handleDatePicked}
-            onCancel={() => setShowDateModal(false)}
+            open={showDateModal}
+            date={value}
+            locale={language?.flag_code ?? 'tr'}
+            onConfirm={date => {
+              setShowDateModal(false);
+              onChange(date);
+            }}
+            onCancel={() => {
+              setShowDateModal(false);
+            }}
+            title={IntLabel('select_date')}
+            confirmText={IntLabel('confirm')}
+            cancelText={IntLabel('cancel')}
+            className="w-10 bg-red-400"
           />
           {error && (
             <Text className="text-red-400 text-xs ">{error?.message}</Text>
@@ -194,7 +190,7 @@ const CustomInputs: React.FC<props> = ({
               mode="default"
               labelField="label"
               valueField="value"
-              searchPlaceholder={'Ara'}
+              searchPlaceholder={IntLabel('search')}
               placeholder={placeholder ?? ''}
               placeholderStyle={{
                 color: 'rgba(77, 74, 72, 0.5)',

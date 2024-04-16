@@ -93,7 +93,7 @@ const AuthWrapper: React.FC<props> = ({children, title, onPress}) => {
                 <CustomButtons
                   type="solid"
                   label={IntLabel('register')}
-                  onPress={() => ''}
+                  onPress={onPress}
                   theme="big"
                 />
                 <CustomButtons

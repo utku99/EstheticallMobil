@@ -5,7 +5,6 @@ import WebClient from '../../utility/WebClient';
 import {Text, TextInput, View} from 'react-native';
 import {SIZES} from '../../constants/constants';
 import CustomInputs from '../../components/CustomInputs';
-import {Controller, useForm} from 'react-hook-form';
 import CustomButtons from '../../components/CustomButtons';
 import AddPhotoComp from '../../components/AddPhotoComp';
 import LegalTextComp from '../../components/LegalTextComp';

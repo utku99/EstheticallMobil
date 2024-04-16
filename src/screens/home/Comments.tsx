@@ -5,6 +5,7 @@ import CommentToCompanyComp from '../../components/CommentToCompanyComp';
 import WebClient from '../../utility/WebClient';
 import {useSelector} from 'react-redux';
 import HandleData from '../../components/HandleData';
+import IntLabel from '../../components/IntLabel';
 
 const Comments = () => {
   const {Post, loading} = WebClient();
@@ -41,7 +42,7 @@ const Comments = () => {
       <HandleData
         data={comments}
         loading={loading}
-        title="Aranan Kategoride Yorum Bulunamadı">
+        title={IntLabel('warning_no_active_record')}>
         <FlatList
           contentContainerStyle={{display: 'flex', gap: 15, paddingBottom: 20}}
           data={comments}

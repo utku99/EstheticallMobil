@@ -5,7 +5,6 @@ import {useSelector} from 'react-redux';
 import WebClient from '../../utility/WebClient';
 import EditIcon from '../../assets/svg/userMenu/EditIcon';
 import {openPicker} from 'react-native-image-crop-picker';
-import {Controller, useForm} from 'react-hook-form';
 import CustomInputs from '../../components/CustomInputs';
 import CustomButtons from '../../components/CustomButtons';
 import HandleData from '../../components/HandleData';
