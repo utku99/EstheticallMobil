@@ -40,23 +40,13 @@ const UserProfile = () => {
       surname: userInfo?.surname,
       email: userInfo?.mail,
       nickname: userInfo?.userName,
-      date: userInfo?.birthDate ?? null,
+      date: userInfo?.birthDate ?? new Date(),
       gender: genderData.find(item => item.value === userInfo?.gender),
       country: countries.find(
         (item: any) => item.value === userInfo?.countryId,
       ),
       city: cities.find((item: any) => item.value === userInfo?.cityId),
-    } as {
-      logo?: any;
-      name?: any;
-      surname?: any;
-      email?: any;
-      nickname?: any;
-      date?: any;
-      gender?: any;
-      country?: any;
-      city?: any;
-    },
+    } as any,
     onSubmit: values => {
       Post(
         '/api/User/WebEditUser',
@@ -196,13 +186,13 @@ const UserProfile = () => {
 
           <CustomInputs
             type="date"
-            value={new Date(formik.values.date)}
-            onChange={(e: any) =>
-              formik.setFieldValue('date', e.toISOString().split('T')[0])
-            }
-            placeholder={IntLabel('birtdhay')}
-            onBlur={formik.handleBlur('date')}
-            error={formik.errors.date}
+            placeholder={IntLabel('birthday')}
+            // value={moment(formik.values.date).toDate()}
+            value={new Date()}
+            onChange={(e: any) => {
+              formik.setFieldValue('date', e);
+            }}
+            style={{width: '75%'}}
           />
 
           <View className="w-full">

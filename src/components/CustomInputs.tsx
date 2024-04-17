@@ -14,11 +14,15 @@ import DatePicker from 'react-native-date-picker';
 import {useSelector} from 'react-redux';
 import {FormattedDate} from 'react-intl';
 
+import DateTimePicker from 'react-native-ui-datepicker';
+import dayjs from 'dayjs';
+
 interface props {
   type:
     | 'text'
     | 'textarea'
     | 'date'
+    | 'date2'
     | 'dropdown'
     | 'checkbox'
     | 'rating'
@@ -161,6 +165,8 @@ const CustomInputs: React.FC<props> = ({
             onCancel={() => {
               setShowDateModal(false);
             }}
+            minimumDate={minimumDate}
+            maximumDate={maximumDate}
             title={IntLabel('select_date')}
             confirmText={IntLabel('confirm')}
             cancelText={IntLabel('cancel')}

@@ -118,7 +118,7 @@ const UserMessage = ({route}: {route?: any}) => {
   return (
     <UserWrapper title={IntLabel('messages')} scrollEnabled={false}>
       <HandleData
-        title={'Mesajınız Bulunmamaktadır'}
+        title={IntLabel('warning_no_active_record')}
         loading={loading}
         data={message}>
         <View

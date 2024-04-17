@@ -10,6 +10,7 @@ import {useFormik} from 'formik';
 import * as Yup from 'yup';
 import {useNavigation} from '@react-navigation/core';
 import IntLabel from '../../components/IntLabel';
+import moment from 'moment';
 
 const Appointment = () => {
   const dispatch = useDispatch();
@@ -36,35 +37,47 @@ const Appointment = () => {
       doctor: '',
       title: '',
       content: '',
-      startDate: null,
-      endDate: null,
-    } as {
-      country: any;
-      city: any;
-      town: any;
-      institution: any;
-      operation: any;
-      suboperation: any;
-      doctor: any;
-      title: any;
-      content: any;
-      startDate: any;
-      endDate: any;
-    },
+      startDate: moment().add(1, 'days').toDate(),
+      endDate: moment().add(2, 'days').toDate(),
+    } as any,
     validationSchema: Yup.object().shape({
-      // country: Yup.object().required("kurum alanı gereklidir"),
-      institution: Yup.object().required('kurum alanı gereklidir'),
-      operation: Yup.object().required('operasyon alanı gereklidir'),
-      suboperation: Yup.object().required('alt operasyon alanı gereklidir'),
-      title: Yup.string().required('başlık alanı gereklidir'),
-      content: Yup.string().required('randevu metni alanı gereklidir'),
-      startDate: Yup.string().required('başlangıç tarihi gereklidir'),
-      endDate: Yup.string().required('bitiş tarihi gereklidir'),
+      // country: Yup.object().required(
+      //   IntLabel('validation_message_this_field_is_required'),
+      // ),
+      // city: Yup.object().required(
+      //   IntLabel('validation_message_this_field_is_required'),
+      // ),
+      // town: Yup.object().required(
+      //   IntLabel('validation_message_this_field_is_required'),
+      // ),
+      institution: Yup.object().required(
+        IntLabel('validation_message_this_field_is_required'),
+      ),
+      operation: Yup.object().required(
+        IntLabel('validation_message_this_field_is_required'),
+      ),
+      suboperation: Yup.object().required(
+        IntLabel('validation_message_this_field_is_required'),
+      ),
+      title: Yup.string().required(
+        IntLabel('validation_message_this_field_is_required'),
+      ),
+      content: Yup.string().required(
+        IntLabel('validation_message_this_field_is_required'),
+      ),
+      startDate: Yup.string().required(
+        IntLabel('validation_message_this_field_is_required'),
+      ),
+      endDate: Yup.string().required(
+        IntLabel('validation_message_this_field_is_required'),
+      ),
     }),
     onSubmit: values => {
       Post(
         '/api/Appointments/RequestAppointment',
         {
+          bankAccountID: 0,
+          price: 0,
           userID: user?.id,
           companyID: values.institution.value,
           companyOfficeID: values.institution.officeID,
@@ -171,7 +184,7 @@ const Appointment = () => {
     <UserWrapper>
       <View className=" h-full w-full" style={{width: SIZES.width * 0.95}}>
         <Text className="font-poppinsMedium text-customGray text-base  mb-3">
-          {IntLabel('take_offer')}
+          {IntLabel('take_appointment')}
         </Text>
 
         {!formik.values.country.value && (
@@ -183,6 +196,7 @@ const Appointment = () => {
             value={formik.values.country}
             onChange={(e: any) => formik.setFieldValue('country', e)}
             style={{width: '75%', height: 32}}
+            error={formik.errors.country}
           />
         )}
 
@@ -195,6 +209,7 @@ const Appointment = () => {
             value={formik.values.city}
             onChange={(e: any) => formik.setFieldValue('city', e)}
             style={{width: '75%', height: 32}}
+            error={formik.errors.city}
           />
         )}
 
@@ -207,6 +222,7 @@ const Appointment = () => {
             value={formik.values.town}
             onChange={(e: any) => formik.setFieldValue('town', e)}
             style={{width: '75%', height: 32}}
+            error={formik.errors.town}
           />
         )}
 
@@ -218,6 +234,7 @@ const Appointment = () => {
           value={formik.values.institution}
           onChange={(e: any) => formik.setFieldValue('institution', e)}
           style={{width: '75%', height: 32}}
+          error={formik.errors.institution}
         />
 
         {!formik.values.operation.value && (
@@ -228,6 +245,7 @@ const Appointment = () => {
             value={formik.values.operation}
             onChange={(e: any) => formik.setFieldValue('operation', e)}
             style={{width: '75%', height: 32}}
+            error={formik.errors.operation}
           />
         )}
 
@@ -239,6 +257,7 @@ const Appointment = () => {
             value={formik.values.suboperation}
             onChange={(e: any) => formik.setFieldValue('suboperation', e)}
             style={{width: '75%', height: 32}}
+            error={formik.errors.suboperation}
           />
         )}
 
@@ -275,19 +294,23 @@ const Appointment = () => {
           <View className="flex-row flex-wrap justify-between">
             <CustomInputs
               type="date"
-              minimumDate={
-                new Date(new Date().setDate(new Date().getDate() + 1))
-              }
+              minimumDate={moment().add(1, 'days').toDate()}
               placeholder={IntLabel('start_date')}
               value={formik.values.startDate}
-              onChange={(e: any) => formik.setFieldValue('startDate', e)}
+              onChange={(e: any) => {
+                formik.setFieldValue('startDate', e);
+                formik.setFieldValue(
+                  'endDate',
+                  moment(e).add(1, 'days').toDate(),
+                );
+              }}
               style={{width: '75%'}}
             />
             <CustomInputs
               type="date"
-              minimumDate={
-                new Date(new Date().setDate(new Date().getDate() + 2))
-              }
+              minimumDate={moment(formik.values.startDate)
+                .add(1, 'days')
+                .toDate()}
               placeholder={IntLabel('end_date')}
               value={formik.values.endDate}
               onChange={(e: any) => formik.setFieldValue('endDate', e)}

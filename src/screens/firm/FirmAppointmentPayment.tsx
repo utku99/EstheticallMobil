@@ -34,7 +34,7 @@ const FirmAppointmentPayment = ({route}: any) => {
     validationSchema: Yup.object().shape({
       bank: Yup.object().required('banka hesabı seçmelisiniz'),
     }),
-    onSubmit: values => {
+    onSubmit: (values, {resetForm}) => {
       Post('/api/Appointments/AppointmentBankTransfer', {
         appointmentID: paymentInfo?.appointmentID,
         companyID: paymentInfo?.companyID,
@@ -44,8 +44,9 @@ const FirmAppointmentPayment = ({route}: any) => {
         bankAccountID: values.bank.bankAccoundId,
       }).then(res => {
         if (res.data.code == '100') {
+          resetForm();
           toast(res.data.message);
-          //   navigation.goBack();
+          navigation.goBack();
         } else {
           toast(res.data.message);
         }
@@ -76,6 +77,8 @@ const FirmAppointmentPayment = ({route}: any) => {
       setBanks(temp);
     });
   }, []);
+
+  console.log(route.params?.item);
 
   return (
     <View className="flex-1 bg-[#FAFAFA]">

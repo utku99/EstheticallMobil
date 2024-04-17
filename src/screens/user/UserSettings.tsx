@@ -12,6 +12,9 @@ const UserSettings = () => {
   return (
     <UserWrapper title="Ayarlar">
       <View className="space-y-8  w-[75%]">
+        <Text className="font-poppinsMedium  text-center text-base text-customGray">
+          {IntLabel('notifications')}
+        </Text>
         <View className="flex-row items-center justify-between ">
           <Text className="font-poppinsMedium text-base text-customGray">
             {IntLabel('messages')}

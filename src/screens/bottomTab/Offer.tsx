@@ -10,6 +10,7 @@ import * as Yup from 'yup';
 import WebClient, {toast} from '../../utility/WebClient';
 import {useSelector} from 'react-redux';
 import IntLabel from '../../components/IntLabel';
+import moment from 'moment';
 
 const Offer = () => {
   const {Post} = WebClient();
@@ -33,8 +34,8 @@ const Offer = () => {
       accomodation: false,
       escort: false,
       images: [],
-      startDate: new Date(),
-      endDate: new Date(),
+      startDate: moment().add(1, 'days').toDate(),
+      endDate: moment().add(2, 'days').toDate(),
     } as any,
     validationSchema: Yup.object().shape({
       country: Yup.object().required(
@@ -240,19 +241,23 @@ const Offer = () => {
           <View className="flex-row flex-wrap justify-between">
             <CustomInputs
               type="date"
-              minimumDate={
-                new Date(new Date().setDate(new Date().getDate() + 1))
-              }
+              minimumDate={moment().add(1, 'days').toDate()}
               placeholder={IntLabel('start_date')}
               value={formik.values.startDate}
-              onChange={(e: any) => formik.setFieldValue('startDate', e)}
+              onChange={(e: any) => {
+                formik.setFieldValue('startDate', e);
+                formik.setFieldValue(
+                  'endDate',
+                  moment(e).add(1, 'days').toDate(),
+                );
+              }}
               style={{width: '75%'}}
             />
             <CustomInputs
               type="date"
-              minimumDate={
-                new Date(new Date().setDate(new Date().getDate() + 2))
-              }
+              minimumDate={moment(formik.values.startDate)
+                .add(1, 'days')
+                .toDate()}
               placeholder={IntLabel('end_date')}
               value={formik.values.endDate}
               onChange={(e: any) => formik.setFieldValue('endDate', e)}

@@ -54,7 +54,7 @@ const UserComment = () => {
         <HandleData
           data={waitingComments}
           loading={loading}
-          title={'Onay Bekleyen Yorumunuz Bulunamadı'}>
+          title={IntLabel('warning_no_active_record')}>
           <FlatList
             contentContainerStyle={{
               display: 'flex',
@@ -76,7 +76,7 @@ const UserComment = () => {
         <HandleData
           data={activeComments}
           loading={loading}
-          title={'Onaylanan Yorumunuz Bulunamadı'}>
+          title={IntLabel('warning_no_active_record')}>
           <FlatList
             contentContainerStyle={{
               display: 'flex',

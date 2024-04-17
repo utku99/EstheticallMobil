@@ -83,7 +83,7 @@ const UserOffer = () => {
         <HandleData
           data={myOffers}
           loading={loading}
-          title={'Talebiniz Bulunmamaktadır'}>
+          title={IntLabel('warning_no_active_record')}>
           <FlatList
             contentContainerStyle={{
               display: 'flex',
@@ -106,7 +106,7 @@ const UserOffer = () => {
         <HandleData
           data={selectedRequest?.incomingOffers}
           loading={loading}
-          title={'Talebinize Gelen Teklif Bulunamadı'}>
+          title={IntLabel('warning_no_active_record')}>
           <FlatList
             contentContainerStyle={{
               display: 'flex',
@@ -128,7 +128,7 @@ const UserOffer = () => {
         <HandleData
           data={completedOffers}
           loading={loading}
-          title={'Kabul Edilen Teklifiniz Bulunamadı'}>
+          title={IntLabel('warning_no_active_record')}>
           <FlatList
             contentContainerStyle={{
               display: 'flex',

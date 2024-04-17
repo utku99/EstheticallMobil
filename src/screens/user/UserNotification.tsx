@@ -28,7 +28,7 @@ const UserNotification = () => {
     <UserWrapper title={IntLabel('notifications')} showBellIcon>
       <HandleData
         data={notifications}
-        title={'Bildiriminiz Bulunmamaktadır'}
+        title={IntLabel('warning_no_active_record')}
         loading={loading}>
         <FlatList
           contentContainerStyle={{display: 'flex', gap: 15}}

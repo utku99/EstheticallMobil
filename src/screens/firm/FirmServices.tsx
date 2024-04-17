@@ -44,7 +44,7 @@ const FirmServices = ({route}: props) => {
       <HandleData
         data={subServiceDetails}
         loading={loading}
-        title="Firmanın Hizmeti Bulunamadı">
+        title={IntLabel('warning_no_active_record')}>
         <View
           className="border border-customLightGray rounded-lg p-2 mb-3 space-y-3 bg-white"
           style={{width: SIZES.width * 0.95}}>

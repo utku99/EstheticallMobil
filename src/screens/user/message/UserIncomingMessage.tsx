@@ -40,7 +40,7 @@ const UserIncomingMessage = () => {
     <UserWrapper title={IntLabel('messages')}>
       <HandleData
         data={users}
-        title={'Mesajınız Bulunmamaktadır'}
+        title={IntLabel('warning_no_active_record')}
         loading={loading}>
         <FlatList
           contentContainerStyle={{display: 'flex', gap: 15}}

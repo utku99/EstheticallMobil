@@ -9,6 +9,8 @@ import {useFormik} from 'formik';
 import {useSelector} from 'react-redux';
 import WebClient from '../../utility/WebClient';
 import IntLabel from '../../components/IntLabel';
+import * as Yup from 'yup';
+import moment from 'moment';
 
 interface props {
   route?: any;
@@ -26,31 +28,35 @@ const FirmAppointment = ({route}: props) => {
   const [doctors, setDoctors] = useState<any>(null);
 
   const formik = useFormik({
-    enableReinitialize: true,
     initialValues: {
-      institution: company ?? '',
       operation: '',
       suboperation: '',
       doctor: '',
       title: '',
       content: '',
-      startDate: null,
-      endDate: null,
-    } as {
-      operation: any;
-      suboperation: any;
-      title: any;
-      content: any;
-      doctor: any;
-      startDate: any;
-      endDate: any;
-    },
-    // validationSchema: Yup.object().shape({
-    //     operation: Yup.object().required("operasyon alanı gereklidir"),
-    //     title: Yup.string().required("başlık alanı gereklidir"),
-    //     content: Yup.string().required("soru metni alanı gereklidir"),
-    //     checked: Yup.boolean().oneOf([true], 'metni onaylamanız gerekmektedir'),
-    // }),
+      startDate: moment().add(1, 'days').toDate(),
+      endDate: moment().add(2, 'days').toDate(),
+    } as any,
+    validationSchema: Yup.object().shape({
+      operation: Yup.object().required(
+        IntLabel('validation_message_this_field_is_required'),
+      ),
+      suboperation: Yup.object().required(
+        IntLabel('validation_message_this_field_is_required'),
+      ),
+      title: Yup.string().required(
+        IntLabel('validation_message_this_field_is_required'),
+      ),
+      content: Yup.string().required(
+        IntLabel('validation_message_this_field_is_required'),
+      ),
+      startDate: Yup.string().required(
+        IntLabel('validation_message_this_field_is_required'),
+      ),
+      endDate: Yup.string().required(
+        IntLabel('validation_message_this_field_is_required'),
+      ),
+    }),
     onSubmit: values => {
       Post(
         '/api/Appointments/RequestAppointment',
@@ -72,7 +78,7 @@ const FirmAppointment = ({route}: props) => {
         if (res.data.code == '100') {
           if (company?.isAppointmentPaid) {
             navigation.navigate('firmappointmentpayment', {
-              item: formik.values,
+              item: {...formik.values, institution: company},
             });
           } else {
             navigation.goBack();
@@ -131,10 +137,11 @@ const FirmAppointment = ({route}: props) => {
           <CustomInputs
             type="dropdown"
             dropdownData={services}
+            placeholder={IntLabel('select_operation')}
             value={formik.values.operation}
             onChange={(e: any) => formik.setFieldValue('operation', e)}
-            placeholder={IntLabel('select_operation')}
             style={{width: '75%', height: 32}}
+            error={formik.errors.operation}
           />
         )}
 
@@ -142,10 +149,11 @@ const FirmAppointment = ({route}: props) => {
           <CustomInputs
             type="dropdown"
             dropdownData={subServices}
+            placeholder={IntLabel('select_sub_operation')}
             value={formik.values.suboperation}
             onChange={(e: any) => formik.setFieldValue('suboperation', e)}
-            placeholder={IntLabel('select_sub_operation')}
             style={{width: '75%', height: 32}}
+            error={formik.errors.suboperation}
           />
         )}
 
@@ -164,13 +172,15 @@ const FirmAppointment = ({route}: props) => {
           type="textareasmall"
           value={formik.values.title}
           onChangeText={formik.handleChange('title')}
+          error={formik.errors.title}
         />
 
         <CustomInputs
           type="textareabig"
+          title={IntLabel('appointment_text')}
           value={formik.values.content}
           onChangeText={formik.handleChange('content')}
-          title={IntLabel('appointment_text')}
+          error={formik.errors.content}
         />
 
         <View className="my-3">
@@ -180,19 +190,23 @@ const FirmAppointment = ({route}: props) => {
           <View className="flex-row flex-wrap justify-between">
             <CustomInputs
               type="date"
-              minimumDate={
-                new Date(new Date().setDate(new Date().getDate() + 1))
-              }
+              minimumDate={moment().add(1, 'days').toDate()}
               placeholder={IntLabel('start_date')}
               value={formik.values.startDate}
-              onChange={(e: any) => formik.setFieldValue('startDate', e)}
+              onChange={(e: any) => {
+                formik.setFieldValue('startDate', e);
+                formik.setFieldValue(
+                  'endDate',
+                  moment(e).add(1, 'days').toDate(),
+                );
+              }}
               style={{width: '75%'}}
             />
             <CustomInputs
               type="date"
-              minimumDate={
-                new Date(new Date().setDate(new Date().getDate() + 2))
-              }
+              minimumDate={moment(formik.values.startDate)
+                .add(1, 'days')
+                .toDate()}
               placeholder={IntLabel('end_date')}
               value={formik.values.endDate}
               onChange={(e: any) => formik.setFieldValue('endDate', e)}
