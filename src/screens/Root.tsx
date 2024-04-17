@@ -61,6 +61,11 @@ import VideoPlayer from './auth/VideoPlayer';
 import CustomButtons from '../components/CustomButtons';
 import IntLabel from '../components/IntLabel';
 import {setGuest} from '../redux/slices/user';
+import TermsOfUse from './user/legalTexts/TermsOfUse';
+import Help from './user/legalTexts/Help';
+import PrivacyPolicy from './user/legalTexts/PrivacyPolicy';
+import AboutUs from './user/legalTexts/AboutUs';
+import ForgetPassword from './auth/ForgetPassword';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -177,6 +182,14 @@ const UserStack = () => {
         <Stack.Screen name="usersettings" component={UserSettings} />
         <Stack.Screen name="userlogout" component={UserLogOut} />
       </Stack.Group>
+
+      {/* legal texts */}
+      <Stack.Group>
+        <Stack.Screen name="termsofuse" component={TermsOfUse} />
+        <Stack.Screen name="help" component={Help} />
+        <Stack.Screen name="privacypolicy" component={PrivacyPolicy} />
+        <Stack.Screen name="aboutus" component={AboutUs} />
+      </Stack.Group>
     </Stack.Navigator>
   );
 };
@@ -189,6 +202,7 @@ const AuthStack = () => {
       <Stack.Screen name="login" component={Login} />
       <Stack.Screen name="userregister" component={UserRegister} />
       <Stack.Screen name="firmregister" component={FirmRegister} />
+      <Stack.Screen name="forgetpass" component={ForgetPassword} />
     </Stack.Navigator>
   );
 };

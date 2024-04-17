@@ -5,7 +5,7 @@ import {setLoggedIn, setUser} from '../../redux/slices/user';
 import {useFormik} from 'formik';
 import * as Yup from 'yup';
 import AuthWrapper from './AuthWrapper';
-import {Text, View} from 'react-native';
+import {Pressable, Text, View} from 'react-native';
 import CustomInputs from '../../components/CustomInputs';
 import IntLabel from '../../components/IntLabel';
 
@@ -69,9 +69,11 @@ const Login = () => {
           secureTextEntry
         />
 
-        <Text className="font-poppinsMedium text-sm  text-customOrange self-end">
-          {IntLabel('forget_password')}
-        </Text>
+        <Pressable onPress={() => navigation.navigate('forgetpass')}>
+          <Text className="font-poppinsMedium text-sm  text-customOrange self-end">
+            {IntLabel('forget_password')}
+          </Text>
+        </Pressable>
       </View>
     </AuthWrapper>
   );

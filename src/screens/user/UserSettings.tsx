@@ -1,4 +1,4 @@
-import {View, Text, Switch} from 'react-native';
+import {View, Text, Switch, Pressable} from 'react-native';
 import React from 'react';
 import UserWrapper from './UserWrapper';
 import DocumentIcon from '../../assets/svg/userMenu/DocumentIcon';
@@ -7,10 +7,12 @@ import SecurityIcon from '../../assets/svg/userMenu/SecurityIcon';
 import AboutIcon from '../../assets/svg/userMenu/AboutIcon';
 import LangChoiceComp from '../../components/LangChoiceComp';
 import IntLabel from '../../components/IntLabel';
+import {useNavigation} from '@react-navigation/native';
 
 const UserSettings = () => {
+  const navigation = useNavigation();
   return (
-    <UserWrapper title="Ayarlar">
+    <UserWrapper title={IntLabel('settings')}>
       <View className="space-y-8  w-[75%]">
         <Text className="font-poppinsMedium  text-center text-base text-customGray">
           {IntLabel('notifications')}
@@ -49,34 +51,42 @@ const UserSettings = () => {
 
       <View className="flex-row items-center space-x-4 mt-8 ">
         <View className="space-y-4">
-          <View className="flex-row items-center space-x-2">
+          <Pressable
+            onPress={() => navigation.navigate('termsofuse')}
+            className="flex-row items-center space-x-2">
             <DocumentIcon />
             <Text className=" text-base text-customGray font-sans ">
               {IntLabel('terms_of_use')}{' '}
             </Text>
-          </View>
+          </Pressable>
 
-          <View className="flex-row items-center space-x-2">
+          <Pressable
+            onPress={() => navigation.navigate('privacypolicy')}
+            className="flex-row items-center space-x-2">
             <SecurityIcon />
             <Text className=" text-base text-customGray font-sans">
               {IntLabel('privacy_policy')}{' '}
             </Text>
-          </View>
+          </Pressable>
         </View>
 
         <View className="space-y-4">
-          <View className="flex-row items-center space-x-2">
+          <Pressable
+            onPress={() => navigation.navigate('help')}
+            className="flex-row items-center space-x-2">
             <HelpIcon />
             <Text className=" text-base text-customGray font-sans">
               {IntLabel('help')}{' '}
             </Text>
-          </View>
-          <View className="flex-row items-center space-x-2">
+          </Pressable>
+          <Pressable
+            onPress={() => navigation.navigate('aboutus')}
+            className="flex-row items-center space-x-2">
             <AboutIcon />
             <Text className=" text-base text-customGray font-sans">
               {IntLabel('about_us')}{' '}
             </Text>
-          </View>
+          </Pressable>
         </View>
       </View>
     </UserWrapper>

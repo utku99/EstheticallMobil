@@ -13,7 +13,7 @@ const UserLogOut = ({navigation}: any) => {
     <UserWrapper title={IntLabel('exit')}>
       <View className=" justify-center px-[20px] space-y-4 h-full">
         <Text className="font-medium font-poppins text-customGray text-base text-center">
-          {IntLabel('logout_browser')}
+          {IntLabel('logout_mobil')}
         </Text>
         <View className="flex-row items-center justify-evenly">
           <CustomButtons
