@@ -85,6 +85,25 @@ const SharingComp = ({
     });
   }, []);
 
+  const onPress = (item: any) => {
+    if (isLoggedIn && addComment) {
+      Post('/api/Comment/AddComment', {
+        sharedId: item?.sharedID,
+        userId: user?.id,
+        comment: addComment,
+        isActive: true,
+        isDeleted: false,
+      }).then(res => {
+        if (res.data.code === '100') {
+          setAddComment(null);
+          setClicked(true);
+        }
+      });
+    } else {
+      toast(IntLabel('login_required_warning'));
+    }
+  };
+
   return (
     <View
       className={`h-fit border border-customLightGray rounded-xl bg-white `}
@@ -267,25 +286,7 @@ const SharingComp = ({
               placeholderTextColor={'#4D4A48'}
               onChangeText={(e: any) => setAddComment(e)}
             />
-            <TouchableOpacity
-              onPress={() => {
-                if (isLoggedIn && addComment) {
-                  Post('/api/Comment/AddComment', {
-                    sharedId: item?.sharedID,
-                    userId: user?.id,
-                    comment: addComment,
-                    isActive: true,
-                    isDeleted: false,
-                  }).then(res => {
-                    if (res.data.code === '100') {
-                      setAddComment(null);
-                      setClicked(true);
-                    }
-                  });
-                } else {
-                  toast(IntLabel('login_required_warning'));
-                }
-              }}>
+            <TouchableOpacity onPress={onPress(item)}>
               <SharingSendMessageIcon />
             </TouchableOpacity>
           </View>

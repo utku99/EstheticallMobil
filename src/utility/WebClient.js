@@ -2,6 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import Toast from 'react-native-root-toast';
 import { useSelector } from "react-redux";
+import { deviceLanguage } from "../constants/constants";
 
 
 
@@ -14,7 +15,7 @@ const WebClient = () => {
     baseURL: "https://estheticallv2-api.ranna.com.tr",
     headers: {
       'Content-Type': 'application/json',
-      "LanguageId": language?.type 
+      "LanguageId": language? language?.type : deviceLanguage=="tr" ? 1 : 2
     },
   };
 

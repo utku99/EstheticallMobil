@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Dimensions, StatusBar } from "react-native";
+import { Dimensions, NativeModules, Platform, StatusBar } from "react-native";
 import DeviceInfo from "react-native-device-info";
 
 
@@ -19,3 +19,9 @@ export const SIZES = {
     isTablet: DeviceInfo.isTablet(),
     isSmall: Dimensions.get('window').width <= 375 ? true : false,
 };
+
+export const deviceLanguage =
+Platform.OS === 'ios'
+  ? NativeModules.SettingsManager.settings.AppleLocale ||
+    NativeModules.SettingsManager.settings.AppleLanguages[0] //iOS 13
+  : NativeModules.I18nManager.localeIdentifier.split("_")[0]

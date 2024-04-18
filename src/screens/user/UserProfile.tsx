@@ -42,10 +42,10 @@ const UserProfile = () => {
       nickname: userInfo?.userName,
       date: userInfo?.birthDate ?? new Date(),
       gender: genderData.find(item => item.value === userInfo?.gender),
-      country: countries.find(
+      country: countries?.find(
         (item: any) => item.value === userInfo?.countryId,
       ),
-      city: cities.find((item: any) => item.value === userInfo?.cityId),
+      city: cities?.find((item: any) => item.value === userInfo?.cityId),
     } as any,
     onSubmit: values => {
       Post(
@@ -121,7 +121,7 @@ const UserProfile = () => {
         }
       });
     };
-  }, [formik.values.country?.value, user]);
+  }, [formik.values.country?.value]);
 
   return (
     <UserWrapper>
@@ -192,7 +192,6 @@ const UserProfile = () => {
             onChange={(e: any) => {
               formik.setFieldValue('date', e);
             }}
-            style={{width: '75%'}}
           />
 
           <View className="w-full">
@@ -236,8 +235,8 @@ const UserProfile = () => {
               />
             </View>
           </View>
-
-          <View className="my-6 space-y-3">
+          <View className="flex-1"></View>
+          <View className="my-6 space-y-3  w-full">
             <CustomButtons
               type="iconsolid"
               label={IntLabel('save')}

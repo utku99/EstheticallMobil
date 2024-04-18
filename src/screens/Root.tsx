@@ -1,4 +1,4 @@
-import {Pressable} from 'react-native';
+import {Pressable, View} from 'react-native';
 import React, {useEffect} from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {
@@ -91,18 +91,22 @@ function BottomTabs() {
   );
 }
 
-const UserStack = () => {
+const UserStack = ({route}: any) => {
   const navigation = useNavigation();
   const {isGuest, isLoggedIn} = useSelector((state: any) => state.user);
   const dispatch = useDispatch();
+
   return (
     <Stack.Navigator
       screenOptions={{
-        headerLeft: () => (
-          <Pressable onPress={() => navigation.goBack()}>
-            <HeaderBackIcon />
-          </Pressable>
-        ),
+        headerLeft: ({canGoBack}) =>
+          canGoBack ? (
+            <Pressable onPress={() => navigation.goBack()}>
+              <HeaderBackIcon />
+            </Pressable>
+          ) : (
+            <View></View>
+          ),
         headerTitle: () => (
           <Pressable onPress={() => navigation.navigate('sharing')}>
             <EstheticLogo width={133} height={38} />

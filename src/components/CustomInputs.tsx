@@ -14,9 +14,6 @@ import DatePicker from 'react-native-date-picker';
 import {useSelector} from 'react-redux';
 import {FormattedDate} from 'react-intl';
 
-import DateTimePicker from 'react-native-ui-datepicker';
-import dayjs from 'dayjs';
-
 interface props {
   type:
     | 'text'
