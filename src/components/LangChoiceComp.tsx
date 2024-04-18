@@ -13,7 +13,7 @@ const LangChoiceComp = () => {
   return (
     <Dropdown
       data={languages}
-      value={language}
+      value={language ?? languages[0]}
       onChange={e => dispatch(setLanguage(e))}
       mode="default"
       labelField="label"
