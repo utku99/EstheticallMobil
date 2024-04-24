@@ -115,7 +115,7 @@ const Packages = () => {
 
     setClicked(false);
     setClickedLike(false);
-  }, [clicked, clickedLike, language]);
+  }, [clicked, clickedLike, language, country, city]);
 
   return (
     <View className="bg-[#FAFAFA] flex-1 relative">

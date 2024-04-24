@@ -212,6 +212,7 @@ const UserCommentComp = ({item, setClicked}: any) => {
                 type="rating"
                 value={formik.values.rating}
                 onChange={(e: any) => setRating(e)}
+                readonly={false}
               />
             </View>
           </View>

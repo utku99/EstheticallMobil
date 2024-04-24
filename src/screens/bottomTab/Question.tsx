@@ -62,6 +62,7 @@ const Question = () => {
         serviceId: formik.values.operation.value ?? 0,
       }).then(res => {
         if (res.data.code == '100') {
+          toast(res.data.message);
           resetForm();
           toast(IntLabel('message_created_warning'));
         } else {

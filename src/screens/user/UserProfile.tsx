@@ -64,10 +64,14 @@ const UserProfile = () => {
         },
         false,
         false,
-      ).then(res => {
-        if (res.data.code === '100') {
-        }
-      });
+      )
+        .then(res => {
+          console.log(res.data);
+
+          if (res.data.code === '100') {
+          }
+        })
+        .catch(err => console.log(err));
     },
   });
 
@@ -122,6 +126,8 @@ const UserProfile = () => {
       });
     };
   }, [formik.values.country?.value]);
+
+  console.log(formik.values.date);
 
   return (
     <UserWrapper>
@@ -187,8 +193,7 @@ const UserProfile = () => {
           <CustomInputs
             type="date"
             placeholder={IntLabel('birthday')}
-            // value={moment(formik.values.date).toDate()}
-            value={new Date()}
+            value={moment(formik.values.date).toDate()}
             onChange={(e: any) => {
               formik.setFieldValue('date', e);
             }}

@@ -31,7 +31,6 @@ const UserLogOut = ({navigation}: any) => {
               dispatch(setLoggedIn(false));
               dispatch(setGuest(false));
             }}
-            style={{width: 80}}
           />
         </View>
       </View>

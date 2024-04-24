@@ -13,6 +13,7 @@ import IntLabel from './IntLabel';
 import DatePicker from 'react-native-date-picker';
 import {useSelector} from 'react-redux';
 import {FormattedDate} from 'react-intl';
+import {useTheme} from '@react-navigation/native';
 
 interface props {
   type:
@@ -42,6 +43,7 @@ interface props {
   dropdownContainerStyle?: any;
   minimumDate?: Date;
   maximumDate?: Date;
+  readonly?: boolean;
 }
 
 const CustomInputs: React.FC<props> = ({
@@ -63,11 +65,13 @@ const CustomInputs: React.FC<props> = ({
   dropdownContainerStyle,
   minimumDate,
   maximumDate,
+  readonly = true,
 }) => {
   const [isFocusDropdown, setIsFocusDropdown] = useState(false);
   const [showDateModal, setShowDateModal] = useState(false);
   const [showSecure, setShowSecure] = useState(secureTextEntry);
   const {language} = useSelector((state: any) => state.user);
+  const colors = useTheme().colors;
 
   return (
     <>
@@ -104,9 +108,11 @@ const CustomInputs: React.FC<props> = ({
       )}
       {type == 'textareasmall' && (
         <View className="mb-3" style={style}>
-          <Text className="font-poppinsMedium text-customGray text-base  mb-3">
-            {IntLabel('title_text')}
-          </Text>
+          {title && (
+            <Text className="font-poppinsMedium text-customGray text-base  mb-3">
+              {title}
+            </Text>
+          )}
           <TextInput
             className={` border border-customLightGray rounded-xl bg-white min-h-[40px] max-h-[80px] px-2 text-customGray text-xs font-poppinsRegular`}
             value={value}
@@ -115,15 +121,19 @@ const CustomInputs: React.FC<props> = ({
             onBlur={onBlur}
             textAlignVertical="top"
             multiline
+            placeholder={IntLabel('title_text')}
+            placeholderTextColor={'rgba(77,74,72,0.5)'}
           />
           {error && <Text className="text-red-400 text-xs "> {error}</Text>}
         </View>
       )}
       {type == 'textareabig' && (
         <View className="mb-3" style={style}>
-          <Text className="font-poppinsMedium text-customGray text-base  mb-3">
-            {title}
-          </Text>
+          {title && (
+            <Text className="font-poppinsMedium text-customGray text-base  mb-3">
+              {title}
+            </Text>
+          )}
           <TextInput
             textAlignVertical="top"
             className={` border border-customLightGray rounded-xl bg-white min-h-[100px] max-h-[400px] px-2 text-customGray text-xs font-poppinsRegular`}
@@ -132,6 +142,8 @@ const CustomInputs: React.FC<props> = ({
             onChangeText={onChangeText}
             onBlur={onBlur}
             multiline
+            placeholder={placeholder}
+            placeholderTextColor={'rgba(77,74,72,0.5)'}
           />
           {error && <Text className="text-red-400 text-xs "> {error}</Text>}
         </View>
@@ -193,6 +205,7 @@ const CustomInputs: React.FC<props> = ({
                 fontSize: 12,
                 fontFamily: 'Poppins-Regular',
               }}
+              itemTextStyle={{color: 'rgba(77, 74, 72, 1)', height: 20}}
               onFocus={() => setIsFocusDropdown(true)}
               onBlur={() => setIsFocusDropdown(false)}
               value={value}
@@ -246,6 +259,7 @@ const CustomInputs: React.FC<props> = ({
           imageSize={14}
           type="custom"
           ratingColor="#FF8170"
+          readonly={readonly}
         />
       )}
     </>

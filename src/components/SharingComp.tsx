@@ -76,6 +76,8 @@ const SharingComp = ({
 
   const [addComment, setAddComment] = useState(null);
 
+  const warning = IntLabel('login_required_warning');
+
   useEffect(() => {
     Post('/api/Shared/GetSharedDetailAsync', {
       sharedId: item?.sharedID,
@@ -84,25 +86,6 @@ const SharingComp = ({
       setSharedDetail(res.data);
     });
   }, []);
-
-  const onPress = (item: any) => {
-    if (isLoggedIn && addComment) {
-      Post('/api/Comment/AddComment', {
-        sharedId: item?.sharedID,
-        userId: user?.id,
-        comment: addComment,
-        isActive: true,
-        isDeleted: false,
-      }).then(res => {
-        if (res.data.code === '100') {
-          setAddComment(null);
-          setClicked(true);
-        }
-      });
-    } else {
-      toast(IntLabel('login_required_warning'));
-    }
-  };
 
   return (
     <View
@@ -286,7 +269,25 @@ const SharingComp = ({
               placeholderTextColor={'#4D4A48'}
               onChangeText={(e: any) => setAddComment(e)}
             />
-            <TouchableOpacity onPress={onPress(item)}>
+            <TouchableOpacity
+              onPress={() => {
+                if (isLoggedIn && addComment) {
+                  Post('/api/Comment/AddComment', {
+                    sharedId: item?.sharedID,
+                    userId: user?.id,
+                    comment: addComment,
+                    isActive: true,
+                    isDeleted: false,
+                  }).then(res => {
+                    if (res.data.code === '100') {
+                      setAddComment(null);
+                      setClicked(true);
+                    }
+                  });
+                } else {
+                  toast(warning);
+                }
+              }}>
               <SharingSendMessageIcon />
             </TouchableOpacity>
           </View>

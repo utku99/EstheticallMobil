@@ -37,6 +37,7 @@ const LangChoiceComp = () => {
         fontSize: 14,
         color: '#4D4A48',
         fontFamily: 'Poppins-Medium',
+        height: 20,
       }}
     />
   );

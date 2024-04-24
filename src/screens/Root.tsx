@@ -66,6 +66,7 @@ import Help from './user/legalTexts/Help';
 import PrivacyPolicy from './user/legalTexts/PrivacyPolicy';
 import AboutUs from './user/legalTexts/AboutUs';
 import ForgetPassword from './auth/ForgetPassword';
+import LogOutIcon from '../assets/svg/userMenu/LogOutIcon';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -119,17 +120,19 @@ const UserStack = ({route}: any) => {
               <HeaderMenuIcon />
             </Pressable>
           ) : (
-            <CustomButtons
-              theme="small"
-              label={IntLabel('exit')}
-              type="solid"
-              style={{width: 60, height: 30, marginRight: 40}}
-              onPress={() => dispatch(setGuest(false))}
-            />
+            <Pressable onPress={() => dispatch(setGuest(false))}>
+              <LogOutIcon />
+            </Pressable>
           ),
         headerLeftContainerStyle: {width: '14%', alignItems: 'center'},
-        headerTitleContainerStyle: {width: '100%', alignItems: 'center'},
-        headerRightContainerStyle: {alignItems: 'center'},
+        headerTitleContainerStyle: {
+          width: '100%',
+          alignItems: 'center',
+        },
+        headerRightContainerStyle: {
+          width: '14%',
+          alignItems: 'center',
+        },
         headerStyle: {backgroundColor: '#FAFAFA', shadowOffset: 0},
       }}>
       {/* home */}

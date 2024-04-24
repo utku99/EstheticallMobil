@@ -28,7 +28,12 @@ const HandleData = ({data, loading, title, children}: props) => {
         <View className="w-[80px] h-[80px] items-center justify-center">
           <LottieView
             source={require('../assets/lottie/data.json')}
-            style={{width: '100%', height: '100%'}}
+            style={{
+              width: '100%',
+              height: '100%',
+            }}
+            autoPlay
+            loop
           />
         </View>
       </View>

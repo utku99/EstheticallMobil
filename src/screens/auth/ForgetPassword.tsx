@@ -12,6 +12,7 @@ import CustomInputs from '../../components/CustomInputs';
 
 const ForgetPassword = () => {
   const {Post} = WebClient();
+  const warning = IntLabel('change_pass_mail_info');
 
   const formik = useFormik({
     initialValues: {
@@ -28,18 +29,16 @@ const ForgetPassword = () => {
         {
           mail: values.email,
         },
-        true,
+        false,
         true,
       ).then(res => {
         if (res.data.code == '100') {
           resetForm();
-          toast(IntLabel('change_pass_mail_info'));
+          toast(warning);
         }
       });
     },
   });
-
-  console.log(formik.errors.email);
 
   return (
     <ImageBackground

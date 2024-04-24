@@ -91,7 +91,7 @@ const CommentToCompanyComp = ({item}: any) => {
 
       {/* doctor */}
       <View className="space-y-2">
-        <Text className="text-base font-poppinsRegular text-customGray">
+        <Text className="text-sm font-poppinsRegular text-customGray">
           {IntLabel('performing_the_operation')}
         </Text>
         <View className="flex-row items-center justify-between">

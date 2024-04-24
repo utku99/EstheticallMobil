@@ -57,6 +57,7 @@ const CustomButtons: React.FC<props> = ({
           style={style}
           className={`bg-customOrange ${handleSize()}  rounded-lg items-center justify-center px-4 `}>
           <Text
+            numberOfLines={1}
             className={`font-poppinsMedium text-white ${handleFontSize()} `}>
             {label}
           </Text>
@@ -68,6 +69,7 @@ const CustomButtons: React.FC<props> = ({
           style={style}
           className={`bg-white border border-customOrange  ${handleSize()}   rounded-lg items-center justify-center  px-4 `}>
           <Text
+            numberOfLines={1}
             className={`font-poppinsMedium text-customGray  ${handleFontSize()}   `}>
             {label}
           </Text>
@@ -80,6 +82,7 @@ const CustomButtons: React.FC<props> = ({
           className={`bg-customOrange  ${handleSize()}  rounded-lg items-center justify-center px-4  flex-row  space-x-2`}>
           {handleIcon()}
           <Text
+            numberOfLines={1}
             className={`font-poppinsMedium text-white  ${handleFontSize()}   `}>
             {label}
           </Text>
@@ -92,6 +95,7 @@ const CustomButtons: React.FC<props> = ({
           className={`bg-white border border-customOrange  ${handleSize()}  rounded-lg justify-center  px-4  flex-row items-center space-x-2`}>
           {handleIcon()}
           <Text
+            numberOfLines={1}
             className={`font-poppinsMedium text-customGray  ${handleFontSize()}   `}>
             {label}
           </Text>
@@ -103,6 +107,7 @@ const CustomButtons: React.FC<props> = ({
           style={style}
           className={`bg-customBrown  ${handleSize()}   rounded-lg items-center justify-center px-4 `}>
           <Text
+            numberOfLines={1}
             className={`font-poppinsSemiBold text-white whitespace-nowrap  ${handleFontSize()}  `}>
             {label}
           </Text>
@@ -114,6 +119,7 @@ const CustomButtons: React.FC<props> = ({
           style={style}
           className={`bg-white border border-customBrown  ${handleSize()}   rounded-lg items-center justify-center  px-4 `}>
           <Text
+            numberOfLines={1}
             className={`font-poppinsSemiBold text-customBrown whitespace-nowrap  ${handleFontSize()}   `}>
             {label}
           </Text>

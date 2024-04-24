@@ -40,7 +40,7 @@ const PackageComp = ({
     if (item?.companyPoint) {
       return item?.companyPoint?.split('/')[0] / 20;
     } else {
-      return item?.doctor?.commentPoint / 20;
+      return (item?.doctor?.commentPoint ?? item?.doctorCommentPoint) / 20;
     }
   };
 
@@ -93,7 +93,7 @@ const PackageComp = ({
         <LikeUnlikeComp
           item={item}
           setClicked={setClicked}
-          isFavorite={item?.isFavorite}
+          isFavorite={item?.doctorIsFavorite}
         />
       </View>
 
@@ -158,9 +158,9 @@ const PackageComp = ({
         <>
           <View className="px-[10px] space-y-3 flex-row">
             <Text className="font-poppinsMedium text-sm text-customGray">
-              {IntLabel('related_doctor')}:{' '}
+              {IntLabel('related_doctor')}{' '}
             </Text>
-            <View className="h-[0.5px] bg-black/[.5] w-full"></View>
+            <View className="h-[0.5px] bg-black/[.5] flex-1"></View>
           </View>
           <View className="flex-row items-center p-[10px] justify-between">
             <View className="w-[60px] h-[60px] overflow-hidden rounded-full border-[0.6px] border-customGray">
@@ -174,12 +174,17 @@ const PackageComp = ({
               <Text
                 numberOfLines={1}
                 className="text-customGray  text-xs font-poppinsSemiBold">
-                {item?.doctor?.doctorName ?? item?.doctorBranch}
+                {item?.doctor?.doctorName ?? item?.doctorName}
               </Text>
               <Text
                 numberOfLines={1}
                 className="text-customGray  text-xs font-poppinsRegular">
                 {item?.doctor?.branch ?? item?.doctorBranch}
+              </Text>
+              <Text
+                numberOfLines={1}
+                className="text-customGray  text-xs font-poppinsRegular">
+                {item?.doctor?.location ?? item?.doctorLocation}
               </Text>
             </View>
             <View className="items-center">
@@ -196,7 +201,9 @@ const PackageComp = ({
                 <LikeUnlikeComp
                   item={item}
                   readOnly
-                  isFavorite={item?.doctorIsFavorite}
+                  isFavorite={
+                    item?.doctor?.isFavorite ?? item?.doctorIsFavorite
+                  }
                 />
               </View>
             </View>
@@ -205,7 +212,7 @@ const PackageComp = ({
             <Text className="font-poppinsMedium text-sm text-customGray">
               {IntLabel('packet_content')}{' '}
             </Text>
-            <View className="h-[0.5px] bg-black/[.5] w-full"></View>
+            <View className="h-[0.5px] bg-black/[.5] flex-1"></View>
           </View>
           <RenderHTML
             source={{html: item?.footerModel?.content ?? item?.content}}
@@ -228,10 +235,12 @@ const PackageComp = ({
       <Pressable
         onPress={() => setSeeAll(!seeAll)}
         className="bg-customBrown w-full h-[35px] rounded-b-lg flex-row items-center justify-between px-[10px]">
-        <Text className="font-poppinsRegular  text-xs text-white flex-1">
+        <Text
+          numberOfLines={1}
+          className="font-poppinsRegular  text-xs text-white flex-1 ">
           {IntLabel('packet_price')}: {item?.footerModel?.price ?? item?.price}₺
         </Text>
-        <View className="flex-1 items-center">
+        <View className="flex-2 items-center ">
           {seeAll ? <DoctorArrowUpIcon /> : <DoctorArrowDownIcon />}
         </View>
         <View className="flex-1"></View>
