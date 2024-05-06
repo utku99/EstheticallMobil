@@ -80,6 +80,13 @@ const OfferComp = ({
                 className="text-customGray font-poppinsSemiBold text-xs ">
                 {item?.name}
               </Text>
+              {(item?.companyBranch ?? item?.doctorBranch) && (
+                <Text
+                  numberOfLines={1}
+                  className="text-customGray font-poppinsRegular text-xs ">
+                  {item?.companyBranch ?? item?.doctorBranch}
+                </Text>
+              )}
               <Text
                 numberOfLines={1}
                 className="text-customGray font-poppinsRegular text-xs ">
@@ -160,23 +167,13 @@ const OfferComp = ({
               </View>
             </View>
 
-            <View className="flex-row items-center justify-between">
-              <View className="flex-1">
-                <Text className="text-customGray font-poppinsMedium text-sm ">
-                  {IntLabel('location')}:{' '}
-                </Text>
-                <Text className="text-customGray font-poppinsRegular text-sm ">
-                  {item?.location}
-                </Text>
-              </View>
-              <View className="flex-1">
-                <Text className="text-customGray font-poppinsMedium text-sm ">
-                  {IntLabel('category')}:{' '}
-                </Text>
-                <Text className="text-customGray font-poppinsRegular text-sm ">
-                  Hastane,klinik (sabit??)
-                </Text>
-              </View>
+            <View className="flex-1">
+              <Text className="text-customGray font-poppinsMedium text-sm ">
+                {IntLabel('location')}:{' '}
+              </Text>
+              <Text className="text-customGray font-poppinsRegular text-sm ">
+                {item?.location}
+              </Text>
             </View>
 
             <View>
@@ -234,60 +231,56 @@ const OfferComp = ({
                 />
               </View>
             </View>
-            <View className="flex-row">
-              <Text className=" font-poppinsMedium text-sm text-customGray">
-                {IntLabel('related_doctor')}:{' '}
-              </Text>
-              <View className="h-[0.5px] bg-black/[.5] w-full self-center"></View>
-            </View>
 
-            <View className="flex-row items-center justify-between">
-              <View className="w-[60px] h-[60px] overflow-hidden rounded-full border-[0.6px] border-customGray">
-                <Image
-                  source={{uri: item?.doctorLogo}}
-                  className="w-full h-full object-cover"
-                />
-              </View>
-              <View className="w-[40%] ">
-                <Text
-                  numberOfLines={1}
-                  className="text-customGray font-poppinsSemiBold text-xs ">
-                  {item?.doctorName}
-                </Text>
-                <Text
-                  numberOfLines={1}
-                  className="text-customGray font-poppinsRegular text-xs">
-                  {item?.doctorBranch}
-                </Text>
-                <Text
-                  numberOfLines={1}
-                  className="text-customGray font-poppinsRegular text-xs">
-                  {item?.location}
-                </Text>
-              </View>
-              <View className="items-center">
-                <Text className="text-customGray font-poppinsRegular text-xs">
-                  {item?.doctorCommentPoint / 20}/5
-                </Text>
-                <Text className="text-customGray font-poppinsRegular text-xs">
-                  {IntLabel('comments')}
-                </Text>
-              </View>
-              <LikeUnlikeComp
-                item={item}
-                readOnly
-                isFavorite={item?.isDoctorFavorite}
-              />
-            </View>
+            {item?.doctorBranch && (
+              <>
+                <View className="flex-row">
+                  <Text className=" font-poppinsMedium text-sm text-customGray">
+                    {IntLabel('related_doctor')}:{' '}
+                  </Text>
+                  <View className="h-[0.5px] bg-black/[.5] w-full self-center"></View>
+                </View>
 
-            <Text className="text-customOrange font-poppinsSemiBold text-base text-center mb-3">
-              {IntLabel('offer_price')}: {item?.price}{' '}
-              {item?.currencyType === 1
-                ? '₺'
-                : item?.currencyType === 2
-                ? '$'
-                : '€'}
-            </Text>
+                <View className="flex-row items-center justify-between">
+                  <View className="w-[60px] h-[60px] overflow-hidden rounded-full border-[0.6px] border-customGray">
+                    <Image
+                      source={{uri: item?.doctorLogo}}
+                      className="w-full h-full object-cover"
+                    />
+                  </View>
+                  <View className="w-[40%] ">
+                    <Text
+                      numberOfLines={1}
+                      className="text-customGray font-poppinsSemiBold text-xs ">
+                      {item?.doctorName}
+                    </Text>
+                    <Text
+                      numberOfLines={1}
+                      className="text-customGray font-poppinsRegular text-xs">
+                      {item?.doctorBranch}
+                    </Text>
+                    <Text
+                      numberOfLines={1}
+                      className="text-customGray font-poppinsRegular text-xs">
+                      {item?.location}
+                    </Text>
+                  </View>
+                  <View className="items-center">
+                    <Text className="text-customGray font-poppinsRegular text-xs">
+                      {item?.doctorCommentPoint / 20}/5
+                    </Text>
+                    <Text className="text-customGray font-poppinsRegular text-xs">
+                      {IntLabel('comments')}
+                    </Text>
+                  </View>
+                  <LikeUnlikeComp
+                    item={item}
+                    readOnly
+                    isFavorite={item?.isDoctorFavorite}
+                  />
+                </View>
+              </>
+            )}
 
             {!completed && (
               <CustomButtons

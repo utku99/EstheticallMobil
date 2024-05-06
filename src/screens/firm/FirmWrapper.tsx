@@ -146,6 +146,13 @@ const FirmWrapper: React.FC<props> = ({children}) => {
                 </Text>
                 <BlueTick />
               </View>
+              {(firmLeftInfo?.companyBranch ?? firmLeftInfo?.doctorBranch) && (
+                <Text
+                  numberOfLines={1}
+                  className="text-customGray font-poppinsRegular text-xs">
+                  {firmLeftInfo?.companyBranch ?? firmLeftInfo?.doctorBranch}
+                </Text>
+              )}
               <Text
                 numberOfLines={1}
                 className="text-customGray font-poppinsRegular text-xs">
@@ -164,7 +171,11 @@ const FirmWrapper: React.FC<props> = ({children}) => {
           {/* tabs */}
           <FlatList
             className="my-4"
-            data={buttonData}
+            data={
+              firmLeftInfo?.companyTypeID == 4
+                ? buttonData.filter((tab: any) => tab.id != 5)
+                : buttonData
+            }
             renderItem={({item}) => (
               <CustomButtons
                 type={route.name == item.name ? 'brownsolid' : 'brownoutlined'}

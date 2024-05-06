@@ -40,11 +40,11 @@ const DoctorComp: React.FC<props> = ({item, setClicked, readOnly}) => {
             className="text-customGray text-xs font-poppinsSemiBold ">
             {item?.nameWithTitle ?? item?.name}
           </Text>
-          {item?.branch && (
+          {(item?.companyBranch ?? item?.doctorBranch) && (
             <Text
               numberOfLines={1}
               className="text-customGray  text-xs font-poppinsRegular">
-              {item?.branch}
+              {item?.companyBranch ?? item?.doctorBranch}
             </Text>
           )}
           <Text

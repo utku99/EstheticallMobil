@@ -69,6 +69,13 @@ const AppointmentComp = ({item}: {item: any}) => {
                 className="text-customGray font-poppinsSemiBold text-sm ">
                 {item?.companyModel?.companyName}
               </Text>
+              {item?.companyModel?.companyBranch && (
+                <Text
+                  numberOfLines={1}
+                  className="text-customGray font-poppinsRegular text-xs ">
+                  {item?.companyModel?.companyBranch}
+                </Text>
+              )}
               <Text
                 numberOfLines={1}
                 className="text-customGray font-poppinsRegular text-xs ">

@@ -116,6 +116,17 @@ const SharingComp = ({
               className="text-customGray  text-xs font-poppinsSemiBold">
               {item?.name ?? item?.parentModel?.name}
             </Text>
+            {(item?.companyBranch ??
+              item?.doctorBranch ??
+              item?.parentModel?.companyBranch) && (
+              <Text
+                numberOfLines={1}
+                className="text-customGray text-xs font-poppinsRegular ">
+                {item?.companyBranch ??
+                  item?.doctorBranch ??
+                  item?.parentModel?.companyBranch}
+              </Text>
+            )}
             <Text
               numberOfLines={1}
               className="text-customGray text-xs font-poppinsRegular ">

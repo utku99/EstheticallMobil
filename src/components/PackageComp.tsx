@@ -74,6 +74,18 @@ const PackageComp = ({
               className="text-customGray text-xs font-poppinsSemiBold">
               {item?.headerModel?.companyName ?? item?.companyName}
             </Text>
+
+            {(item?.companyBranch ??
+              item?.doctorBranch ??
+              item?.headerModel?.companyBranch) && (
+              <Text
+                numberOfLines={1}
+                className="text-customGray  text-xs font-poppinsRegular">
+                {item?.companyBranch ??
+                  item?.doctorBranch ??
+                  item.headerModel.companyBranch}
+              </Text>
+            )}
             <Text
               numberOfLines={1}
               className="text-customGray  text-xs font-poppinsRegular">
@@ -158,58 +170,63 @@ const PackageComp = ({
 
       {seeAll && (
         <>
-          <View className="px-[10px] space-y-3 flex-row">
-            <Text className="font-poppinsMedium text-sm text-customGray">
-              {IntLabel('related_doctor')}{' '}
-            </Text>
-            <View className="h-[0.5px] bg-black/[.5] flex-1"></View>
-          </View>
-          <View className="flex-row items-center p-[10px] justify-between">
-            <View className="w-[60px] h-[60px] overflow-hidden rounded-full border-[0.6px] border-customGray">
-              <Image
-                source={{uri: item?.doctor?.logo ?? item?.doctorLogo}}
-                className="w-full h-full"
-                resizeMode="cover"
-              />
-            </View>
-            <View className=" w-[40%]">
-              <Text
-                numberOfLines={1}
-                className="text-customGray  text-xs font-poppinsSemiBold">
-                {item?.doctor?.doctorName ?? item?.doctorName}
-              </Text>
-              <Text
-                numberOfLines={1}
-                className="text-customGray  text-xs font-poppinsRegular">
-                {item?.doctor?.branch ?? item?.doctorBranch}
-              </Text>
-              <Text
-                numberOfLines={1}
-                className="text-customGray  text-xs font-poppinsRegular">
-                {item?.doctor?.location ?? item?.doctorLocation}
-              </Text>
-            </View>
-            <View className="items-center">
-              <Text className="text-customGray font-poppinsRegular text-xs">
-                {handlePoint()}/5
-              </Text>
-              <Text className="text-customGray font-poppinsRegular text-xs">
-                {IntLabel('comments')}
-              </Text>
-            </View>
-            <View className="items-center space-y-2">
-              <ShareIcon />
-              <View>
-                <LikeUnlikeComp
-                  item={item}
-                  readOnly
-                  isFavorite={
-                    item?.doctor?.isFavorite ?? item?.doctorIsFavorite
-                  }
-                />
+          {item?.doctorBranch && (
+            <>
+              <View className="px-[10px] space-y-3 flex-row">
+                <Text className="font-poppinsMedium text-sm text-customGray">
+                  {IntLabel('related_doctor')}{' '}
+                </Text>
+                <View className="h-[0.5px] bg-black/[.5] flex-1"></View>
               </View>
-            </View>
-          </View>
+              <View className="flex-row items-center p-[10px] justify-between">
+                <View className="w-[60px] h-[60px] overflow-hidden rounded-full border-[0.6px] border-customGray">
+                  <Image
+                    source={{uri: item?.doctor?.logo ?? item?.doctorLogo}}
+                    className="w-full h-full"
+                    resizeMode="cover"
+                  />
+                </View>
+                <View className=" w-[40%]">
+                  <Text
+                    numberOfLines={1}
+                    className="text-customGray  text-xs font-poppinsSemiBold">
+                    {item?.doctor?.doctorName ?? item?.doctorName}
+                  </Text>
+                  <Text
+                    numberOfLines={1}
+                    className="text-customGray  text-xs font-poppinsRegular">
+                    {item?.doctorBranch}
+                  </Text>
+                  <Text
+                    numberOfLines={1}
+                    className="text-customGray  text-xs font-poppinsRegular">
+                    {item?.doctor?.location ?? item?.doctorLocation}
+                  </Text>
+                </View>
+                <View className="items-center">
+                  <Text className="text-customGray font-poppinsRegular text-xs">
+                    {handlePoint()}/5
+                  </Text>
+                  <Text className="text-customGray font-poppinsRegular text-xs">
+                    {IntLabel('comments')}
+                  </Text>
+                </View>
+                <View className="items-center space-y-2">
+                  <ShareIcon />
+                  <View>
+                    <LikeUnlikeComp
+                      item={item}
+                      readOnly
+                      isFavorite={
+                        item?.doctor?.isFavorite ?? item?.doctorIsFavorite
+                      }
+                    />
+                  </View>
+                </View>
+              </View>
+            </>
+          )}
+
           <View className="px-[10px] space-y-3 flex-row">
             <Text className="font-poppinsMedium text-sm text-customGray">
               {IntLabel('packet_content')}{' '}
