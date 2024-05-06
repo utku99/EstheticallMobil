@@ -15,7 +15,7 @@ import CommunicationItem from '../../assets/svg/firm/CommunicationItem';
 import ShareIcon from '../../assets/svg/firm/ShareIcon';
 import UnLikeIcon from '../../assets/svg/common/UnLikeIcon';
 import CustomButtons from '../../components/CustomButtons';
-import {SIZES} from '../../constants/constants';
+import {SIZES, viewedType} from '../../constants/constants';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import ModalWrapper from '../../components/ModalWrapper';
 import HandleData from '../../components/HandleData';
@@ -58,7 +58,22 @@ const FirmWrapper: React.FC<props> = ({children}) => {
       companyOfficeId: route.params?.companyOfficeId ?? 0,
       userId: user?.id ?? 0,
     }).then(res => {
-      setFirmLeftInfo(res.data.object);
+      if (res.data.code === '100') {
+        setFirmLeftInfo(res.data.object);
+
+        Post('/api/Common/InsertView', {
+          id:
+            res.data.object.companyOfficeID == 0
+              ? res.data.object.companyID
+              : res.data.object.companyOfficeID,
+          isActive: true,
+          typeID:
+            res.data.object.companyOfficeID == 0
+              ? viewedType.company
+              : viewedType.office,
+          userID: user?.id ?? 0,
+        }).then(res => {});
+      }
     });
 
     Post('/api/CompanyServices/WebListCompanyServices', {

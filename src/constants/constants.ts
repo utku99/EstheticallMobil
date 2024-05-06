@@ -25,3 +25,10 @@ Platform.OS === 'ios'
   ? NativeModules.SettingsManager.settings.AppleLocale ||
     NativeModules.SettingsManager.settings.AppleLanguages[0] //iOS 13
   : NativeModules.I18nManager.localeIdentifier.split("_")[0]
+
+  export const viewedType = {
+    package :0,
+    company:1,
+    office:2,
+    sharing:4
+}

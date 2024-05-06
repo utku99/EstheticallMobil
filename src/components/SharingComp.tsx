@@ -15,7 +15,7 @@ import SharingShareIcon from '../assets/svg/homepages/SharingShareIcon';
 import SharingSendMessageIcon from '../assets/svg/homepages/SharingSendMessageIcon';
 import Carousel, {Pagination} from 'react-native-snap-carousel';
 import WebClient, {toast} from '../utility/WebClient';
-import {SIZES} from '../constants/constants';
+import {SIZES, viewedType} from '../constants/constants';
 import HandleData from './HandleData';
 import {useNavigation} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
@@ -24,6 +24,7 @@ import SharingSavedIcon from '../assets/svg/homepages/SharingSavedIcon';
 import moment from 'moment';
 import IntLabel from './IntLabel';
 import Clipboard from '@react-native-clipboard/clipboard';
+import Video from 'react-native-video';
 
 const CommentComp = ({item}: any) => {
   return (
@@ -158,13 +159,23 @@ const SharingComp = ({
             imgUrl: img,
             title: '',
           }))}
-          renderItem={({item}: any) => (
-            <Image
-              source={{uri: item?.imgUrl}}
-              className="w-full h-full"
-              resizeMode="cover"
-            />
-          )}
+          renderItem={({item}: any) =>
+            item?.imgUrl?.includes('mp4') ? (
+              <Video
+                source={{uri: item?.imgUrl}}
+                disableFocus
+                repeat
+                resizeMode="cover"
+                className="w-full h-full "
+              />
+            ) : (
+              <Image
+                source={{uri: item?.imgUrl}}
+                className="w-full h-full"
+                resizeMode="cover"
+              />
+            )
+          }
           sliderWidth={SIZES.width * 0.95}
           itemWidth={SIZES.width * 0.95}
           loop={true}
@@ -210,12 +221,29 @@ const SharingComp = ({
       <View
         className={`bg-customBrown w-full h-[35px] px-[10px] rounded-b-xl flex-row items-center`}>
         <Text
-          onPress={() => setSeeComments(!seeComments)}
+          onPress={() => {
+            Post('/api/Common/InsertView', {
+              id: item?.sharedID,
+              isActive: true,
+              typeID: viewedType.sharing,
+              userID: user?.id ?? 0,
+            }).then(res => {});
+            setSeeComments(!seeComments);
+          }}
           className="text-white text-xs font-poppinsRegular flex-1">
           {seeComments ? IntLabel('hide_comments') : IntLabel('see_comments')}
         </Text>
         <View className="flex-row space-x-3 ">
-          <TouchableOpacity onPress={() => setSeeComments(!seeComments)}>
+          <TouchableOpacity
+            onPress={() => {
+              Post('/api/Common/InsertView', {
+                id: item?.sharedID,
+                isActive: true,
+                typeID: viewedType.sharing,
+                userID: user?.id ?? 0,
+              }).then(res => {});
+              setSeeComments(!seeComments);
+            }}>
             <SharingMessageIcon />
           </TouchableOpacity>
 

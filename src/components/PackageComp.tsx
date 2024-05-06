@@ -3,7 +3,7 @@ import React, {useRef, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
 import WebClient from '../utility/WebClient';
-import {SIZES} from '../constants/constants';
+import {SIZES, viewedType} from '../constants/constants';
 import CustomInputs from './CustomInputs';
 import LikeIcon from '../assets/svg/common/LikeIcon';
 import Carousel, {Pagination} from 'react-native-snap-carousel';
@@ -35,6 +35,8 @@ const PackageComp = ({
   const isCarousel = useRef(null);
   const navigation = useNavigation();
   const [visible, setVisible] = useState(false);
+  const {Post} = WebClient();
+  const {user} = useSelector((state: any) => state.user);
 
   const handlePoint = () => {
     if (item?.companyPoint) {
@@ -233,7 +235,15 @@ const PackageComp = ({
 
       {/* bottom */}
       <Pressable
-        onPress={() => setSeeAll(!seeAll)}
+        onPress={() => {
+          Post('/api/Common/InsertView', {
+            id: item?.packageID,
+            isActive: true,
+            typeID: viewedType.package,
+            userID: user?.id ?? 0,
+          }).then(res => {});
+          setSeeAll(!seeAll);
+        }}
         className="bg-customBrown w-full h-[35px] rounded-b-lg flex-row items-center justify-between px-[10px]">
         <Text
           numberOfLines={1}

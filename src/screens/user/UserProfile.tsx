@@ -2,7 +2,7 @@ import {View, Text, Image, Pressable} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import UserWrapper from './UserWrapper';
 import {useSelector} from 'react-redux';
-import WebClient from '../../utility/WebClient';
+import WebClient, {toast} from '../../utility/WebClient';
 import EditIcon from '../../assets/svg/userMenu/EditIcon';
 import {openPicker} from 'react-native-image-crop-picker';
 import CustomInputs from '../../components/CustomInputs';
@@ -18,7 +18,7 @@ const UserProfile = () => {
   const {Post, loading} = WebClient();
 
   const [userInfo, setUserInfo] = useState<any>(null);
-  const [selectedImage, setSelectedImage] = useState<any>(null);
+  const [selectedImage, setSelectedImage] = useState<any>('');
   const [countries, setCountries] = useState([]);
   const [cities, setCities] = useState([]);
 
@@ -35,24 +35,23 @@ const UserProfile = () => {
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      logo: selectedImage ?? userInfo?.logo,
-      name: userInfo?.name,
-      surname: userInfo?.surname,
-      email: userInfo?.mail,
-      nickname: userInfo?.userName,
-      date: userInfo?.birthDate ?? new Date(),
-      gender: genderData.find(item => item.value === userInfo?.gender),
-      country: countries?.find(
-        (item: any) => item.value === userInfo?.countryId,
-      ),
-      city: cities?.find((item: any) => item.value === userInfo?.cityId),
+      logo: userInfo?.logo ?? '',
+      name: userInfo?.name ?? '',
+      surname: userInfo?.surname ?? '',
+      email: userInfo?.mail ?? '',
+      nickname: userInfo?.userName ?? '',
+      date: userInfo?.birthDate,
+      gender: genderData.find(item => item.value === userInfo?.gender) ?? 0,
+      country:
+        countries?.find((item: any) => item.value === userInfo?.countryId) ?? 0,
+      city: cities?.find((item: any) => item.value === userInfo?.cityId) ?? 0,
     } as any,
     onSubmit: values => {
       Post(
         '/api/User/WebEditUser',
         {
           userId: user.id,
-          logo: values.logo,
+          logo: selectedImage,
           name: values.name,
           surname: values.surname,
           userName: values.nickname,
@@ -64,14 +63,9 @@ const UserProfile = () => {
         },
         false,
         false,
-      )
-        .then(res => {
-          console.log(res.data);
-
-          if (res.data.code === '100') {
-          }
-        })
-        .catch(err => console.log(err));
+      ).then(res => {
+        toast(res.data.message);
+      });
     },
   });
 
@@ -126,8 +120,6 @@ const UserProfile = () => {
       });
     };
   }, [formik.values.country?.value]);
-
-  console.log(formik.values.date);
 
   return (
     <UserWrapper>
@@ -203,12 +195,12 @@ const UserProfile = () => {
             <CustomInputs
               type="dropdown"
               value={formik.values.gender}
-              onChange={(e: any) => formik.handleChange('gender')(e)}
+              onChange={(e: any) => formik.setFieldValue('gender', e)}
               dropdownData={genderData}
               placeholder={IntLabel('gender')}
               onBlur={formik.handleBlur('gender')}
-              error={formik.errors.gender}
-              touched={formik.touched.gender}
+              // error={formik.errors.gender}
+              // touched={formik.touched.gender}
             />
           </View>
 
@@ -217,7 +209,7 @@ const UserProfile = () => {
               <CustomInputs
                 type="dropdown"
                 value={formik.values.country}
-                onChange={formik.handleChange('country')}
+                onChange={(e: any) => formik.setFieldValue('country', e)}
                 dropdownData={countries}
                 placeholder={IntLabel('country')}
                 onBlur={formik.handleBlur('country')}
@@ -230,7 +222,7 @@ const UserProfile = () => {
               <CustomInputs
                 type="dropdown"
                 value={formik.values.city}
-                onChange={formik.handleChange('city')}
+                onChange={(e: any) => formik.setFieldValue('city', e)}
                 dropdownData={cities}
                 placeholder={IntLabel('city')}
                 onBlur={formik.handleBlur('city')}
@@ -241,22 +233,13 @@ const UserProfile = () => {
             </View>
           </View>
           <View className="flex-1"></View>
-          <View className="my-6 space-y-3  w-full">
-            <CustomButtons
-              type="iconsolid"
-              label={IntLabel('save')}
-              icon="send"
-              theme="big"
-              onPress={formik.handleSubmit}
-            />
-            <CustomButtons
-              type="iconoutlined"
-              label={IntLabel('give_up')}
-              icon="send"
-              theme="big"
-              onPress={formik.handleReset}
-            />
-          </View>
+          <CustomButtons
+            type="solid"
+            label={IntLabel('save_changes')}
+            theme="big"
+            onPress={formik.handleSubmit}
+            style={{width: '100%'}}
+          />
         </View>
       </HandleData>
     </UserWrapper>
