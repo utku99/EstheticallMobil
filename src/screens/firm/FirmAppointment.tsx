@@ -76,13 +76,7 @@ const FirmAppointment = ({route}: props) => {
         true,
       ).then(res => {
         if (res.data.code == '100') {
-          if (company?.isAppointmentPaid) {
-            navigation.navigate('firmappointmentpayment', {
-              item: {...formik.values, institution: company},
-            });
-          } else {
-            navigation.goBack();
-          }
+          navigation.goBack();
         }
       });
     },
@@ -214,6 +208,8 @@ const FirmAppointment = ({route}: props) => {
             />
           </View>
         </View>
+
+        <View className="flex-1"></View>
 
         <CustomButtons
           type="iconsolid"

@@ -232,6 +232,8 @@ const FirmOffer = ({route}: any) => {
           error={formik.errors.images}
         />
 
+        <View className="flex-1"></View>
+
         <CustomButtons
           type="iconsolid"
           label={IntLabel('send')}

@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import WebClient from './WebClient'
 import { setLanguage, setLanguages } from '../redux/slices/user'
 import { deviceLanguage } from '../constants/constants'
+import SpinnerComp from '../components/SpinnerComp'
 
 
 
@@ -37,7 +38,7 @@ const InitlProviderComp = ({ children }) => {
 
     return (
         <IntlProvider locale={language?.language_code ?? deviceLanguage} messages={appParameter} defaultLocale={deviceLanguage} >
-            {children}
+            {appParameter?children : <SpinnerComp/>}
         </IntlProvider>
     )
 }

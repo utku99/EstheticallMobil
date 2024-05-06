@@ -25,8 +25,6 @@ const UserIncomingMessage = () => {
         companyOfficeID: 0,
         userID: user?.id,
       }).then(res => setUsers(res.data.object));
-
-      connection.invoke('LoginMessageHub', {UserID: user?.id, TypeID: 1});
     } else {
       navigation.navigate('sharing');
     }

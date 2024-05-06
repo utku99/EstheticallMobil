@@ -271,7 +271,7 @@ const Offer = () => {
           onChange={(e: any) => formik.setFieldValue('images', e)}
           error={formik.errors.images}
         />
-
+        <View className="flex-1"></View>
         <CustomButtons
           type="iconsolid"
           label={IntLabel('send')}

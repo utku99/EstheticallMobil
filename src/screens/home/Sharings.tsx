@@ -13,6 +13,7 @@ const Sharings = () => {
   const {Post, loading} = WebClient();
   const dispatch = useDispatch();
   const {user, language} = useSelector((state: any) => state.user);
+  const {connection, connectionId} = useSelector((state: any) => state.hub);
   const [clicked, setClicked] = useState(false);
 
   const {
@@ -64,6 +65,10 @@ const Sharings = () => {
           console.log('no player id');
         }
       });
+    }
+
+    if (user) {
+      connection.invoke('LoginMessageHub', {UserID: user?.id, TypeID: 1});
     }
 
     dispatch(setListFilters(false));

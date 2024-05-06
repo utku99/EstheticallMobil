@@ -92,15 +92,6 @@ const AppointmentComp = ({item}: {item: any}) => {
           />
         </View>
 
-        <View className="">
-          <Text className="text-customGray text-sm font-poppinsMedium ">
-            {IntLabel('category')}:{' '}
-          </Text>
-          <Text className="text-customGray  text-sm font-poppinsRegular">
-            Hastane (sabit??)
-          </Text>
-        </View>
-
         <View>
           <Text className="text-customGray text-sm font-poppinsMedium ">
             {IntLabel('operations')}:{' '}
@@ -142,7 +133,7 @@ const AppointmentComp = ({item}: {item: any}) => {
         )}
       </View>
 
-      <StepIndicator
+      {/* <StepIndicator
         customStyles={{
           stepIndicatorSize: 36,
           currentStepIndicatorSize: 36,
@@ -168,7 +159,7 @@ const AppointmentComp = ({item}: {item: any}) => {
         currentPosition={item?.operationState} // 0 1 2
         labels={['Onay Bekliyor', 'Onaylandı', 'Tamamlandı']}
         stepCount={3}
-      />
+      /> */}
 
       <CustomButtons
         onPress={() => setVisible(true)}

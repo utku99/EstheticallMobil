@@ -6,7 +6,7 @@ const hubConnectionSlice = createSlice({
 name:"hub",
 initialState:{
     connection:null,
-    message:[],
+    message:null,
     connectionId:null,
     totalUsers:0
 },
@@ -16,9 +16,6 @@ reducers:{
     },
     setMessage:(state,action)=>{
     state.message=action.payload
-    },
-    addMessage:(state,action)=>{
-    state.message.push(action.payload)
     },
     setConnectionId:(state,action)=>{
     state.connectionId=action.payload
@@ -30,5 +27,5 @@ reducers:{
 })
 
 export default hubConnectionSlice.reducer
-export const {setConnection,setMessage,setConnectionId,setTotalUsers,addMessage} = hubConnectionSlice.actions
+export const {setConnection,setMessage,setConnectionId,setTotalUsers,} = hubConnectionSlice.actions
 

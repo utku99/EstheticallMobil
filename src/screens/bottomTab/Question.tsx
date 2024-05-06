@@ -145,7 +145,7 @@ const Question = () => {
           type="question"
           error={formik.errors.checked}
         />
-
+        <View className="flex-1"></View>
         <CustomButtons
           type="iconsolid"
           label={IntLabel('send')}

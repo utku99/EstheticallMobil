@@ -18,10 +18,9 @@ import AddPhotoIcon from '../../../assets/svg/userMenu/AddPhotoIcon';
 import {SIZES} from '../../../constants/constants';
 import {openPicker} from 'react-native-image-crop-picker';
 import TrashIcon from '../../../assets/svg/firm/TrashIcon';
-import WebClient from '../../../utility/WebClient';
+import WebClient, {toast} from '../../../utility/WebClient';
 import {useDispatch, useSelector} from 'react-redux';
 import {useFormik} from 'formik';
-import {addMessage, setMessage} from '../../../redux/slices/hubConnection';
 import IntLabel from '../../../components/IntLabel';
 
 const UserMessage = ({route}: {route?: any}) => {
@@ -30,6 +29,7 @@ const UserMessage = ({route}: {route?: any}) => {
   const {Post, loading} = WebClient();
   const {user} = useSelector((state: any) => state.user);
   const {connection, message} = useSelector((state: any) => state.hub);
+  const [messages, setMessages] = useState<any>([]);
 
   const openGalery = () => {
     openPicker({
@@ -51,52 +51,45 @@ const UserMessage = ({route}: {route?: any}) => {
       message: string;
     },
     onSubmit: (values, {resetForm, setFieldValue}) => {
-      if (values.images.length == 0) {
-        Post(
-          '/api/Chatting/SendMessage',
-          {
-            roomID: route.params?.selectedUser?.roomID,
-            senderId: user?.id,
-            senderType: 1,
-            message: values.message,
-            messagesType: route.params?.selectedUser?.messagesType,
-            receiverId: route.params?.selectedUser?.correspondentID,
-            receiverType: route.params?.selectedUser?.correspondentType,
-            serviceID: message[0]?.serviceID,
-          },
-          false,
-          false,
-        ).then(res => {
-          if (res.data.code == '100') {
-            resetForm();
-            setFieldValue('images', []);
-            dispatch(addMessage(res.data.object));
-          }
-        });
-      } else {
-        Post(
-          '/api/Chatting/SendMessage',
-          {
-            roomID: route.params?.selectedUser?.roomID,
-            senderId: user?.id,
-            senderType: 1,
-            message: '',
-            image: values.images,
-            messagesType: route.params?.selectedUser?.messagesType,
-            receiverId: route.params?.selectedUser?.correspondentID,
-            receiverType: route.params?.selectedUser?.correspondentType,
-            serviceID: message[0]?.serviceID,
-          },
-          false,
-          false,
-        ).then(res => {
-          if (res.data.code == '100') {
-            resetForm();
-            setFieldValue('images', []);
-            dispatch(addMessage(res.data.object));
-          }
-        });
-      }
+      Post(
+        '/api/Chatting/SendMessage',
+        {
+          roomID: route.params?.selectedUser?.roomID,
+          senderId: user?.id,
+          senderType: 1,
+          message: values.message,
+          images: values.images,
+          messagesType: route.params?.selectedUser?.messagesType,
+          receiverId: route.params?.selectedUser?.correspondentID,
+          receiverType: route.params?.selectedUser?.correspondentType,
+          serviceID: message[0]?.serviceID,
+        },
+        false,
+        false,
+      ).then(res => {
+        if (res.data.code == '100') {
+          resetForm();
+          setFieldValue('images', []);
+
+          const now = new Date();
+          const createdDate = `${now.getHours()}:${
+            (now.getMinutes() < 10 ? '0' : '') + now.getMinutes()
+          }`;
+
+          let temp = messages;
+          temp.push({
+            message: res.data.object.message,
+            createdDate: createdDate,
+            senderId: res.data.object.senderID,
+            image0: res.data.object.image,
+            image1: res.data.object.image2,
+            image2: res.data.object.image3,
+            image3: res.data.object.image4,
+            image4: res.data.object.image5,
+          });
+          setMessages(temp);
+        }
+      });
     },
   });
 
@@ -107,7 +100,7 @@ const UserMessage = ({route}: {route?: any}) => {
       companyOfficeID: 0,
       userID: user?.id,
     }).then(res => {
-      dispatch(setMessage(res.data.object));
+      setMessages(res.data.object);
     });
 
     return () => {
@@ -115,12 +108,16 @@ const UserMessage = ({route}: {route?: any}) => {
     };
   }, []);
 
+  useEffect(() => {
+    message && setMessages([...messages, message]);
+  }, [message]);
+
   return (
     <UserWrapper title={IntLabel('messages')} scrollEnabled={false}>
       <HandleData
         title={IntLabel('warning_no_active_record')}
         loading={loading}
-        data={message}>
+        data={messages}>
         <View
           className="flex-1"
           style={{width: SIZES.width * 0.95, height: SIZES.height * 0.69}}>
@@ -131,7 +128,7 @@ const UserMessage = ({route}: {route?: any}) => {
             }
             className="mb-5 "
             contentContainerStyle={{gap: 15}}
-            data={message}
+            data={messages}
             renderItem={({item}) => <DoctorMessageComp item={item} />}
           />
 
@@ -178,7 +175,17 @@ const UserMessage = ({route}: {route?: any}) => {
                   placeholder={IntLabel('write_message')}
                   placeholderTextColor={'#4D4A48'}
                 />
-                <TouchableOpacity onPress={() => formik.handleSubmit()}>
+                <TouchableOpacity
+                  onPress={() => {
+                    if (
+                      formik.values.images.length == 0 &&
+                      formik.values.message == ''
+                    ) {
+                      toast('lütfen mesaj girin');
+                    } else {
+                      formik.handleSubmit();
+                    }
+                  }}>
                   <SharingSendMessageIcon />
                 </TouchableOpacity>
               </View>

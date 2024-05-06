@@ -93,13 +93,13 @@ const Appointment = () => {
         true,
       ).then(res => {
         if (res.data.code == '100') {
-          if (formik.values.institution) {
-            navigation.navigate('firmappointmentpayment', {
-              item: formik.values,
-            });
-          } else {
-            navigation.goBack();
-          }
+          // if (formik.values.institution) {
+          //   navigation.navigate('firmappointmentpayment', {
+          //     item: formik.values,
+          //   });
+          // } else {
+          // }
+          navigation.goBack();
         }
       });
     },
@@ -318,6 +318,7 @@ const Appointment = () => {
             />
           </View>
         </View>
+        <View className="flex-1"></View>
 
         <CustomButtons
           type="iconsolid"
