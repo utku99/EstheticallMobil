@@ -234,7 +234,7 @@ const OfferComp = ({
 
             {item?.doctorBranch && (
               <>
-                <View className="flex-row">
+                <View className="flex-row mb-1">
                   <Text className=" font-poppinsMedium text-sm text-customGray">
                     {IntLabel('related_doctor')}:{' '}
                   </Text>
@@ -299,7 +299,7 @@ const OfferComp = ({
       <Pressable
         onPress={() => setSeeAll(!seeAll)}
         className="bg-customBrown w-full h-[35px] rounded-b-lg flex-row items-center justify-between px-[10px]">
-        {!seeAll && (
+        {/* {!seeAll && (
           <Text
             numberOfLines={1}
             className="font-poppinsRegular text-xs text-white flex-1">
@@ -310,7 +310,8 @@ const OfferComp = ({
               ? '$'
               : '€'}
           </Text>
-        )}
+        )} */}
+        {!seeAll && <View className="flex-1"></View>}
         <View className="flex-1 items-center ">
           {seeAll ? <DoctorArrowUpIcon /> : <DoctorArrowDownIcon />}
         </View>

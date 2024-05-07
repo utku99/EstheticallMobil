@@ -144,7 +144,7 @@ const FirmWrapper: React.FC<props> = ({children}) => {
                   className="text-customGray text-sm font-poppinsSemiBold">
                   {firmLeftInfo?.name}
                 </Text>
-                <BlueTick />
+                {firmLeftInfo?.isApprovementCompany && <BlueTick />}
               </View>
               {(firmLeftInfo?.companyBranch ?? firmLeftInfo?.doctorBranch) && (
                 <Text
@@ -194,7 +194,7 @@ const FirmWrapper: React.FC<props> = ({children}) => {
             contentContainerStyle={{
               flexDirection: 'row',
               gap: 8,
-              paddingLeft: '2%',
+              paddingHorizontal: '2%',
             }}
           />
         </View>

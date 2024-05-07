@@ -25,6 +25,7 @@ import moment from 'moment';
 import IntLabel from './IntLabel';
 import Clipboard from '@react-native-clipboard/clipboard';
 import Video from 'react-native-video';
+import BlueTick from '../assets/svg/common/BlueTick';
 
 const CommentComp = ({item}: any) => {
   return (
@@ -111,11 +112,16 @@ const SharingComp = ({
             />
           </View>
           <View className="pl-2 flex-shrink">
-            <Text
-              numberOfLines={1}
-              className="text-customGray  text-xs font-poppinsSemiBold">
-              {item?.name ?? item?.parentModel?.name}
-            </Text>
+            <View className="flex-row items-center space-x-1">
+              <Text
+                numberOfLines={1}
+                className="text-customGray  text-xs font-poppinsSemiBold">
+                {item?.name ?? item?.parentModel?.name}
+              </Text>
+              {(item?.isApprovedAccount ??
+                item?.parentModel?.isApprovedAccount) && <BlueTick />}
+            </View>
+
             {(item?.companyBranch ??
               item?.doctorBranch ??
               item?.parentModel?.companyBranch) && (

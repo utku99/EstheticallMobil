@@ -16,6 +16,7 @@ import LikeUnlikeComp from './LikeUnlikeComp';
 import {useFormik} from 'formik';
 import CommunicationModal from './CommunicationModal';
 import IntLabel from './IntLabel';
+import BlueTick from '../assets/svg/common/BlueTick';
 
 const PackageComp = ({
   item,
@@ -46,6 +47,8 @@ const PackageComp = ({
     }
   };
 
+  console.log(item);
+
   return (
     <View
       className={`h-fit border border-customLightGray rounded-xl bg-white `}
@@ -69,11 +72,15 @@ const PackageComp = ({
             />
           </View>
           <View className="pl-2 flex-shrink">
-            <Text
-              numberOfLines={1}
-              className="text-customGray text-xs font-poppinsSemiBold">
-              {item?.headerModel?.companyName ?? item?.companyName}
-            </Text>
+            <View className="flex-row items-center space-x-1">
+              <Text
+                numberOfLines={1}
+                className="text-customGray text-xs font-poppinsSemiBold">
+                {item?.headerModel?.companyName ?? item?.companyName}
+              </Text>
+              {(item?.isApprovedAccount ??
+                item?.headerModel?.isApprovementAccount) && <BlueTick />}
+            </View>
 
             {(item?.companyBranch ??
               item?.doctorBranch ??
@@ -261,16 +268,13 @@ const PackageComp = ({
           }).then(res => {});
           setSeeAll(!seeAll);
         }}
-        className="bg-customBrown w-full h-[35px] rounded-b-lg flex-row items-center justify-between px-[10px]">
-        <Text
+        className="bg-customBrown w-full h-[35px] rounded-b-lg flex items-center justify-center">
+        {/* <Text
           numberOfLines={1}
           className="font-poppinsRegular  text-xs text-white flex-1 ">
           {IntLabel('packet_price')}: {item?.footerModel?.price ?? item?.price}₺
-        </Text>
-        <View className="flex-2 items-center ">
-          {seeAll ? <DoctorArrowUpIcon /> : <DoctorArrowDownIcon />}
-        </View>
-        <View className="flex-1"></View>
+        </Text> */}
+        {seeAll ? <DoctorArrowUpIcon /> : <DoctorArrowDownIcon />}
       </Pressable>
 
       {/* modal */}

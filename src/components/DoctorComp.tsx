@@ -5,6 +5,7 @@ import {SIZES} from '../constants/constants';
 import LikeUnlikeComp from './LikeUnlikeComp';
 import IntLabel from './IntLabel';
 import {useNavigation} from '@react-navigation/native';
+import BlueTick from '../assets/svg/common/BlueTick';
 
 interface props {
   item?: any;
@@ -35,11 +36,14 @@ const DoctorComp: React.FC<props> = ({item, setClicked, readOnly}) => {
           />
         </View>
         <View className="space-y-1  flex-shrink">
-          <Text
-            numberOfLines={1}
-            className="text-customGray text-xs font-poppinsSemiBold ">
-            {item?.nameWithTitle ?? item?.name}
-          </Text>
+          <View className="flex-row items-center space-x-1">
+            <Text
+              numberOfLines={1}
+              className="text-customGray text-xs font-poppinsSemiBold ">
+              {item?.nameWithTitle ?? item?.name}
+            </Text>
+            {item?.isApprovedAccount && <BlueTick />}
+          </View>
           {(item?.companyBranch ?? item?.doctorBranch) && (
             <Text
               numberOfLines={1}
