@@ -2,6 +2,7 @@ import {View, Text, Pressable, FlatList, Image} from 'react-native';
 import React, {useState} from 'react';
 import AddPhotoIcon from '../assets/svg/firm/AddPhotoIcon';
 import {openPicker} from 'react-native-image-crop-picker';
+import picker from 'react-native-image-crop-picker';
 
 import TrashIcon from '../assets/svg/firm/TrashIcon';
 
@@ -15,14 +16,31 @@ const AddPhotoComp = ({
   error?: any;
 }) => {
   const openGalery = () => {
-    openPicker({
-      cropping: false,
-      includeBase64: true,
-      multiple: true,
-    }).then((image: any) => {
-      let temp = image.map((img: any) => img.data);
-      onChange(temp);
-    });
+    picker
+      .openPicker({
+        cropping: false,
+        includeBase64: true,
+        multiple: true,
+        mediaType: 'photo',
+        maxFiles: 5,
+      })
+      .then((image: any) => {
+        let temp = image.map((img: any) => img.data);
+        onChange(temp);
+      });
+  };
+  const openCamera = () => {
+    picker
+      .openCamera({
+        cropping: false,
+        includeBase64: true,
+        multiple: true,
+        mediaType: 'photo',
+        maxFiles: 5,
+      })
+      .then(image => {
+        console.log(image);
+      });
   };
 
   return (
