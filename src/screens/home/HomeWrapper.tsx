@@ -358,7 +358,7 @@ const HomeWrapper: React.FC<props> = ({children}) => {
         onDismiss={() => setVisible2(false)}
         style={{alignItems: 'center'}}
         contentContainerStyle={{
-          padding: 10,
+          padding: 20,
           backgroundColor: 'white',
           width: '90%',
           borderRadius: 10,
@@ -447,7 +447,7 @@ const HomeWrapper: React.FC<props> = ({children}) => {
           icon="send"
           label={IntLabel('make_comment')}
           theme="middle"
-          style={{marginTop: 20}}
+          style={{marginTop: 20, width: '60%', alignSelf: 'center'}}
           onPress={formik.handleSubmit}
         />
       </Modal>
