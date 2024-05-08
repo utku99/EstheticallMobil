@@ -13,10 +13,10 @@ const MessageComp = ({item}: any) => {
   const {user} = useSelector((state: any) => state.user);
 
   const messagesType: any = [
-    {value: 1, label: IntLabel('question')},
+    {value: 1, label: IntLabel('general_question')},
     {value: 2, label: IntLabel('offer')},
     {value: 3, label: IntLabel('packet')},
-    {value: 4, label: IntLabel('general')},
+    {value: 4, label: IntLabel('general_question')},
   ];
 
   return (
