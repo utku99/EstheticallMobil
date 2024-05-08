@@ -67,7 +67,7 @@ const Sharings = () => {
       });
     }
 
-    if (user) {
+    if (user && connection) {
       connection.invoke('LoginMessageHub', {UserID: user?.id, TypeID: 1});
     }
 
@@ -89,6 +89,7 @@ const Sharings = () => {
         <FlatList
           contentContainerStyle={{display: 'flex', gap: 15, paddingBottom: 20}}
           data={shareds}
+          initialNumToRender={2}
           renderItem={({item}) => (
             <SharingComp
               key={item.sharedID}

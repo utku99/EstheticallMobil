@@ -30,7 +30,7 @@ const Comments = () => {
       companyType: institution?.value ?? 0,
       serviceId: operation?.value ?? 0,
       serviceSubId: suboperation?.value ?? 0,
-      languageID: language?.type,
+      languageID: language?.type ?? 1,
       userId: user?.id ?? 0,
     }).then((res: any) => {
       setComments(res.data);
