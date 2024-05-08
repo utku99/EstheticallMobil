@@ -38,8 +38,8 @@ const InitlProviderComp = ({ children }) => {
 
     return (
         <IntlProvider locale={language?.language_code ?? deviceLanguage} messages={appParameter} defaultLocale={deviceLanguage} >
-            {/* {appParameter ? children : <SpinnerComp/>} */}
-            {children }
+            {appParameter ? children : ""}
+            {/* {children } */}
         </IntlProvider>
     )
 }
