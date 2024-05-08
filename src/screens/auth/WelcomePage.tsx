@@ -33,19 +33,19 @@ const WelcomePage = () => {
   const data = [
     {
       key: 1,
-      image: require('../../assets/images/authBg/image1.jpeg'),
+      image: require('../../assets/images/authBg/image1.jpg'),
       text: IntLabel('welcome_title_1'),
       text2: IntLabel('welcome_title_2'),
     },
     {
       key: 2,
-      image: require('../../assets/images/authBg/image2.jpeg'),
+      image: require('../../assets/images/authBg/image2.jpg'),
       text: IntLabel('welcome_title_3'),
       text2: IntLabel('welcome_title_4'),
     },
     {
       key: 3,
-      image: require('../../assets/images/authBg/image3.jpeg'),
+      image: require('../../assets/images/authBg/image3.jpg'),
       text: IntLabel('welcome_title_5'),
       text2: IntLabel('welcome_title_6'),
     },
@@ -67,7 +67,7 @@ const WelcomePage = () => {
           <ImageBackground source={item.image} style={{width: SIZES.width}}>
             <SafeAreaView className="flex-1 items-center justify-between z-50 py-4">
               <View className="">
-                <EstheticLogo />
+                <EstheticLogo width={165} height={47} />
               </View>
               <View className="w-[85%]">
                 <Text className="font-poppinsBold text-4xl text-white mb-[20px]">

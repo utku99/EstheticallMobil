@@ -169,7 +169,7 @@ const SharingComp = ({
       </View>
 
       {/* carousel */}
-      <View className="w-full aspect-[1.5]">
+      <View className="w-full aspect-[1.3]">
         <Carousel
           ref={isCarousel}
           data={(item?.imagesList ?? item?.files)?.map((img: any) => ({
