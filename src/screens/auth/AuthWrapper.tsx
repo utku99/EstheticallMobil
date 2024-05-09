@@ -54,7 +54,7 @@ const AuthWrapper: React.FC<props> = ({children, title, onPress}) => {
               <LangChoiceComp />
             </View>
             <View className="">
-              <EstheticLogo />
+              <EstheticLogo width={165} height={47} />
             </View>
           </View>
 
