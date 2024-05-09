@@ -180,8 +180,8 @@ const SharingComp = ({
             item?.imgUrl?.includes('mp4') ? (
               <Video
                 source={{uri: item?.imgUrl}}
-                disableFocus
-                repeat
+                controls
+                playInBackground={false}
                 resizeMode="cover"
                 className="w-full h-full "
               />
