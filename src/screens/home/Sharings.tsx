@@ -87,7 +87,7 @@ const Sharings = () => {
         <FlatList
           contentContainerStyle={{display: 'flex', gap: 15, paddingBottom: 20}}
           data={shareds}
-          initialNumToRender={2}
+          initialNumToRender={3}
           renderItem={({item}) => (
             <SharingComp
               key={item.sharedID}
