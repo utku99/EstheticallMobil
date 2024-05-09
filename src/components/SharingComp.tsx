@@ -7,7 +7,7 @@ import {
   FlatList,
   TouchableOpacity,
 } from 'react-native';
-import React, {useEffect, useRef, useState, memo} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import CustomInputs from './CustomInputs';
 import SharingMessageIcon from '../assets/svg/homepages/SharingMessageIcon';
 import SharingSaveIcon from '../assets/svg/homepages/SharingSaveIcon';
@@ -342,4 +342,4 @@ const SharingComp = ({
   );
 };
 
-export default memo(SharingComp);
+export default SharingComp;

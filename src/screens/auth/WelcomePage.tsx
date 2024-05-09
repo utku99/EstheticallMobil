@@ -33,18 +33,23 @@ const WelcomePage = () => {
   const data = [
     {
       key: 1,
+      image: require('../../assets/images/authBg/auth2.jpg'),
+      text: IntLabel('welcome_title_0'),
+    },
+    {
+      key: 2,
       image: require('../../assets/images/authBg/image1.jpg'),
       text: IntLabel('welcome_title_1'),
       text2: IntLabel('welcome_title_2'),
     },
     {
-      key: 2,
+      key: 3,
       image: require('../../assets/images/authBg/image2.jpg'),
       text: IntLabel('welcome_title_3'),
       text2: IntLabel('welcome_title_4'),
     },
     {
-      key: 3,
+      key: 4,
       image: require('../../assets/images/authBg/image3.jpg'),
       text: IntLabel('welcome_title_5'),
       text2: IntLabel('welcome_title_6'),
@@ -70,12 +75,22 @@ const WelcomePage = () => {
                 <EstheticLogo width={165} height={47} />
               </View>
               <View className="w-[85%]">
-                <Text className="font-poppinsBold text-4xl text-white mb-[20px]">
-                  {item.text}
-                </Text>
-                <Text className="font-poppinsMedium text-base text-white mb-[20px]">
-                  {item.text2}
-                </Text>
+                {item.key == 1 ? (
+                  <Text className="font-poppinsSemiBold text-4xl text-customGray mb-[60px] px-4">
+                    {item.text}
+                  </Text>
+                ) : (
+                  <Text className="font-poppinsBold text-4xl text-white mb-[20px]">
+                    {item.text}
+                  </Text>
+                )}
+
+                {item?.text2 && (
+                  <Text className="font-poppinsMedium text-base text-white mb-[20px]">
+                    {item.text2}
+                  </Text>
+                )}
+
                 <View className="justify-center flex-row mb-[30px] space-x-3">
                   {data.map(dataItem => (
                     <Pressable
