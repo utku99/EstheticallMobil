@@ -130,6 +130,8 @@ const Packages = () => {
         loading={loading}
         title={IntLabel('warning_no_active_record')}>
         <FlatList
+                  showsVerticalScrollIndicator={false}
+
           contentContainerStyle={{
             display: 'flex',
             gap: 15,

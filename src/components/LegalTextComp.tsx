@@ -24,6 +24,7 @@ const LegalTextComp = ({value, onChange, type, error}: props) => {
   const [legalText2, setLegalText2] = useState<any>('');
   const [legalText3, setLegalText3] = useState<any>('');
   const {language} = useSelector((state: any) => state.user);
+  const [text, setText] = useState<any>(1);
 
   useEffect(() => {
     Post('/api/Common/GetLegalTextWeb', {
@@ -46,6 +47,8 @@ const LegalTextComp = ({value, onChange, type, error}: props) => {
     });
   }, [language]);
 
+  console.log(text);
+
   return (
     <>
       {type == 'auth' && (
@@ -53,20 +56,61 @@ const LegalTextComp = ({value, onChange, type, error}: props) => {
           <View className="flex-row space-x-2">
             <CustomInputs type="checkbox" value={value} onChange={onChange} />
 
-            <Text
-              onPress={() => setVisible(true)}
-              className="text-xs font-poppinsRegular text-black flex-shrink">
-              {IntLabel('auth_text_title')}
+            <Text className="text-xs font-poppinsRegular text-black flex-shrink">
+              <FormattedMessage
+                id="auth_text_title"
+                defaultMessage={'auth_text_title'}
+                values={{
+                  text1TR: (
+                    <Text
+                      onPress={() => {
+                        setText(1);
+                        setVisible(true);
+                      }}
+                      className="text-xs font-poppinsRegular text-customOrange flex-shrink">
+                      Gizlilik ve Kullanım Koşulları
+                    </Text>
+                  ),
+                  text2TR: (
+                    <Text
+                      onPress={() => {
+                        setText(2);
+                        setVisible(true);
+                      }}
+                      className="text-xs font-poppinsRegular text-customOrange flex-shrink">
+                      Bireysel Üyelik Sözleşmesini
+                    </Text>
+                  ),
+                  text1EN: (
+                    <Text
+                      onPress={() => {
+                        setText(1);
+                        setVisible(true);
+                      }}
+                      className="text-xs font-poppinsRegular text-customOrange flex-shrink">
+                      Privacy and Terms of Use
+                    </Text>
+                  ),
+                  text2EN: (
+                    <Text
+                      onPress={() => {
+                        setText(2);
+                        setVisible(true);
+                      }}
+                      className="text-xs font-poppinsRegular text-customOrange flex-shrink">
+                      Individual Membership Agreement
+                    </Text>
+                  ),
+                }}
+              />
             </Text>
 
             <ModalWrapper visible={visible} setVisible={setVisible}>
               <RenderHTML
                 contentWidth={SIZES.width}
-                source={{html: legalText?.content}}
-              />
-              <RenderHTML
-                contentWidth={SIZES.width}
-                source={{html: legalText2?.content}}
+                source={{
+                  html: text == 1 ? legalText?.content : legalText2?.content,
+                }}
               />
             </ModalWrapper>
           </View>
@@ -80,21 +124,24 @@ const LegalTextComp = ({value, onChange, type, error}: props) => {
             <CustomInputs type="checkbox" value={value} onChange={onChange} />
 
             <Text className="text-xs font-poppinsRegular text-customGray flex-shrink">
-              {/* {IntLabel('question_text_title')} */}
               <FormattedMessage
                 id="question_text_title"
                 defaultMessage={'question_text_title'}
                 values={{
                   express_consent_textTR: (
                     <Text
-                      onPress={() => setVisible(true)}
+                      onPress={() => {
+                        setVisible(true);
+                      }}
                       className="text-xs font-poppinsRegular text-customOrange flex-shrink">
                       özel nitelikli kişisel veri açık rıza metnini
                     </Text>
                   ),
                   express_consent_textEN: (
                     <Text
-                      onPress={() => setVisible(true)}
+                      onPress={() => {
+                        setVisible(true);
+                      }}
                       className="text-xs font-poppinsRegular text-customOrange flex-shrink">
                       special personal data can be obtained with explicit
                       consent
@@ -107,7 +154,9 @@ const LegalTextComp = ({value, onChange, type, error}: props) => {
             <ModalWrapper visible={visible} setVisible={setVisible}>
               <RenderHTML
                 contentWidth={SIZES.width}
-                source={{html: legalText3?.content}}
+                source={{
+                  html: legalText3?.content,
+                }}
               />
             </ModalWrapper>
           </View>

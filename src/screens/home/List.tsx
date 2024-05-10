@@ -51,6 +51,7 @@ const List = () => {
         loading={loading}
         title={IntLabel('warning_no_active_record')}>
         <FlatList
+          showsVerticalScrollIndicator={false}
           contentContainerStyle={{display: 'flex', gap: 15, paddingBottom: 20}}
           data={doctors}
           renderItem={({item}) => (

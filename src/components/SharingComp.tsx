@@ -181,6 +181,7 @@ const SharingComp = ({
               <Video
                 source={{uri: item?.imgUrl}}
                 controls
+                paused
                 playInBackground={false}
                 resizeMode="cover"
                 className="w-full h-full "

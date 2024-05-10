@@ -63,6 +63,7 @@ const WelcomePage = () => {
         data={data}
         horizontal
         pagingEnabled
+        showsHorizontalScrollIndicator={false}
         onViewableItemsChanged={({viewableItems}) => {
           if (viewableItems.length > 0) {
             setCurrentPage(viewableItems[0].index || 0);
