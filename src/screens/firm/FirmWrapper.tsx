@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
-import WebClient from '../../utility/WebClient';
+import WebClient, {toast} from '../../utility/WebClient';
 import {useDispatch, useSelector} from 'react-redux';
 import BlueTick from '../../assets/svg/common/BlueTick';
 import CommunicationItem from '../../assets/svg/firm/CommunicationItem';
@@ -24,6 +24,7 @@ import LikeUnlikeComp from '../../components/LikeUnlikeComp';
 import {setSelectedService} from '../../redux/slices/common';
 import IntLabel from '../../components/IntLabel';
 import Clipboard from '@react-native-clipboard/clipboard';
+import {useIntl} from 'react-intl';
 
 interface props {
   children?: React.ReactNode;
@@ -32,6 +33,7 @@ interface props {
 const FirmWrapper: React.FC<props> = ({children}) => {
   const {Post, loading} = WebClient();
   const dispatch = useDispatch();
+  const intl = useIntl();
   const {user, language} = useSelector((state: any) => state.user);
   const {selectedService} = useSelector((state: any) => state.common);
   const [firmLeftInfo, setFirmLeftInfo] = useState<any>();
@@ -51,6 +53,8 @@ const FirmWrapper: React.FC<props> = ({children}) => {
     {id: 7, label: IntLabel('take_offer'), name: 'firmoffer'},
     {id: 8, label: IntLabel('packages'), name: 'firmpackages'},
   ];
+
+  console.log(firmLeftInfo);
 
   useEffect(() => {
     Post('/api/Company/GetCompanyInfoWeb', {
@@ -113,7 +117,17 @@ const FirmWrapper: React.FC<props> = ({children}) => {
               <CommunicationItem />
             </Pressable>
             <TouchableOpacity
-              onPress={() => Clipboard.setString(firmLeftInfo?.name)}>
+              onPress={() => {
+                Clipboard.setString(
+                  `https://dev.estheticall.com/firma/profil?id=${firmLeftInfo?.companyID}&officeId=${firmLeftInfo?.companyOfficeID}`,
+                );
+                toast(
+                  intl.formatMessage({
+                    id: 'copied_clipboard',
+                    defaultMessage: 'copied_clipboard',
+                  }),
+                );
+              }}>
               <ShareIcon />
             </TouchableOpacity>
             <View>

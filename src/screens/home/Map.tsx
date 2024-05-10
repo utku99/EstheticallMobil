@@ -106,11 +106,15 @@ const Map = () => {
                   resizeMode="cover"
                 />
               </View>
-              <View>
-                <Text className="text-customGray  text-xs font-poppinsSemiBold">
+              <View className="flex-shrink">
+                <Text
+                  numberOfLines={1}
+                  className="text-customGray  text-xs font-poppinsSemiBold">
                   {selectedCompany?.name}
                 </Text>
-                <Text className="text-customGray  text-xs font-poppinsRegular">
+                <Text
+                  numberOfLines={2}
+                  className="text-customGray  text-xs font-poppinsRegular">
                   {selectedCompany?.address}
                 </Text>
               </View>
