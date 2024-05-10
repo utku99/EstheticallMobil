@@ -7,6 +7,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {setListFilters} from '../../redux/slices/filter';
 import HandleData from '../../components/HandleData';
 import IntLabel from '../../components/IntLabel';
+import AdvertisementList from '../../components/AdvertisementList';
 
 const List = () => {
   const {Post, loading} = WebClient();
@@ -56,6 +57,7 @@ const List = () => {
           data={doctors}
           renderItem={({item}) => (
             <DoctorComp item={item} setClicked={setClicked} />
+            // <AdvertisementList />
           )}
         />
       </HandleData>

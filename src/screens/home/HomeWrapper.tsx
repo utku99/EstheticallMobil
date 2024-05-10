@@ -22,6 +22,7 @@ import IntLabel from '../../components/IntLabel';
 import MessageIcon from '../../assets/svg/userMenu/MessageIcon';
 import {useFormik} from 'formik';
 import * as Yup from 'yup';
+import AdvertisementList from '../../components/AdvertisementList';
 
 interface props {
   children?: React.ReactNode;

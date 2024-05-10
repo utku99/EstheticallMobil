@@ -8,6 +8,7 @@ import {setListFilters} from '../../redux/slices/filter';
 import HandleData from '../../components/HandleData';
 import {OneSignal} from 'react-native-onesignal';
 import IntLabel from '../../components/IntLabel';
+import AdvertisementSharing from '../../components/AdvertisementSharing';
 
 const Sharings = () => {
   const {Post, loading} = WebClient();
@@ -96,6 +97,7 @@ const Sharings = () => {
               onClickable
               setClicked={setClicked}
             />
+            // <AdvertisementSharing />
           )}
         />
       </HandleData>
