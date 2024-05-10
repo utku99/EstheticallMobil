@@ -28,7 +28,7 @@ const UserRegister = () => {
       passwordAgain: '',
       email: '',
       nickname: '',
-      date: new Date(),
+      date: '',
       gender: '',
       country: '',
       city: '',

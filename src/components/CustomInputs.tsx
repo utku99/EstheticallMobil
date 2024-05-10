@@ -155,9 +155,9 @@ const CustomInputs: React.FC<props> = ({
             onPress={() => setShowDateModal(true)}>
             <Text
               className={`flex-1 text-customGray ${
-                value ? 'text-opacity-100' : 'text-opacity-50'
+                value != '' ? 'opacity-100' : 'opacity-50'
               }  text-xs font-poppinsRegular `}>
-              {value ? <FormattedDate value={value} /> : placeholder}
+              {value != '' ? <FormattedDate value={value} /> : placeholder}
             </Text>
             <CalendarIcon />
           </TouchableOpacity>
@@ -165,7 +165,7 @@ const CustomInputs: React.FC<props> = ({
             modal
             mode="date"
             open={showDateModal}
-            date={value}
+            date={value == '' ? new Date() : value}
             locale={language?.flag_code ?? 'tr'}
             onConfirm={date => {
               setShowDateModal(false);

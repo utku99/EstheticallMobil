@@ -34,8 +34,8 @@ const FirmAppointment = ({route}: props) => {
       doctor: '',
       title: '',
       content: '',
-      startDate: moment().add(1, 'days').toDate(),
-      endDate: moment().add(2, 'days').toDate(),
+      startDate: '',
+      endDate: '',
     } as any,
     validationSchema: Yup.object().shape({
       operation: Yup.object().required(
@@ -187,22 +187,22 @@ const FirmAppointment = ({route}: props) => {
               minimumDate={moment().add(1, 'days').toDate()}
               placeholder={IntLabel('start_date')}
               value={formik.values.startDate}
+              error={formik.errors.startDate}
               onChange={(e: any) => {
                 formik.setFieldValue('startDate', e);
-                formik.setFieldValue(
-                  'endDate',
-                  moment(e).add(1, 'days').toDate(),
-                );
+                formik.setFieldValue('endDate', '');
               }}
               style={{width: '75%'}}
             />
             <CustomInputs
               type="date"
-              minimumDate={moment(formik.values.startDate)
-                .add(1, 'days')
-                .toDate()}
+              minimumDate={
+                formik.values.startDate != '' &&
+                moment(formik.values.startDate).add(1, 'days').toDate()
+              }
               placeholder={IntLabel('end_date')}
               value={formik.values.endDate}
+              error={formik.errors.endDate}
               onChange={(e: any) => formik.setFieldValue('endDate', e)}
               style={{width: '75%'}}
             />

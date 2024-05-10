@@ -26,6 +26,7 @@ import IntLabel from './IntLabel';
 import Clipboard from '@react-native-clipboard/clipboard';
 import Video from 'react-native-video';
 import BlueTick from '../assets/svg/common/BlueTick';
+import {useIntl} from 'react-intl';
 
 const CommentComp = ({item}: any) => {
   return (
@@ -75,7 +76,7 @@ const SharingComp = ({
   const isCarousel = useRef(null);
   const navigation = useNavigation();
   const {user, isLoggedIn} = useSelector((state: any) => state.user);
-
+  const intl = useIntl();
   const [addComment, setAddComment] = useState(null);
 
   const warning = IntLabel('login_required_warning');
@@ -286,7 +287,16 @@ const SharingComp = ({
             <SharingSaveIcon />
           )}
 
-          <TouchableOpacity onPress={() => Clipboard.setString(item?.name)}>
+          <TouchableOpacity
+            onPress={() => {
+              Clipboard.setString(item?.name);
+              toast(
+                intl.formatMessage({
+                  id: 'copied_clipboard',
+                  defaultMessage: 'copied_clipboard',
+                }),
+              );
+            }}>
             <SharingShareIcon />
           </TouchableOpacity>
         </View>

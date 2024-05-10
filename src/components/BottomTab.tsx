@@ -1,5 +1,5 @@
 import {Pressable, SafeAreaView, Text, View} from 'react-native';
-import React, {Component} from 'react';
+import React, {Component, useEffect, useState} from 'react';
 import HomeIcon from '../assets/svg/bottomTab/HomeIcon';
 import QuestionIcon from '../assets/svg/bottomTab/QuestionIcon';
 import AppointmentIcon from '../assets/svg/bottomTab/AppointmentIcon';
@@ -14,9 +14,9 @@ const BottomTab = ({props}: any) => {
   const insets = useSafeAreaInsets();
 
   let routeName =
-    props.state.routes[0].state.routes[
+    props?.state?.routes[0]?.state?.routes[
       props.state.routes[0].state.routes.length - 1
-    ].name;
+    ]?.name ?? 'sharing';
 
   return (
     <View
