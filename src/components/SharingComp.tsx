@@ -289,7 +289,9 @@ const SharingComp = ({
 
           <TouchableOpacity
             onPress={() => {
-              Clipboard.setString(item?.name);
+              Clipboard.setString(
+                `https://dev.estheticall.com/paylasimlar?id=${item?.sharedID}`,
+              );
               toast(
                 intl.formatMessage({
                   id: 'copied_clipboard',

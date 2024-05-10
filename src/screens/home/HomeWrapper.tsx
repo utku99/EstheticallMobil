@@ -211,7 +211,6 @@ const HomeWrapper: React.FC<props> = ({children}) => {
           <CustomButtons
             type={route.name == 'sharing' ? 'solid' : 'outlined'}
             label={IntLabel('sharings')}
-            style={{width: 110}}
             onPress={() => {
               navigation.navigate('sharing', {tab: 1});
             }}
@@ -219,7 +218,6 @@ const HomeWrapper: React.FC<props> = ({children}) => {
           <CustomButtons
             type={route.name == 'comment' ? 'solid' : 'outlined'}
             label={IntLabel('comments')}
-            style={{width: 110}}
             onPress={() => {
               navigation.navigate('comment', {tab: 2});
             }}
@@ -227,7 +225,6 @@ const HomeWrapper: React.FC<props> = ({children}) => {
           <CustomButtons
             type={route.name == 'list' ? 'solid' : 'outlined'}
             label={IntLabel('list')}
-            style={{width: 110}}
             onPress={() => {
               navigation.navigate('list', {tab: 3});
             }}
@@ -236,7 +233,6 @@ const HomeWrapper: React.FC<props> = ({children}) => {
             type={route.name == 'map' ? 'iconsolid' : 'iconoutlined'}
             icon="location"
             label={IntLabel('map')}
-            style={{width: 110}}
             onPress={() => {
               navigation.navigate('map', {tab: 4});
             }}
