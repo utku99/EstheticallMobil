@@ -74,7 +74,7 @@ const Tab = createBottomTabNavigator();
 function DrawerMenu() {
   return (
     <Drawer.Navigator
-      drawerContent={props => <DrawerBar />}
+      drawerContent={props => <DrawerBar props={props} />}
       screenOptions={{headerShown: false}}>
       <Drawer.Screen name="home" component={BottomTabs} />
     </Drawer.Navigator>
@@ -84,7 +84,7 @@ function DrawerMenu() {
 function BottomTabs() {
   return (
     <Tab.Navigator
-      tabBar={props => <BottomTab />}
+      tabBar={props => <BottomTab props={props} />}
       screenOptions={{headerShown: false}}>
       <Tab.Screen name="home2" component={UserStack} />
     </Tab.Navigator>

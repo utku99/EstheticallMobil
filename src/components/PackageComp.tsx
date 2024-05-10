@@ -47,8 +47,6 @@ const PackageComp = ({
     }
   };
 
-  console.log(item);
-
   return (
     <View
       className={`h-fit border border-customLightGray rounded-xl bg-white `}

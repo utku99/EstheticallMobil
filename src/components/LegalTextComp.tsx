@@ -9,6 +9,7 @@ import {SIZES} from '../constants/constants';
 import IntLabel from './IntLabel';
 import {useSelector} from 'react-redux';
 import {FormattedMessage} from 'react-intl';
+import SpinnerComp from './SpinnerComp';
 
 interface props {
   value: boolean;
@@ -19,7 +20,7 @@ interface props {
 
 const LegalTextComp = ({value, onChange, type, error}: props) => {
   const [visible, setVisible] = useState(false);
-  const {Post} = WebClient();
+  const {Post, loading} = WebClient();
   const [legalText, setLegalText] = useState<any>('');
   const [legalText2, setLegalText2] = useState<any>('');
   const [legalText3, setLegalText3] = useState<any>('');
@@ -46,8 +47,6 @@ const LegalTextComp = ({value, onChange, type, error}: props) => {
       setLegalText3(res.data.object);
     });
   }, [language]);
-
-  console.log(text);
 
   return (
     <>
@@ -106,12 +105,16 @@ const LegalTextComp = ({value, onChange, type, error}: props) => {
             </Text>
 
             <ModalWrapper visible={visible} setVisible={setVisible}>
-              <RenderHTML
-                contentWidth={SIZES.width}
-                source={{
-                  html: text == 1 ? legalText?.content : legalText2?.content,
-                }}
-              />
+              {loading ? (
+                <SpinnerComp />
+              ) : (
+                <RenderHTML
+                  contentWidth={SIZES.width}
+                  source={{
+                    html: text == 1 ? legalText?.content : legalText2?.content,
+                  }}
+                />
+              )}
             </ModalWrapper>
           </View>
           {error && <Text className="text-red-400 text-xs "> {error}</Text>}
@@ -152,12 +155,16 @@ const LegalTextComp = ({value, onChange, type, error}: props) => {
             </Text>
 
             <ModalWrapper visible={visible} setVisible={setVisible}>
-              <RenderHTML
-                contentWidth={SIZES.width}
-                source={{
-                  html: legalText3?.content,
-                }}
-              />
+              {loading ? (
+                <SpinnerComp />
+              ) : (
+                <RenderHTML
+                  contentWidth={SIZES.width}
+                  source={{
+                    html: legalText3?.content,
+                  }}
+                />
+              )}
             </ModalWrapper>
           </View>
           {error && <Text className="text-red-400 text-xs "> {error}</Text>}

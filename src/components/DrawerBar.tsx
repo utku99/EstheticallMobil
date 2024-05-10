@@ -17,16 +17,16 @@ import LogOutIcon from '../assets/svg/userMenu/LogOutIcon';
 import {useNavigation} from '@react-navigation/native';
 import IntLabel from './IntLabel';
 
-const DrawerBar = () => {
+const DrawerBar = ({props}: any) => {
   const navigation = useNavigation();
+
   return (
     <DrawerContentScrollView>
       <DrawerItem
         label={IntLabel('my_profile')}
         onPress={() => navigation.navigate('userprofile')}
         icon={() => <ProfileIcon />}
-        activeTintColor="red"
-        pressColor="blue"
+        pressColor="#8F7A6C"
         labelStyle={{
           fontSize: 14,
           color: '#4D4A48',
@@ -37,8 +37,7 @@ const DrawerBar = () => {
         label={IntLabel('my_offers')}
         onPress={() => navigation.navigate('useroffer')}
         icon={() => <OfferIcon />}
-        activeTintColor="red"
-        pressColor="blue"
+        pressColor="#8F7A6C"
         labelStyle={{
           fontSize: 14,
           color: '#4D4A48',
@@ -49,8 +48,7 @@ const DrawerBar = () => {
         label={IntLabel('my_appointments')}
         onPress={() => navigation.navigate('userappointment')}
         icon={() => <AppointmentIcon />}
-        activeTintColor="red"
-        pressColor="blue"
+        pressColor="#8F7A6C"
         labelStyle={{
           fontSize: 14,
           color: '#4D4A48',
@@ -61,8 +59,7 @@ const DrawerBar = () => {
         label={IntLabel('messages')}
         onPress={() => navigation.navigate('userincomingmessage')}
         icon={() => <MessageIcon />}
-        activeTintColor="red"
-        pressColor="blue"
+        pressColor="#8F7A6C"
         labelStyle={{
           fontSize: 14,
           color: '#4D4A48',
@@ -73,8 +70,7 @@ const DrawerBar = () => {
         label={IntLabel('notifications')}
         onPress={() => navigation.navigate('usernotification')}
         icon={() => <NotificationIcon />}
-        activeTintColor="red"
-        pressColor="blue"
+        pressColor="#8F7A6C"
         labelStyle={{
           fontSize: 14,
           color: '#4D4A48',
@@ -85,8 +81,7 @@ const DrawerBar = () => {
         label={IntLabel('comments')}
         onPress={() => navigation.navigate('usercomment')}
         icon={() => <CommentIcon />}
-        activeTintColor="red"
-        pressColor="blue"
+        pressColor="#8F7A6C"
         labelStyle={{
           fontSize: 14,
           color: '#4D4A48',
@@ -97,8 +92,7 @@ const DrawerBar = () => {
         label={IntLabel('favorites')}
         onPress={() => navigation.navigate('userfavorite')}
         icon={() => <FavoriteIcon />}
-        activeTintColor="red"
-        pressColor="blue"
+        pressColor="#8F7A6C"
         labelStyle={{
           fontSize: 14,
           color: '#4D4A48',
@@ -109,8 +103,7 @@ const DrawerBar = () => {
         label={IntLabel('saved')}
         onPress={() => navigation.navigate('usersaved')}
         icon={() => <SavedIcon />}
-        activeTintColor="red"
-        pressColor="blue"
+        pressColor="#8F7A6C"
         labelStyle={{
           fontSize: 14,
           color: '#4D4A48',
@@ -121,8 +114,7 @@ const DrawerBar = () => {
         label={IntLabel('settings')}
         onPress={() => navigation.navigate('usersettings')}
         icon={() => <SettingsIcon />}
-        activeTintColor="red"
-        pressColor="blue"
+        pressColor="#8F7A6C"
         labelStyle={{
           fontSize: 14,
           color: '#4D4A48',
@@ -133,8 +125,7 @@ const DrawerBar = () => {
         label={IntLabel('exit')}
         onPress={() => navigation.navigate('userlogout')}
         icon={() => <LogOutIcon />}
-        activeTintColor="red"
-        pressColor="blue"
+        pressColor="#8F7A6C"
         labelStyle={{
           fontSize: 14,
           color: '#4D4A48',

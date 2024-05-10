@@ -6,9 +6,10 @@ import {useSelector} from 'react-redux';
 import {legalTextType} from '../../../constants/enum';
 import RenderHTML from 'react-native-render-html';
 import {SIZES} from '../../../constants/constants';
+import SpinnerComp from '../../../components/SpinnerComp';
 
 const TermsOfUse = () => {
-  const {Post} = WebClient();
+  const {Post, loading} = WebClient();
   const [legalText, setLegalText] = useState<any>('');
   const {language} = useSelector((state: any) => state.user);
 
@@ -23,12 +24,16 @@ const TermsOfUse = () => {
 
   return (
     <UserWrapper>
-      <View className=" w-[90%]">
-        <RenderHTML
-          contentWidth={SIZES.width}
-          source={{html: legalText?.content}}
-        />
-      </View>
+      {loading ? (
+        <SpinnerComp />
+      ) : (
+        <View className=" w-[90%]">
+          <RenderHTML
+            contentWidth={SIZES.width}
+            source={{html: legalText?.content}}
+          />
+        </View>
+      )}
     </UserWrapper>
   );
 };
