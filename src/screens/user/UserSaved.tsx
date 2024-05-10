@@ -32,7 +32,12 @@ const UserSaved = () => {
           contentContainerStyle={{display: 'flex', gap: 15, paddingBottom: 20}}
           data={userSaved}
           renderItem={({item}) => (
-            <SharingComp item={item} setClicked={setClicked} readOnly />
+            <SharingComp
+              item={item}
+              setClicked={setClicked}
+              readOnly
+              onClickable={false}
+            />
           )}
         />
       </HandleData>
