@@ -127,7 +127,7 @@ const UserProfile = () => {
         <View className="items-center px-[5%] flex-1">
           {/* image */}
           <View className="flex-row space-x-1 mb-6">
-            <View className="w-[80px] h-[80px] overflow-hidden rounded-full ">
+            <View className="w-[80px] h-[80px] overflow-hidden rounded-full border border-opacity-50 border-customGray">
               <Image
                 source={{
                   uri: selectedImage
