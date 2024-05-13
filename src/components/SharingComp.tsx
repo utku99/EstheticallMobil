@@ -6,6 +6,7 @@ import {
   TextInput,
   FlatList,
   TouchableOpacity,
+  TouchableHighlight,
 } from 'react-native';
 import React, {useEffect, useRef, useState} from 'react';
 import CustomInputs from './CustomInputs';
@@ -27,6 +28,8 @@ import Clipboard from '@react-native-clipboard/clipboard';
 import Video from 'react-native-video';
 import BlueTick from '../assets/svg/common/BlueTick';
 import {useIntl} from 'react-intl';
+import UnMuted from '../assets/svg/homepages/UnMuted';
+import Muted from '../assets/svg/homepages/Muted';
 
 const CommentComp = ({item}: any) => {
   return (
@@ -63,11 +66,13 @@ const SharingComp = ({
   onClickable = false,
   setClicked,
   readOnly,
+  isFocus,
 }: {
   item: any;
   onClickable?: boolean;
   setClicked?: any;
   readOnly?: boolean;
+  isFocus?: boolean;
 }) => {
   const [seeComments, setSeeComments] = useState(false);
   const [sharedDetail, setSharedDetail] = useState<any>(null);
@@ -78,7 +83,7 @@ const SharingComp = ({
   const {user, isLoggedIn} = useSelector((state: any) => state.user);
   const intl = useIntl();
   const [addComment, setAddComment] = useState(null);
-  const screenIsFocused = useIsFocused();
+  const [isMuted, setIsMuted] = useState(true);
 
   const warning = IntLabel('login_required_warning');
 
@@ -180,16 +185,25 @@ const SharingComp = ({
           }))}
           renderItem={({item}: any) =>
             item?.imgUrl?.includes('mp4') ? (
-              <Video
-                source={{uri: item?.imgUrl}}
-                controls
-                repeat={false}
-                playInBackground={false}
-                paused={!screenIsFocused}
-                playWhenInactive={false}
-                resizeMode="cover"
-                className="w-full h-full "
-              />
+              <TouchableHighlight
+                className="relative"
+                onPress={() => {
+                  setIsMuted(!isMuted);
+                }}>
+                <>
+                  <Video
+                    source={{uri: item?.imgUrl}}
+                    repeat
+                    muted={isMuted}
+                    paused={!isFocus}
+                    resizeMode="cover"
+                    className="w-full h-full "
+                  />
+                  <View className="absolute bottom-2 right-2">
+                    {isMuted ? <Muted /> : <UnMuted />}
+                  </View>
+                </>
+              </TouchableHighlight>
             ) : (
               <Image
                 source={{uri: item?.imgUrl}}

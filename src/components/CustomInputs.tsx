@@ -20,7 +20,6 @@ interface props {
     | 'text'
     | 'textarea'
     | 'date'
-    | 'date2'
     | 'dropdown'
     | 'checkbox'
     | 'rating'

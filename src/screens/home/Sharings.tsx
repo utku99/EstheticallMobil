@@ -9,6 +9,8 @@ import HandleData from '../../components/HandleData';
 import {OneSignal} from 'react-native-onesignal';
 import IntLabel from '../../components/IntLabel';
 import AdvertisementSharing from '../../components/AdvertisementSharing';
+import {SIZES} from '../../constants/constants';
+import {useIsFocused} from '@react-navigation/native';
 
 const Sharings = () => {
   const {Post, loading} = WebClient();
@@ -79,6 +81,16 @@ const Sharings = () => {
     language,
   ]);
 
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const onViewCallBack = React.useCallback((viewableItems: any) => {
+    setCurrentIndex(viewableItems?.viewableItems[0]?.index);
+  }, []);
+
+  const viewConfigRef = React.useRef({viewAreaCoveragePercentThreshold: 50});
+
+  const screenIsFocused = useIsFocused();
+
   return (
     <HomeWrapper>
       <HandleData
@@ -90,12 +102,15 @@ const Sharings = () => {
           contentContainerStyle={{display: 'flex', gap: 15, paddingBottom: 20}}
           data={shareds}
           initialNumToRender={3}
-          renderItem={({item}) => (
+          onViewableItemsChanged={onViewCallBack}
+          viewabilityConfig={viewConfigRef.current}
+          renderItem={({item, index}) => (
             <SharingComp
               key={item.sharedID}
               item={item}
               onClickable
               setClicked={setClicked}
+              isFocus={index === currentIndex && screenIsFocused}
             />
             // <AdvertisementSharing />
           )}
