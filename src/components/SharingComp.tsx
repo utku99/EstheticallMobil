@@ -17,7 +17,7 @@ import Carousel, {Pagination} from 'react-native-snap-carousel';
 import WebClient, {toast} from '../utility/WebClient';
 import {SIZES, viewedType} from '../constants/constants';
 import HandleData from './HandleData';
-import {useNavigation} from '@react-navigation/native';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
 import LikeUnlikeComp from './LikeUnlikeComp';
 import SharingSavedIcon from '../assets/svg/homepages/SharingSavedIcon';
@@ -79,6 +79,7 @@ const SharingComp = ({
   const intl = useIntl();
   const [addComment, setAddComment] = useState(null);
   const [paused, setPaused] = useState(false);
+  const screenIsFocused = useIsFocused();
 
   const warning = IntLabel('login_required_warning');
 
@@ -94,6 +95,8 @@ const SharingComp = ({
       setPaused(true);
     };
   }, []);
+
+  console.log(screenIsFocused);
 
   return (
     <View
@@ -188,7 +191,8 @@ const SharingComp = ({
                 source={{uri: item?.imgUrl}}
                 controls
                 playInBackground={false}
-                paused={paused}
+                paused={!screenIsFocused}
+                playWhenInactive={false}
                 resizeMode="cover"
                 className="w-full h-full "
               />
