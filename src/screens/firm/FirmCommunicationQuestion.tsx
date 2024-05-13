@@ -25,6 +25,8 @@ const FirmCommunicationQuestion = ({route}: props) => {
   const [company, setCompany] = useState<any>(null);
   const {user} = useSelector((state: any) => state.user);
 
+  let warning = IntLabel('message_created_warning');
+
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
@@ -40,7 +42,7 @@ const FirmCommunicationQuestion = ({route}: props) => {
       content: Yup.string().required(
         IntLabel('validation_message_this_field_is_required'),
       ),
-      images: Yup.array().min(1, IntLabel('photo_required')),
+      // images: Yup.array().min(1, IntLabel('photo_required')),
       checked: Yup.bool()
         .oneOf([true], IntLabel('accept_text_warning'))
         .required(IntLabel('accept_text_warning')),
@@ -60,8 +62,8 @@ const FirmCommunicationQuestion = ({route}: props) => {
         serviceId: formik.values.operation.value ?? 0,
       }).then(res => {
         if (res.data.code == '100') {
+          toast(warning, 5);
           resetForm();
-          toast(IntLabel('message_created_warning'));
         } else {
           toast(res.data.message);
         }

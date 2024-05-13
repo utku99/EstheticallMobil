@@ -34,6 +34,8 @@ const CommunicationModal = ({
     else if (type == 'appointment') return messageEnum.appointment;
   };
 
+  let warning = IntLabel('message_created_warning');
+
   const formik = useFormik({
     initialValues: {
       title: '',
@@ -49,11 +51,11 @@ const CommunicationModal = ({
         senderType: messageTypeEnum.user,
         message: values.content,
         receiverId:
-          (item?.companyOfficeID || item?.companyModel?.companyOfficeID) == 0
+          (item?.companyOfficeID ?? item?.companyModel?.companyOfficeID) == 0
             ? item?.companyID ?? item?.companyModel?.companyID
             : item?.companyOfficeID ?? item?.companyModel?.companyOfficeID,
         receiverType:
-          (item?.companyOfficeID || item?.companyModel?.companyOfficeID) == 0
+          (item?.companyOfficeID ?? item?.companyModel?.companyOfficeID) == 0
             ? messageTypeEnum.company
             : messageTypeEnum.office,
         messageType: handleMessageType(),
@@ -61,10 +63,7 @@ const CommunicationModal = ({
       }).then(res => {
         if (res.data.code == '100') {
           setVisible(false);
-          toast(
-            'Mesajınız oluşturulmuştur. Mesajlarım sayfasından ilgili kurum ile görüşmeye başlayabilirsiniz.',
-            5,
-          );
+          toast(warning, 5);
         } else {
           toast(res.data.message);
         }

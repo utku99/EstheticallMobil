@@ -19,6 +19,8 @@ const Question = () => {
   const [services, setServices] = useState([]);
   const [allCompanies, setAllCompanies] = useState(null);
 
+  let warning = IntLabel('message_created_warning');
+
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
@@ -39,7 +41,7 @@ const Question = () => {
       content: Yup.string().required(
         IntLabel('validation_message_this_field_is_required'),
       ),
-      images: Yup.array().min(1, IntLabel('photo_required')),
+      // images: Yup.array().min(1, IntLabel('photo_required')),
       checked: Yup.bool()
         .oneOf([true], IntLabel('accept_text_warning'))
         .required(IntLabel('accept_text_warning')),
@@ -64,7 +66,7 @@ const Question = () => {
         if (res.data.code == '100') {
           toast(res.data.message);
           resetForm();
-          toast(IntLabel('message_created_warning'));
+          toast(warning, 5);
         } else {
           toast(res.data.message);
         }

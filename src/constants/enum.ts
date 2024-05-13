@@ -39,5 +39,5 @@ export const messageEnum ={
     appointment:1,
     offer:2,
     package:3,
-    general:3,
+    general:4,
 }
