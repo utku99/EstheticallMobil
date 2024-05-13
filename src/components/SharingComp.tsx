@@ -78,7 +78,6 @@ const SharingComp = ({
   const {user, isLoggedIn} = useSelector((state: any) => state.user);
   const intl = useIntl();
   const [addComment, setAddComment] = useState(null);
-  const [paused, setPaused] = useState(false);
   const screenIsFocused = useIsFocused();
 
   const warning = IntLabel('login_required_warning');
@@ -90,13 +89,7 @@ const SharingComp = ({
     }).then(res => {
       setSharedDetail(res.data);
     });
-
-    return () => {
-      setPaused(true);
-    };
   }, []);
-
-  console.log(screenIsFocused);
 
   return (
     <View
@@ -190,6 +183,7 @@ const SharingComp = ({
               <Video
                 source={{uri: item?.imgUrl}}
                 controls
+                repeat={false}
                 playInBackground={false}
                 paused={!screenIsFocused}
                 playWhenInactive={false}
