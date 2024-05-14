@@ -6,37 +6,25 @@ interface props {
   children?: React.ReactNode;
   title?: string;
   showBellIcon?: boolean;
-  scrollEnabled?: boolean;
 }
 
-const UserWrapper = ({
-  children,
-  title,
-  showBellIcon = false,
-  scrollEnabled = true,
-}: props) => {
+const UserWrapper = ({children, title, showBellIcon = false}: props) => {
   return (
-    <ScrollView
-      className="bg-[#FAFAFA] "
-      scrollEnabled={scrollEnabled}
-      nestedScrollEnabled
-      contentContainerStyle={{flexGrow: 1, paddingVertical: 10}}>
-      <View className="items-center h-full">
-        {title && (
-          <>
-            <Text className="font-poppinsMedium  text-customGray text-base text-center mb-[20px] ">
-              {title}
-            </Text>
-            {showBellIcon && (
-              <View className="absolute right-[90px]">
-                <NotificationIcon2 />
-              </View>
-            )}
-          </>
-        )}
-        {children}
-      </View>
-    </ScrollView>
+    <View className="bg-[#FAFAFA] flex-1">
+      {title && (
+        <>
+          <Text className="font-poppinsMedium  text-customGray text-base text-center mb-[20px] ">
+            {title}
+          </Text>
+          {showBellIcon && (
+            <View className="absolute right-[90px]">
+              <NotificationIcon2 />
+            </View>
+          )}
+        </>
+      )}
+      <View className="items-center h-full flex-1 py-3">{children}</View>
+    </View>
   );
 };
 

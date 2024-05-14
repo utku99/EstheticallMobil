@@ -113,7 +113,7 @@ const UserMessage = ({route}: {route?: any}) => {
   }, [message]);
 
   return (
-    <UserWrapper title={IntLabel('messages')} scrollEnabled={false}>
+    <UserWrapper title={IntLabel('messages')}>
       <HandleData
         title={IntLabel('warning_no_active_record')}
         loading={loading}

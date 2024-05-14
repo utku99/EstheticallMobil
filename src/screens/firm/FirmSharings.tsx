@@ -7,6 +7,7 @@ import {useSelector} from 'react-redux';
 import {FlatList} from 'react-native-gesture-handler';
 import SharingComp from '../../components/SharingComp';
 import IntLabel from '../../components/IntLabel';
+import {useIsFocused} from '@react-navigation/native';
 
 interface props {
   route?: any;
@@ -16,18 +17,26 @@ const FirmSharings = ({route}: props) => {
   const {Post, loading} = WebClient();
   const [sharings, setSharings] = useState<any>([]);
   const {user} = useSelector((state: any) => state.user);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
     Post('/api/Shared/GetCompanySharedDetail', {
       companyID: route.params.companyId,
       companyOfficeID: route.params.companyOfficeId,
       page: 1,
-      pageSize: 5,
+      pageSize: 100,
       userId: user?.id ?? 0,
     }).then(res => {
       setSharings(res.data);
     });
   }, []);
+
+  const onViewCallBack = React.useCallback((viewableItems: any) => {
+    setCurrentIndex(viewableItems?.viewableItems[0]?.index);
+    console.log(viewableItems);
+  }, []);
+  const viewConfigRef = React.useRef({viewAreaCoveragePercentThreshold: 50});
+  const screenIsFocused = useIsFocused();
 
   return (
     <FirmWrapper>
@@ -38,8 +47,14 @@ const FirmSharings = ({route}: props) => {
         <FlatList
           contentContainerStyle={{display: 'flex', gap: 15, paddingBottom: 20}}
           data={sharings}
-          renderItem={({item}) => (
-            <SharingComp key={item.sharedID} item={item} />
+          onViewableItemsChanged={onViewCallBack}
+          viewabilityConfig={viewConfigRef.current}
+          renderItem={({item, index}) => (
+            <SharingComp
+              key={item.sharedID}
+              item={item}
+              isFocus={index === currentIndex && screenIsFocused}
+            />
           )}
         />
       </HandleData>

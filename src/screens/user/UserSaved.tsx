@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import UserWrapper from './UserWrapper';
 import SharingComp from '../../components/SharingComp';
 import WebClient from '../../utility/WebClient';
@@ -6,6 +6,7 @@ import {useSelector} from 'react-redux';
 import HandleData from '../../components/HandleData';
 import {FlatList} from 'react-native';
 import IntLabel from '../../components/IntLabel';
+import {useIsFocused} from '@react-navigation/native';
 
 const UserSaved = () => {
   const [userSaved, setUserSaved] = useState<any>([]);
@@ -22,6 +23,15 @@ const UserSaved = () => {
     setClicked(false);
   }, [clicked]);
 
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const onViewCallBack = React.useCallback((viewableItems: any) => {
+    setCurrentIndex(viewableItems?.viewableItems[0]?.index);
+    console.log(viewableItems, 'saved');
+  }, []);
+  const viewConfigRef = React.useRef({viewAreaCoveragePercentThreshold: 50});
+  const screenIsFocused = useIsFocused();
+
   return (
     <UserWrapper title="Kaydedilenler">
       <HandleData
@@ -29,14 +39,18 @@ const UserSaved = () => {
         loading={loading}
         title={IntLabel('warning_no_active_record')}>
         <FlatList
+          showsVerticalScrollIndicator={false}
           contentContainerStyle={{display: 'flex', gap: 15, paddingBottom: 20}}
           data={userSaved}
-          renderItem={({item}) => (
+          onViewableItemsChanged={onViewCallBack}
+          viewabilityConfig={viewConfigRef.current}
+          renderItem={({item, index}) => (
             <SharingComp
               item={item}
               setClicked={setClicked}
               readOnly
               onClickable
+              isFocus={index === currentIndex && screenIsFocused}
             />
           )}
         />

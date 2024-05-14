@@ -86,9 +86,7 @@ const Sharings = () => {
   const onViewCallBack = React.useCallback((viewableItems: any) => {
     setCurrentIndex(viewableItems?.viewableItems[0]?.index);
   }, []);
-
   const viewConfigRef = React.useRef({viewAreaCoveragePercentThreshold: 50});
-
   const screenIsFocused = useIsFocused();
 
   return (

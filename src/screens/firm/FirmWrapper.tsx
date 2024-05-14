@@ -96,6 +96,7 @@ const FirmWrapper: React.FC<props> = ({children}) => {
   return (
     <ScrollView
       className="bg-[#FAFAFA] "
+      nestedScrollEnabled
       contentContainerStyle={{flexGrow: 1, paddingBottom: 30}}>
       <HandleData loading={loading}>
         {/* banner */}
