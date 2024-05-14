@@ -136,10 +136,10 @@ const UserRegister = () => {
         cityId: values.city.value,
         userRoleId: 3,
         companyTypeId: 0,
-        LanguageId: language?.type,
+        LanguageId: language?.type ?? 1,
       }).then((res: any) => {
         if (res.data.result.code == '100') {
-          toast(IntLabel('successful'));
+          toast(res.data.result.message);
           resetForm();
           navigation.navigate('login');
         } else {

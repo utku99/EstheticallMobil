@@ -8,6 +8,8 @@ import WebClient, {toast} from '../utility/WebClient';
 import {useSelector} from 'react-redux';
 import moment from 'moment';
 import IntLabel from './IntLabel';
+import UnLikeIcon from '../assets/svg/common/UnLikeIcon';
+import CustomInputs from './CustomInputs';
 
 interface props {
   item?: any;
@@ -17,6 +19,8 @@ interface props {
 const NotificationComp: React.FC<props> = ({item, setClicked}) => {
   const {Post} = WebClient();
   const {user} = useSelector((state: any) => state.user);
+
+  console.log(item);
 
   return (
     <>
@@ -65,40 +69,47 @@ const NotificationComp: React.FC<props> = ({item, setClicked}) => {
           <View className="flex-row items-center space-x-3">
             <View className="w-[60px] h-[60px] overflow-hidden rounded-full border-[0.6px] border-customGray">
               <Image
-                source={{uri: item?.logo}}
+                source={{uri: item?.companyLogo}}
                 className="w-full h-full"
                 resizeMode="cover"
               />
             </View>
-            <View>
-              <Text className="text-customGray font-poppins text-xs font-bold">
-                {item?.nameWithTitle}
-              </Text>
-              <Text className="text-customGray font-poppins text-xs">
-                {item?.doctorBranch}
-              </Text>
-              <Text className="text-customGray font-poppins text-xs">
-                {item?.doctorLocation}
-              </Text>
-            </View>
-            <View className="items-center flex-1">
-              <Text className="text-customGray font-poppins text-xs">
-                {/* {item?.commentsPoint.split('/')[0] / 20}/5 */}
-              </Text>
+            <Text className="text-customGray font-poppins text-xs font-bold">
+              {item?.companyName}
+            </Text>
+            <View className="items-center flex-1 space-y-2">
               <Text className="text-customGray font-poppins text-xs">
                 {IntLabel('comments')}
               </Text>
+              <CustomInputs
+                type="rating"
+                value={Number(item?.companyPoint) / 20}
+              />
             </View>
             <View className="items-center space-y-1">
-              <ShareIcon />
-              <LikeIcon />
+              {item?.isCompanyFavorite ? <LikeIcon /> : <UnLikeIcon />}
             </View>
           </View>
           <View className="flex-row items-center justify-between">
             <Text className="text-customGray font-poppins text-sm">
-              Erkan Vural size yeni bir mesaj gönderdi.
+              {item?.content}
             </Text>
-            <TrashIcon />
+            <TouchableOpacity
+              onPress={() => {
+                Post('/api/Notification/RemoveUserPushMessage', {
+                  userID: user?.id,
+                  userPushNotificationID: item?.userPushNotificationId,
+                }).then(res => {
+                  if (res.data.resultCode == '100') {
+                    toast(res.data.resultMessage);
+                    setClicked(true);
+                  } else {
+                    toast(res.data.resultMessage);
+                  }
+                });
+              }}>
+              <TrashIcon />
+            </TouchableOpacity>
           </View>
         </View>
       )}

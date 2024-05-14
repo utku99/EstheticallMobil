@@ -15,7 +15,7 @@ const AboutUs = () => {
   useEffect(() => {
     Post('/api/Common/GetLegalTextWeb', {
       typeID: legalTextType.ABOUT,
-      languageID: language?.type,
+      languageID: language?.type ?? 1,
     }).then((res: any) => {
       setLegalText(res.data.object);
     });

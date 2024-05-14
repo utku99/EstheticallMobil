@@ -36,6 +36,7 @@ const Map = () => {
 
   const [companies, setCompanies] = useState<any>([]);
   const [selectedCompany, setSelectedCompany] = useState<any>(null);
+  const {language} = useSelector((state: any) => state.user);
 
   useEffect(() => {
     Post('/api/Company/CompanyMapsListAsync', {
@@ -45,7 +46,7 @@ const Map = () => {
       companyType: institution?.value ?? 0,
       serviceId: operation?.value ?? 0,
       serviceSubId: suboperation?.value ?? 0,
-      languageID: 1,
+      languageID: language?.type ?? 1,
     }).then((res: any) => {
       setCompanies(res.data);
     });

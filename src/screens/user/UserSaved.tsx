@@ -36,7 +36,7 @@ const UserSaved = () => {
               item={item}
               setClicked={setClicked}
               readOnly
-              onClickable={false}
+              onClickable
             />
           )}
         />

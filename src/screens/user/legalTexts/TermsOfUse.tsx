@@ -16,7 +16,7 @@ const TermsOfUse = () => {
   useEffect(() => {
     Post('/api/Common/GetLegalTextWeb', {
       typeID: legalTextType.PRIVACYANDTERMSOFUSE,
-      languageID: language?.type,
+      languageID: language?.type ?? 1,
     }).then((res: any) => {
       setLegalText(res.data.object);
     });

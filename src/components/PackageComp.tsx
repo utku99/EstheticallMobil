@@ -138,7 +138,7 @@ const PackageComp = ({
           onSnapToItem={i => setIndex(i)}
         />
         <Pagination
-          dotsLength={item?.imagesList?.length ?? item?.files?.length ?? 0}
+          dotsLength={item?.images?.length ?? item?.sliders?.length}
           activeDotIndex={index}
           carouselRef={isCarousel}
           dotStyle={{

@@ -9,6 +9,7 @@ import WebClient, {toast} from '../utility/WebClient';
 import {useSelector} from 'react-redux';
 import {messageEnum, messageTypeEnum} from '../constants/enum';
 import IntLabel from './IntLabel';
+import {useIntl} from 'react-intl';
 
 interface props {
   item?: any;
@@ -27,14 +28,15 @@ const CommunicationModal = ({
 }: props) => {
   const {Post} = WebClient();
   const {user} = useSelector((state: any) => state.user);
+  const intl = useIntl();
+
+  console.log(item, '--');
 
   const handleMessageType = () => {
     if (type == 'package') return messageEnum.package;
     else if (type == 'offer') return messageEnum.offer;
     else if (type == 'appointment') return messageEnum.appointment;
   };
-
-  let warning = IntLabel('message_created_warning');
 
   const formik = useFormik({
     initialValues: {
@@ -51,19 +53,34 @@ const CommunicationModal = ({
         senderType: messageTypeEnum.user,
         message: values.content,
         receiverId:
-          (item?.companyOfficeID ?? item?.companyModel?.companyOfficeID) == 0
-            ? item?.companyID ?? item?.companyModel?.companyID
-            : item?.companyOfficeID ?? item?.companyModel?.companyOfficeID,
+          (item?.companyOfficeID ??
+            item?.companyModel?.companyOfficeID ??
+            item?.headerModel?.companyOfficeID) == 0
+            ? item?.companyID ??
+              item?.companyModel?.companyID ??
+              item?.headerModel?.companyID
+            : item?.companyOfficeID ??
+              item?.companyModel?.companyOfficeID ??
+              item?.headerModel?.companyOfficeID,
         receiverType:
-          (item?.companyOfficeID ?? item?.companyModel?.companyOfficeID) == 0
+          (item?.companyOfficeID ??
+            item?.companyModel?.companyOfficeID ??
+            item?.headerModel?.companyOfficeID) == 0
             ? messageTypeEnum.company
             : messageTypeEnum.office,
         messageType: handleMessageType(),
         serviceId: 0,
       }).then(res => {
         if (res.data.code == '100') {
+          toast(
+            intl.formatMessage({
+              id: 'message_created_warning',
+              defaultMessage: 'message_created_warning',
+            }),
+            5,
+          );
+          formik.resetForm();
           setVisible(false);
-          toast(warning, 5);
         } else {
           toast(res.data.message);
         }

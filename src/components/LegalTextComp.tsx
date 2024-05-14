@@ -30,19 +30,19 @@ const LegalTextComp = ({value, onChange, type, error}: props) => {
   useEffect(() => {
     Post('/api/Common/GetLegalTextWeb', {
       typeID: legalTextType.PRIVACYANDTERMSOFUSE,
-      languageID: language?.type,
+      languageID: language?.type ?? 1,
     }).then((res: any) => {
       setLegalText(res.data.object);
     });
     Post('/api/Common/GetLegalTextWeb', {
       typeID: legalTextType.IndividualMembershipAgreement,
-      languageID: language?.type,
+      languageID: language?.type ?? 1,
     }).then((res: any) => {
       setLegalText2(res.data.object);
     });
     Post('/api/Common/GetLegalTextWeb', {
       typeID: legalTextType.EXPRESSCONSENTTEXT,
-      languageID: language?.type,
+      languageID: language?.type ?? 1,
     }).then((res: any) => {
       setLegalText3(res.data.object);
     });

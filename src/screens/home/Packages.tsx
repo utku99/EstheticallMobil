@@ -103,7 +103,7 @@ const Packages = () => {
       companyType: institution?.value ?? 0,
       serviceId: operation?.value ?? 0,
       serviceSubId: suboperation?.value ?? 0,
-      languageID: language?.type,
+      languageID: language?.type ?? 1,
       userID: user?.id ?? 0,
     }).then((res: any) => {
       let temp = res.data.map((item: any) => ({
