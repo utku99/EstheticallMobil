@@ -24,12 +24,12 @@ import LikeUnlikeComp from './LikeUnlikeComp';
 import SharingSavedIcon from '../assets/svg/homepages/SharingSavedIcon';
 import moment from 'moment';
 import IntLabel from './IntLabel';
-import Clipboard from '@react-native-clipboard/clipboard';
 import Video from 'react-native-video';
 import BlueTick from '../assets/svg/common/BlueTick';
 import {useIntl} from 'react-intl';
 import UnMuted from '../assets/svg/homepages/UnMuted';
 import Muted from '../assets/svg/homepages/Muted';
+import Share from 'react-native-share';
 
 const CommentComp = ({item}: any) => {
   return (
@@ -306,15 +306,15 @@ const SharingComp = ({
 
           <TouchableOpacity
             onPress={() => {
-              Clipboard.setString(
-                `https://dev.estheticall.com/paylasimlar?id=${item?.sharedID}`,
-              );
-              toast(
-                intl.formatMessage({
-                  id: 'copied_clipboard',
-                  defaultMessage: 'copied_clipboard',
-                }),
-              );
+              // toast(
+              //   intl.formatMessage({
+              //     id: 'copied_clipboard',
+              //     defaultMessage: 'copied_clipboard',
+              //   }),
+              // );
+              Share.open({
+                url: `https://dev.estheticall.com/paylasimlar?id=${item?.sharedID}`,
+              });
             }}>
             <SharingShareIcon />
           </TouchableOpacity>

@@ -23,8 +23,8 @@ import CustomInputs from '../../components/CustomInputs';
 import LikeUnlikeComp from '../../components/LikeUnlikeComp';
 import {setSelectedService} from '../../redux/slices/common';
 import IntLabel from '../../components/IntLabel';
-import Clipboard from '@react-native-clipboard/clipboard';
 import {useIntl} from 'react-intl';
+import Share from 'react-native-share';
 
 interface props {
   children?: React.ReactNode;
@@ -118,15 +118,15 @@ const FirmWrapper: React.FC<props> = ({children}) => {
             </Pressable>
             <TouchableOpacity
               onPress={() => {
-                Clipboard.setString(
-                  `https://dev.estheticall.com/firma/profil?id=${firmLeftInfo?.companyID}&officeId=${firmLeftInfo?.companyOfficeID}`,
-                );
-                toast(
-                  intl.formatMessage({
-                    id: 'copied_clipboard',
-                    defaultMessage: 'copied_clipboard',
-                  }),
-                );
+                // toast(
+                //   intl.formatMessage({
+                //     id: 'copied_clipboard',
+                //     defaultMessage: 'copied_clipboard',
+                //   }),
+                // );
+                Share.open({
+                  url: `https://dev.estheticall.com/firma/profil?id=${firmLeftInfo?.companyID}&officeId=${firmLeftInfo?.companyOfficeID}`,
+                });
               }}>
               <ShareIcon />
             </TouchableOpacity>
