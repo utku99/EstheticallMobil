@@ -203,6 +203,7 @@ const HomeWrapper: React.FC<props> = ({children}) => {
         </TouchableOpacity>
         <ScrollView
           horizontal
+          showsHorizontalScrollIndicator={false}
           contentContainerStyle={{
             alignItems: 'center',
             gap: 10,

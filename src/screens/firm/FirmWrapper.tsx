@@ -287,8 +287,6 @@ const FirmWrapper: React.FC<props> = ({children}) => {
           />
         </View>
       </ModalWrapper>
-
-      {/* item.serviceTypeId === 4? */}
     </ScrollView>
   );
 };

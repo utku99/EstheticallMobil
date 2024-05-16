@@ -11,6 +11,28 @@ import WebClient from '../../utility/WebClient';
 import IntLabel from '../../components/IntLabel';
 import * as Yup from 'yup';
 import moment from 'moment';
+import {FormattedMessage} from 'react-intl';
+
+const interviewData = [
+  {
+    value: 1,
+    label: (
+      <FormattedMessage
+        id="online_meeting_request"
+        defaultMessage={'Online Görüşme Talebi'}
+      />
+    ),
+  },
+  {
+    value: 2,
+    label: (
+      <FormattedMessage
+        id="live_meeting_request"
+        defaultMessage={'Canlı Görüşme Talebi'}
+      />
+    ),
+  },
+];
 
 interface props {
   route?: any;
@@ -36,6 +58,7 @@ const FirmAppointment = ({route}: props) => {
       content: '',
       startDate: '',
       endDate: '',
+      meeting: '',
     } as any,
     validationSchema: Yup.object().shape({
       operation: Yup.object().required(
@@ -54,6 +77,9 @@ const FirmAppointment = ({route}: props) => {
         IntLabel('validation_message_this_field_is_required'),
       ),
       endDate: Yup.string().required(
+        IntLabel('validation_message_this_field_is_required'),
+      ),
+      meeting: Yup.object().required(
         IntLabel('validation_message_this_field_is_required'),
       ),
     }),
@@ -119,6 +145,10 @@ const FirmAppointment = ({route}: props) => {
   return (
     <FirmWrapper>
       <View className=" h-full w-full" style={{width: SIZES.width * 0.95}}>
+        <Text className="font-poppinsRegular text-customGray text-sm  mb-3">
+          {IntLabel('appointment_info')}
+        </Text>
+
         <CustomInputs
           type="dropdown"
           value={company}
@@ -207,6 +237,33 @@ const FirmAppointment = ({route}: props) => {
               style={{width: '75%'}}
             />
           </View>
+        </View>
+
+        <View className=" mb-3">
+          <View className="flex-row flex-wrap justify-between">
+            {interviewData.map((item: any, i: number) => (
+              <CustomInputs
+                key={i}
+                type="checkbox"
+                title={item.label}
+                value={
+                  formik.values.meeting?.value == item.value ? true : false
+                }
+                onChange={() => {
+                  if (formik.values.meeting == item) {
+                    formik.setFieldValue('meeting', '');
+                  } else {
+                    formik.setFieldValue('meeting', item);
+                  }
+                }}
+              />
+            ))}
+          </View>
+          {formik.errors.meeting && (
+            <Text className="text-red-400 text-xs">
+              {String(formik.errors.meeting)}
+            </Text>
+          )}
         </View>
 
         <View className="flex-1"></View>

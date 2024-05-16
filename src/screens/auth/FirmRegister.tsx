@@ -478,7 +478,7 @@ const FirmRegister = ({route}: any) => {
       <LegalTextComp
         value={formik.values.checked}
         onChange={() => formik.setFieldValue('checked', !formik.values.checked)}
-        type="auth"
+        type="companyRegister"
         error={formik.errors.checked}
       />
     </AuthWrapper>

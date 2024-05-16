@@ -1,4 +1,4 @@
-import {View, Text} from 'react-native';
+import {View, Text, ScrollView} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import UserWrapper from '../user/UserWrapper';
 import {SIZES} from '../../constants/constants';
@@ -128,7 +128,10 @@ const Offer = () => {
 
   return (
     <UserWrapper>
-      <View className=" h-full w-full" style={{width: SIZES.width * 0.95}}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        className=" h-full w-full"
+        style={{width: SIZES.width * 0.95}}>
         <Text className="font-poppinsMedium text-customGray text-base  mb-3">
           {IntLabel('take_offer')}
         </Text>
@@ -280,7 +283,7 @@ const Offer = () => {
           style={{width: 180, alignSelf: 'center'}}
           onPress={formik.handleSubmit}
         />
-      </View>
+      </ScrollView>
     </UserWrapper>
   );
 };

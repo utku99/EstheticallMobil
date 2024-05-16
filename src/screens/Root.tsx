@@ -132,7 +132,7 @@ const UserStack = ({route}: any) => {
           width: '14%',
           alignItems: 'center',
         },
-        headerStyle: {backgroundColor: '#FAFAFA', shadowOffset: 0},
+        headerStyle: {backgroundColor: '#FAFAFA', shadowOpacity: 0},
       }}>
       {/* home */}
       <Stack.Group>

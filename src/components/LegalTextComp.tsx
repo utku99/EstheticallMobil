@@ -14,7 +14,7 @@ import SpinnerComp from './SpinnerComp';
 interface props {
   value: boolean;
   onChange: any;
-  type: 'auth' | 'question';
+  type: 'auth' | 'question' | 'companyRegister';
   error?: any;
 }
 
@@ -24,6 +24,7 @@ const LegalTextComp = ({value, onChange, type, error}: props) => {
   const [legalText, setLegalText] = useState<any>('');
   const [legalText2, setLegalText2] = useState<any>('');
   const [legalText3, setLegalText3] = useState<any>('');
+  const [legalText4, setLegalText4] = useState<any>('');
   const {language} = useSelector((state: any) => state.user);
   const [text, setText] = useState<any>(1);
 
@@ -45,6 +46,12 @@ const LegalTextComp = ({value, onChange, type, error}: props) => {
       languageID: language?.type ?? 1,
     }).then((res: any) => {
       setLegalText3(res.data.object);
+    });
+    Post('/api/Common/GetLegalTextWeb', {
+      typeID: legalTextType.CorporateMembershipAgreement,
+      languageID: language?.type ?? 1,
+    }).then((res: any) => {
+      setLegalText4(res.data.object);
     });
   }, [language]);
 
@@ -112,6 +119,81 @@ const LegalTextComp = ({value, onChange, type, error}: props) => {
                   contentWidth={SIZES.width}
                   source={{
                     html: text == 1 ? legalText?.content : legalText2?.content,
+                  }}
+                />
+              )}
+            </ModalWrapper>
+          </View>
+          {error && <Text className="text-red-400 text-xs "> {error}</Text>}
+        </View>
+      )}
+      {type == 'companyRegister' && (
+        <View className="mb-3">
+          <View className="flex-row space-x-2">
+            <CustomInputs type="checkbox" value={value} onChange={onChange} />
+
+            <Text className="text-xs font-poppinsRegular text-black flex-shrink">
+              <FormattedMessage
+                id="auth_text_title"
+                defaultMessage={'auth_text_title'}
+                values={{
+                  text1TR: (
+                    <Text
+                      onPress={() => {
+                        setText(1);
+                        setVisible(true);
+                      }}
+                      className="text-xs font-poppinsRegular text-customOrange flex-shrink">
+                      Gizlilik ve Kullanım Koşulları
+                    </Text>
+                  ),
+                  text2TR: (
+                    <Text
+                      onPress={() => {
+                        setText(3);
+                        setVisible(true);
+                      }}
+                      className="text-xs font-poppinsRegular text-customOrange flex-shrink">
+                      Kurrumsal Üyelik Sözleşmesini
+                    </Text>
+                  ),
+                  text1EN: (
+                    <Text
+                      onPress={() => {
+                        setText(1);
+                        setVisible(true);
+                      }}
+                      className="text-xs font-poppinsRegular text-customOrange flex-shrink">
+                      Privacy and Terms of Use
+                    </Text>
+                  ),
+                  text2EN: (
+                    <Text
+                      onPress={() => {
+                        setText(3);
+                        setVisible(true);
+                      }}
+                      className="text-xs font-poppinsRegular text-customOrange flex-shrink">
+                      Institutional Membership Agreement
+                    </Text>
+                  ),
+                }}
+              />
+            </Text>
+
+            <ModalWrapper visible={visible} setVisible={setVisible}>
+              {loading ? (
+                <SpinnerComp />
+              ) : (
+                <RenderHTML
+                  contentWidth={SIZES.width}
+                  source={{
+                    html:
+                      text == 1
+                        ? legalText?.content
+                        : text == 2
+                        ? legalText2?.content
+                        : legalText4?.content,
                   }}
                 />
               )}

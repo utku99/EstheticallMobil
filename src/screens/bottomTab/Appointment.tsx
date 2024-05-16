@@ -1,4 +1,4 @@
-import {View, Text} from 'react-native';
+import {View, Text, ScrollView} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import UserWrapper from '../user/UserWrapper';
 import CustomInputs from '../../components/CustomInputs';
@@ -11,6 +11,28 @@ import * as Yup from 'yup';
 import {useNavigation} from '@react-navigation/core';
 import IntLabel from '../../components/IntLabel';
 import moment from 'moment';
+import {FormattedMessage} from 'react-intl';
+
+const interviewData = [
+  {
+    value: 1,
+    label: (
+      <FormattedMessage
+        id="online_meeting_request"
+        defaultMessage={'Online Görüşme Talebi'}
+      />
+    ),
+  },
+  {
+    value: 2,
+    label: (
+      <FormattedMessage
+        id="live_meeting_request"
+        defaultMessage={'Canlı Görüşme Talebi'}
+      />
+    ),
+  },
+];
 
 const Appointment = () => {
   const dispatch = useDispatch();
@@ -39,6 +61,7 @@ const Appointment = () => {
       content: '',
       startDate: '',
       endDate: '',
+      meeting: '',
     } as any,
     validationSchema: Yup.object().shape({
       // country: Yup.object().required(
@@ -69,6 +92,9 @@ const Appointment = () => {
         IntLabel('validation_message_this_field_is_required'),
       ),
       endDate: Yup.string().required(
+        IntLabel('validation_message_this_field_is_required'),
+      ),
+      meeting: Yup.object().required(
         IntLabel('validation_message_this_field_is_required'),
       ),
     }),
@@ -182,9 +208,16 @@ const Appointment = () => {
 
   return (
     <UserWrapper>
-      <View className=" h-full w-full" style={{width: SIZES.width * 0.95}}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        className=" h-full w-full"
+        style={{width: SIZES.width * 0.95}}>
         <Text className="font-poppinsMedium text-customGray text-base  mb-3">
           {IntLabel('take_appointment')}
+        </Text>
+
+        <Text className="font-poppinsRegular text-customGray text-sm  mb-3">
+          {IntLabel('appointment_info')}
         </Text>
 
         {!formik.values.country.value && (
@@ -318,6 +351,34 @@ const Appointment = () => {
             />
           </View>
         </View>
+
+        <View className=" mb-3">
+          <View className="flex-row flex-wrap justify-between">
+            {interviewData.map((item: any, i: number) => (
+              <CustomInputs
+                key={i}
+                type="checkbox"
+                title={item.label}
+                value={
+                  formik.values.meeting?.value == item.value ? true : false
+                }
+                onChange={() => {
+                  if (formik.values.meeting == item) {
+                    formik.setFieldValue('meeting', '');
+                  } else {
+                    formik.setFieldValue('meeting', item);
+                  }
+                }}
+              />
+            ))}
+          </View>
+          {formik.errors.meeting && (
+            <Text className="text-red-400 text-xs">
+              {String(formik.errors.meeting)}
+            </Text>
+          )}
+        </View>
+
         <View className="flex-1"></View>
 
         <CustomButtons
@@ -328,7 +389,7 @@ const Appointment = () => {
           style={{width: 180, alignSelf: 'center'}}
           onPress={formik.handleSubmit}
         />
-      </View>
+      </ScrollView>
     </UserWrapper>
   );
 };
