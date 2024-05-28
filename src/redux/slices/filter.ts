@@ -8,6 +8,7 @@ const filterSlice = createSlice({
         country: null,
         city: null,
         town: null,
+        district: null,
         institution: null,
         operation: null,
         suboperation: null,
@@ -23,6 +24,9 @@ const filterSlice = createSlice({
         setTown: (state, action) => {
             state.town = action.payload
         },
+        setDistrict: (state, action) => {
+            state.district = action.payload
+        },
         setInstitution: (state, action) => {
             state.institution = action.payload
         },
@@ -36,9 +40,10 @@ const filterSlice = createSlice({
             state.listFilters = action.payload
         },
         resetFilters: (state) => {
-            state.country = null,
+                state.country = null,
                 state.city = null,
                 state.town = null,
+                state.district = null,
                 state.institution = null,
                 state.operation = null,
                 state.suboperation = null
@@ -47,4 +52,4 @@ const filterSlice = createSlice({
 })
 
 export default filterSlice.reducer
-export const { setCity, setCountry, setInstitution, setOperation, setSubOperation, setTown, setListFilters, resetFilters } = filterSlice.actions
+export const { setCity, setCountry, setInstitution, setOperation, setSubOperation, setTown, setListFilters, resetFilters,setDistrict } = filterSlice.actions

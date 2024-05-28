@@ -28,6 +28,7 @@ const FirmRegister = ({route}: any) => {
       phone: '',
       password: '',
       passwordAgain: '',
+      branch: '',
       title: '',
       companyName: '',
       country: '',
@@ -111,6 +112,12 @@ const FirmRegister = ({route}: any) => {
               intl.formatMessage({
                 id: 'title_required',
                 defaultMessage: 'ünvan gereklidir',
+              }),
+            ),
+            branch: Yup.string().required(
+              intl.formatMessage({
+                id: 'doctor_branch_required',
+                defaultMessage: 'uzmanlık alanı gereklidir',
               }),
             ),
             country: Yup.object().required(
@@ -245,29 +252,56 @@ const FirmRegister = ({route}: any) => {
               .required(IntLabel('accept_text_warning')),
           }),
     onSubmit: (values, {resetForm}) => {
-      Post(
-        '/api/Auth/RegisterCompany',
-        {
-          companyTypeId: route.params.type,
-          name: values.companyName,
-          managerName: values.name,
-          managerSurname: values.surname,
-          email: values.email,
-          titleId: values.title?.value,
-          password: values.password,
-          phoneNumber: values.phone,
-          countryId: values.country.value,
-          cityId: values.city.value,
-          townId: values.town.value,
-          districtId: values.district.value,
-        },
-        true,
-        true,
-      ).then(res => {
-        if (res.data.code === '100') {
-          resetForm();
-        }
-      });
+      if (route.params.type == 4) {
+        Post(
+          '/api/Auth/RegisterCompany',
+          {
+            companyTypeId: route.params.type,
+            name: values.companyName,
+            managerName: values.name,
+            managerSurname: values.surname,
+            email: values.email,
+            titleId: values.title?.value,
+            branch: values.branch,
+            password: values.password,
+            phoneNumber: values.phone,
+            countryId: values.country.value,
+            cityId: values.city.value,
+            townId: values.town.value,
+            districtId: values.district.value,
+          },
+          true,
+          true,
+        ).then(res => {
+          if (res.data.code === '100') {
+            resetForm();
+          }
+        });
+      } else {
+        Post(
+          '/api/Auth/RegisterCompany',
+          {
+            companyTypeId: route.params.type,
+            name: values.companyName,
+            managerName: values.name,
+            managerSurname: values.surname,
+            email: values.email,
+            titleId: values.title?.value,
+            password: values.password,
+            phoneNumber: values.phone,
+            countryId: values.country.value,
+            cityId: values.city.value,
+            townId: values.town.value,
+            districtId: values.district.value,
+          },
+          true,
+          true,
+        ).then(res => {
+          if (res.data.code === '100') {
+            resetForm();
+          }
+        });
+      }
     },
   });
 
@@ -390,6 +424,18 @@ const FirmRegister = ({route}: any) => {
           error={formik.errors.companyName}
           touched={formik.touched.companyName}
           onBlur={formik.handleBlur('companyName')}
+        />
+      )}
+
+      {route.params.type == 4 && (
+        <CustomInputs
+          type="text"
+          placeholder={IntLabel('doctor_branch')}
+          onChangeText={formik.handleChange('branch')}
+          value={formik.values.branch}
+          error={formik.errors.branch}
+          touched={formik.touched.branch}
+          onBlur={formik.handleBlur('branch')}
         />
       )}
       <CustomInputs

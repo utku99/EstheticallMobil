@@ -11,6 +11,7 @@ import {
   resetFilters,
   setCity,
   setCountry,
+  setDistrict,
   setInstitution,
   setListFilters,
   setOperation,
@@ -34,31 +35,110 @@ const HomeWrapper: React.FC<props> = ({children}) => {
   const [visible2, setVisible2] = useState(false);
   const route = useRoute();
   const {Post} = WebClient();
-  const {user, isLoggedIn} = useSelector((state: any) => state.user);
+  const {user, isLoggedIn, language} = useSelector((state: any) => state.user);
 
-  const {country, city, town, institution, operation, suboperation} =
+  const {country, city, town, district, institution, operation, suboperation} =
     useSelector((state: any) => state.filter);
 
   const dispatch = useDispatch();
 
-  const [countries, setCountries] = useState([]);
-  const [cities, setCities] = useState([]);
-  const [towns, setTowns] = useState([]);
+  const [countries, setCountries] = useState<any>([]);
+  const [cities, setCities] = useState<any>([]);
+  const [towns, setTowns] = useState<any>([]);
   const [services, setServices] = useState<any>([]);
   const [serviceSubs, setServiceSubs] = useState<any>([]);
+  const [districts, setDistricts] = useState<any>([]);
 
   const [allCompanies, setAllCompanies] = useState(null);
   const [servicesCompany, setServicesCompany] = useState<any>([]);
   const [subServicesCompany, setSubServicesCompany] = useState([]);
   const [doctors, setDoctors] = useState([]);
 
-  const institutionData = [
+  const [filterInstitution, setFilterInstitution] = useState<any>([]);
+
+  let institutionData = [
     {value: 1, label: IntLabel('hospital')},
-    {value: 4, label: IntLabel('doctor')},
     {value: 2, label: IntLabel('beauty_center')},
     {value: 3, label: IntLabel('clinic')},
+    {value: 4, label: IntLabel('doctor')},
   ];
 
+  // filter
+  useEffect(() => {
+    Post('/api/Common/GetCountriesAsync', {})
+      .then(res => {
+        const countries = res.data.map((item: any) => ({
+          value: item.countryID,
+          label: item.countryName,
+        }));
+        setCountries(countries);
+      })
+      .finally(() => {
+        Post('/api/Common/GetCitiesAsync', {
+          countryID: country?.value,
+        })
+          .then(res => {
+            const cities = res.data.map((item: any) => ({
+              value: item.cityID,
+              label: item.name,
+            }));
+            setCities(cities);
+          })
+          .finally(() => {
+            Post('/api/Common/GetTownsAsync', {
+              cityID: city?.value,
+            })
+              .then(res => {
+                const towns = res.data.map((item: any) => ({
+                  value: item.townID,
+                  label: item.name,
+                }));
+                setTowns(towns);
+              })
+              .finally(() => {
+                Post('/api/Common/GetDistinctsAsync', {
+                  townID: town?.value,
+                }).then(res => {
+                  const districts = res.data.map((item: any) => ({
+                    value: item.districtID,
+                    label: item.name,
+                  }));
+                  setDistricts(districts);
+                });
+              });
+          });
+      });
+
+    Post('/api/Service/GetAllServices', {})
+      .then((res: any) => {
+        let temp = res.data;
+        temp.unshift({value: 0, label: 'Tümü'});
+        setServices(temp);
+      })
+      .finally(() => {
+        Post('/api/Service/GetSubServicesByService', {
+          serviceId: operation?.value,
+        }).then(res => {
+          let temp = res.data;
+          temp.unshift({value: 0, label: 'Tümü'});
+          setServiceSubs(temp);
+        });
+      });
+
+    Post('/api/Common/ListCompanyTypesByServices', {
+      serviceId: operation?.value ?? 0,
+    }).then((res: any) => {
+      let temp = res.data.map((item: any) => ({
+        ...item,
+        value: item.companyTypeId,
+        label: item.companyTypeName,
+      }));
+
+      setFilterInstitution(temp ?? []);
+    });
+  }, [country, city, town, operation, language]);
+
+  // comment to company
   const formik = useFormik({
     initialValues: {
       institution: '',
@@ -99,64 +179,6 @@ const HomeWrapper: React.FC<props> = ({children}) => {
       });
     },
   });
-
-  useEffect(() => {
-    Post('/api/Common/GetCountriesAsync', {})
-      .then(res => {
-        const countries = res.data.map((item: any) => ({
-          value: item.countryID,
-          label: item.countryName,
-        }));
-        setCountries(countries);
-      })
-      .finally(() => {
-        getCities();
-      });
-
-    const getCities = () => {
-      Post('/api/Common/GetCitiesAsync', {
-        countryID: country?.value,
-      })
-        .then(res => {
-          const cities = res.data.map((item: any) => ({
-            value: item.cityID,
-            label: item.name,
-          }));
-          setCities(cities);
-        })
-        .finally(() => {
-          getTown();
-        });
-    };
-
-    const getTown = () => {
-      Post('/api/Common/GetTownsAsync', {
-        cityID: city?.value,
-      }).then(res => {
-        const towns = res.data.map((item: any) => ({
-          value: item.townID,
-          label: item.name,
-        }));
-        setTowns(towns);
-      });
-    };
-
-    Post('/api/Service/GetAllServices', {})
-      .then((res: any) => {
-        let temp = res.data;
-        temp.unshift({value: 0, label: 'Tümü'});
-        setServices(temp);
-      })
-      .finally(() => {
-        Post('/api/Service/GetSubServicesByService', {
-          serviceId: operation?.value,
-        }).then(res => {
-          let temp = res.data;
-          temp.unshift({value: 0, label: 'Tümü'});
-          setServiceSubs(temp);
-        });
-      });
-  }, [country, city, operation]);
 
   useEffect(() => {
     Post('/api/Common/GetAllCompanies', {}).then((res: any) => {
@@ -285,7 +307,7 @@ const HomeWrapper: React.FC<props> = ({children}) => {
             onChange={(e: any) => dispatch(setCity(e))}
           />
         )}
-        {city && (
+        {city && !town && (
           <CustomInputs
             type="dropdown"
             value={town}
@@ -295,14 +317,16 @@ const HomeWrapper: React.FC<props> = ({children}) => {
             onChange={(e: any) => dispatch(setTown(e))}
           />
         )}
-
-        <CustomInputs
-          type="dropdown"
-          value={institution}
-          dropdownData={institutionData}
-          placeholder={IntLabel('select_institution_type')}
-          onChange={(e: any) => dispatch(setInstitution(e))}
-        />
+        {town && (
+          <CustomInputs
+            type="dropdown"
+            value={district}
+            dropdownData={districts}
+            placeholder={IntLabel('select_district')}
+            isSearchable
+            onChange={(e: any) => dispatch(setDistrict(e))}
+          />
+        )}
 
         {!operation && (
           <CustomInputs
@@ -324,6 +348,14 @@ const HomeWrapper: React.FC<props> = ({children}) => {
             onChange={(e: any) => dispatch(setSubOperation(e))}
           />
         )}
+
+        <CustomInputs
+          type="dropdown"
+          value={institution}
+          dropdownData={filterInstitution}
+          placeholder={IntLabel('select_institution_type')}
+          onChange={(e: any) => dispatch(setInstitution(e))}
+        />
 
         <View className="flex-row  justify-between">
           <CustomButtons

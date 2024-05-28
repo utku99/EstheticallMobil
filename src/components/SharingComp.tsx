@@ -26,12 +26,16 @@ import moment from 'moment';
 import IntLabel from './IntLabel';
 import Video from 'react-native-video';
 import BlueTick from '../assets/svg/common/BlueTick';
-import {useIntl} from 'react-intl';
+import {FormattedMessage, useIntl} from 'react-intl';
 import UnMuted from '../assets/svg/homepages/UnMuted';
 import Muted from '../assets/svg/homepages/Muted';
 import Share from 'react-native-share';
 
 const CommentComp = ({item}: any) => {
+  const {Post, loading} = WebClient();
+  const {language} = useSelector((state: any) => state.user);
+  const [translatedText, setTranslatedText] = useState(null);
+
   return (
     <View className="space-y-2 mb-2">
       <View className="flex-row items-center space-x-3">
@@ -52,11 +56,34 @@ const CommentComp = ({item}: any) => {
         </View>
       </View>
       <Text className="text-xs text-customGray font-poppinsRegular">
-        {item?.comment}
+        {translatedText ?? item?.comment}
       </Text>
-      <Text className="text-xxs text-customGray font-poppinsRegular">
-        {item?.createdDate}
-      </Text>
+
+      <View className="flex items-center justify-between">
+        <Text className="text-xxs text-customGray font-poppinsRegular">
+          {item?.createdDate}
+        </Text>
+        <Text
+          onPress={() => {
+            if (translatedText) {
+              setTranslatedText(null);
+            } else {
+              Post('/api/Common/TranslateText', {
+                text: item?.comment,
+                targetLanguage: language?.language_code,
+              }).then(res => {
+                setTranslatedText(res.data.trans);
+              });
+            }
+          }}
+          className="self-end text-xs text-blue-400">
+          {translatedText
+            ? IntLabel('see_original')
+            : loading
+            ? IntLabel('loading')
+            : IntLabel('see_translate')}
+        </Text>
+      </View>
     </View>
   );
 };
@@ -78,10 +105,10 @@ const SharingComp = ({
   const [sharedDetail, setSharedDetail] = useState<any>(null);
   const [index, setIndex] = useState<any>(0);
   const {Post, loading} = WebClient();
+  const {user, isLoggedIn, language} = useSelector((state: any) => state.user);
+  const [translatedText, setTranslatedText] = useState(null);
   const isCarousel = useRef(null);
   const navigation = useNavigation();
-  const {user, isLoggedIn} = useSelector((state: any) => state.user);
-  const intl = useIntl();
   const [addComment, setAddComment] = useState(null);
   const [isMuted, setIsMuted] = useState(true);
 
@@ -246,11 +273,33 @@ const SharingComp = ({
         <Text
           numberOfLines={2}
           className="text-customGray text-xs font-poppinsRegular">
-          {item?.description}
+          {translatedText ?? item?.description}
         </Text>
-        <Text className="text-customGray text-xxs font-poppinsRegular">
-          {moment(item?.date, 'YYYY-MM-DD').format('DD.MM.YYYY')}
-        </Text>
+        <View className="flex flex-row justify-between">
+          <Text className="text-customGray text-xxs font-poppinsRegular">
+            {moment(item?.date, 'YYYY-MM-DD').format('DD.MM.YYYY')}
+          </Text>
+          <Text
+            onPress={() => {
+              if (translatedText) {
+                setTranslatedText(null);
+              } else {
+                Post('/api/Common/TranslateText', {
+                  text: item?.description,
+                  targetLanguage: language?.language_code,
+                }).then(res => {
+                  setTranslatedText(res.data.trans);
+                });
+              }
+            }}
+            className="self-end text-xs text-blue-400">
+            {translatedText
+              ? IntLabel('see_original')
+              : loading
+              ? IntLabel('loading')
+              : IntLabel('see_translate')}
+          </Text>
+        </View>
       </View>
 
       {/* bottom */}
