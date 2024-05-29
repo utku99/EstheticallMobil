@@ -11,12 +11,14 @@ import DoctorArrowUpIcon from '../assets/svg/firm/DoctorArrowUpIcon';
 import RenderHTML from 'react-native-render-html';
 import DoctorArrowDownIcon from '../assets/svg/firm/DoctorArrowDownIcon';
 import IntLabel from './IntLabel';
+import DoctorHeaderComp from './DoctorHeaderComp';
 
 interface props {
   item: any;
+  setClicked: any;
 }
 
-const FirmDoctorComp = ({item}: props) => {
+const FirmDoctorComp = ({item, setClicked}: props) => {
   const [seeAll, setSeeAll] = useState(false);
 
   return (
@@ -24,40 +26,16 @@ const FirmDoctorComp = ({item}: props) => {
       className={` border border-customLightGray rounded-xl bg-white `}
       style={{width: SIZES.width * 0.95}}>
       <View className="p-[10px] space-y-3">
-        {/* header */}
-        <View className="flex-row items-center justify-between">
-          <View className="w-[60px] h-[60px] overflow-hidden rounded-full border-[0.6px] border-customGray">
-            <Image
-              source={{uri: item?.headerModel?.picture}}
-              className="w-full h-full"
-              resizeMode="cover"
-            />
-          </View>
-          <View className="w-[44%]">
-            <Text
-              numberOfLines={1}
-              className="text-customGray text-xs font-poppinsSemiBold">
-              {item.headerModel.fullNameWithTitle}
-            </Text>
-            <Text
-              numberOfLines={1}
-              className="text-customGray text-xs font-poppinsRegular">
-              {item.headerModel.branch}
-            </Text>
-          </View>
-          <View className="items-center ">
-            <Text className="text-customGray  text-xs font-poppinsRegular">
-              {parseInt(item?.headerModel?.commentPoint) / 20}/5
-            </Text>
-            <Text className="text-customGray  text-xs font-poppinsRegular">
-              {IntLabel('comments')}
-            </Text>
-          </View>
-          <View className="items-center space-y-2">
-            <ShareIcon />
-            <LikeIcon />
-          </View>
-        </View>
+        <DoctorHeaderComp
+          companyId={item?.headerModel?.companyId}
+          doctorId={item?.headerModel?.companyDoctorId}
+          isFavorite={item?.headerModel?.isFavorite}
+          officeId={item?.headerModel?.companyOfficeId}
+          rating={parseFloat(item?.headerModel?.commentPoint) / 20}
+          setClicked={setClicked}
+          item={item}
+          isApproved={item?.isApprovedAccount}
+        />
 
         <View className="h-[1px] bg-customLightGray "></View>
 
@@ -82,63 +60,56 @@ const FirmDoctorComp = ({item}: props) => {
 
         {seeAll && (
           <View className="space-y-3">
-            <RenderHTML
-              contentWidth={SIZES.width}
-              source={{html: item.doctorInfo.description}}
-            />
+            <Text className="text-customGray font-poppinsRegular">
+              {item.doctorInfo.description}
+            </Text>
             <View>
               <Text className="text-sm font-poppinsSemiBold text-customGray">
                 {IntLabel('birthplace_date')}:{' '}
               </Text>
-              <RenderHTML
-                contentWidth={SIZES.width}
-                source={{html: item?.doctorInfo?.birthPlaceAndYear}}
-              />
+              <Text className="text-customGray font-poppinsRegular">
+                {item.doctorInfo.birthPlaceAndYear}
+              </Text>
             </View>
             <View>
               <Text className="text-sm font-poppinsSemiBold text-customGray">
                 {IntLabel('expertise')}:
               </Text>
-              <RenderHTML
-                contentWidth={SIZES.width}
-                source={{html: item.doctorInfo.expertises}}
-              />
+              <Text className="text-customGray font-poppinsRegular">
+                {item.doctorInfo.expertises}
+              </Text>
             </View>
             <View>
               <Text className="text-sm font-poppinsSemiBold text-customGray">
                 {IntLabel('education')}:
               </Text>
-              <RenderHTML
-                contentWidth={SIZES.width}
-                source={{html: item.doctorInfo.education}}
-              />
+              <Text className="text-customGray font-poppinsRegular">
+                {item.doctorInfo.education}
+              </Text>
             </View>
             <View>
               <Text className="text-sm font-poppinsSemiBold text-customGray">
                 {IntLabel('certificates')}:
               </Text>
-              <RenderHTML
-                contentWidth={SIZES.width}
-                source={{html: item.doctorInfo.certificates}}
-              />
+              <Text className="text-customGray font-poppinsRegular">
+                {item.doctorInfo.certificates}
+              </Text>
             </View>
             <View>
               <Text className="text-sm font-poppinsSemiBold text-customGray">
                 {IntLabel('awards')}:
               </Text>
-              <RenderHTML
-                contentWidth={SIZES.width}
-                source={{html: item.doctorInfo.awards}}
-              />
+              <Text className="text-customGray font-poppinsRegular">
+                {item.doctorInfo.awards}
+              </Text>
             </View>
             <View>
               <Text className="text-sm font-poppinsSemiBold text-customGray">
                 {IntLabel('memberships')}:
               </Text>
-              <RenderHTML
-                contentWidth={SIZES.width}
-                source={{html: item.doctorInfo.memberships}}
-              />
+              <Text className="text-customGray font-poppinsRegular">
+                {item.doctorInfo.memberships}
+              </Text>
             </View>
             <View>
               <Text className="text-sm font-poppinsSemiBold text-customGray">

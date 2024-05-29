@@ -143,7 +143,6 @@ const Packages = () => {
             <PackageComp
               key={item.packageID}
               item={item}
-              onClickable
               setClicked={setClickedLike}
             />
           )}

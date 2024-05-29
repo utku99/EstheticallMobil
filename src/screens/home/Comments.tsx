@@ -3,9 +3,10 @@ import React, {useEffect, useState} from 'react';
 import HomeWrapper from './HomeWrapper';
 import CommentToCompanyComp from '../../components/CommentToCompanyComp';
 import WebClient from '../../utility/WebClient';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import HandleData from '../../components/HandleData';
 import IntLabel from '../../components/IntLabel';
+import {setListFilters} from '../../redux/slices/filter';
 
 const Comments = () => {
   const {Post, loading} = WebClient();
@@ -19,8 +20,9 @@ const Comments = () => {
     suboperation,
     listFilters,
   } = useSelector((state: any) => state.filter);
-
+  const dispatch = useDispatch();
   const [comments, setComments] = useState<any>([]);
+  const [clicked, setClicked] = useState(false);
 
   useEffect(() => {
     Post('/api/Comment/GetCommentListAsync', {
@@ -35,7 +37,15 @@ const Comments = () => {
     }).then((res: any) => {
       setComments(res.data);
     });
-  }, [listFilters]);
+
+    if (listFilters) {
+      dispatch(setListFilters(false));
+    }
+
+    if (clicked) {
+      setClicked(false);
+    }
+  }, [listFilters, clicked]);
 
   return (
     <HomeWrapper>
@@ -47,7 +57,9 @@ const Comments = () => {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{display: 'flex', gap: 15, paddingBottom: 20}}
           data={comments}
-          renderItem={({item}) => <CommentToCompanyComp item={item} />}
+          renderItem={({item}) => (
+            <CommentToCompanyComp item={item} setClicked={setClicked} />
+          )}
         />
       </HandleData>
     </HomeWrapper>

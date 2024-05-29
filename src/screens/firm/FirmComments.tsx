@@ -15,6 +15,7 @@ const FirmComments = ({route}: props) => {
   const {Post, loading} = WebClient();
   const [comments, setComments] = useState<any>([]);
   const {user} = useSelector((state: any) => state.user);
+  const [clicked, setClicked] = useState(false);
 
   useEffect(() => {
     Post('/api/Company/GetCompanyCommentsWeb', {
@@ -25,7 +26,11 @@ const FirmComments = ({route}: props) => {
     }).then(res => {
       setComments(res.data);
     });
-  }, []);
+
+    if (clicked) {
+      setClicked(false);
+    }
+  }, [clicked]);
 
   return (
     <FirmWrapper>
@@ -36,7 +41,9 @@ const FirmComments = ({route}: props) => {
         <FlatList
           contentContainerStyle={{display: 'flex', gap: 15, paddingBottom: 20}}
           data={comments}
-          renderItem={({item}) => <CommentToCompanyComp item={item} />}
+          renderItem={({item}) => (
+            <CommentToCompanyComp item={item} setClicked={setClicked} />
+          )}
         />
       </HandleData>
     </FirmWrapper>

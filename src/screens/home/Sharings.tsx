@@ -72,8 +72,13 @@ const Sharings = () => {
       connection.invoke('LoginMessageHub', {UserID: user?.id, TypeID: 1});
     }
 
-    dispatch(setListFilters(false));
-    setClicked(false);
+    if (listFilters) {
+      dispatch(setListFilters(false));
+    }
+
+    if (clicked) {
+      setClicked(false);
+    }
   }, [
     listFilters,
     clicked,
@@ -106,7 +111,6 @@ const Sharings = () => {
             <SharingComp
               key={item.sharedID}
               item={item}
-              onClickable
               setClicked={setClicked}
               isFocus={index === currentIndex && screenIsFocused}
             />

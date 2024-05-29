@@ -15,6 +15,7 @@ const FirmDoctors = ({route}: props) => {
   const {Post, loading} = WebClient();
   const {user} = useSelector((state: any) => state.user);
   const [doctors, setDoctors] = useState<any>([]);
+  const [clicked, setClicked] = useState(false);
 
   useEffect(() => {
     Post('/api/CompanyDoctor/WebCompanyDoctorList', {
@@ -24,9 +25,11 @@ const FirmDoctors = ({route}: props) => {
     }).then(res => {
       setDoctors(res.data.object);
     });
-  }, []);
 
-  console.log(doctors);
+    if (clicked) {
+      setClicked(false);
+    }
+  }, [clicked]);
 
   return (
     <FirmWrapper>
@@ -38,7 +41,11 @@ const FirmDoctors = ({route}: props) => {
           contentContainerStyle={{display: 'flex', gap: 15, paddingBottom: 20}}
           data={doctors}
           renderItem={({item}) => (
-            <FirmDoctorComp key={item.sharedID} item={item} />
+            <FirmDoctorComp
+              key={item.sharedID}
+              item={item}
+              setClicked={setClicked}
+            />
           )}
         />
       </HandleData>

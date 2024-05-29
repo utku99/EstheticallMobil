@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import UserWrapper from './UserWrapper';
-import DoctorComp from '../../components/DoctorComp';
+import DoctorComp from '../../components/CompanyHeaderComp';
 import WebClient from '../../utility/WebClient';
 import {useSelector} from 'react-redux';
 import HandleData from '../../components/HandleData';

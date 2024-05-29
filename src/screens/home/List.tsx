@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import HomeWrapper from './HomeWrapper';
-import DoctorComp from '../../components/DoctorComp';
+import CompanyHeaderComp from '../../components/CompanyHeaderComp';
 import {FlatList} from 'react-native';
 import WebClient from '../../utility/WebClient';
 import {useDispatch, useSelector} from 'react-redux';
@@ -8,6 +8,7 @@ import {setListFilters} from '../../redux/slices/filter';
 import HandleData from '../../components/HandleData';
 import IntLabel from '../../components/IntLabel';
 import AdvertisementList from '../../components/AdvertisementList';
+import {SIZES} from '../../constants/constants';
 
 const List = () => {
   const {Post, loading} = WebClient();
@@ -41,8 +42,13 @@ const List = () => {
       setDoctors(res.data);
     });
 
-    dispatch(setListFilters(false));
-    setClicked(false);
+    if (listFilters) {
+      dispatch(setListFilters(false));
+    }
+
+    if (clicked) {
+      setClicked(false);
+    }
   }, [listFilters, clicked, language]);
 
   return (
@@ -54,9 +60,25 @@ const List = () => {
         <FlatList
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{display: 'flex', gap: 15, paddingBottom: 20}}
+          style={{width: SIZES.width * 0.95}}
           data={doctors}
-          renderItem={({item}) => (
-            <DoctorComp item={item} setClicked={setClicked} />
+          renderItem={({item, index}) => (
+            <CompanyHeaderComp
+              key={index}
+              item={item}
+              setClicked={setClicked}
+              style={{
+                borderWidth: 1,
+                borderColor: '#CECECE',
+                padding: 10,
+                borderRadius: 12,
+              }}
+              rating={parseFloat(item?.companyPoint) / 20}
+              companyId={item?.companyID}
+              officeId={item?.companyOfficeID}
+              isFavorite={item?.isFavorite}
+              isApproved={item?.isApprovedAccount}
+            />
             // <AdvertisementList />
           )}
         />

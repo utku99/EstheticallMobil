@@ -18,6 +18,7 @@ const FirmSharings = ({route}: props) => {
   const [sharings, setSharings] = useState<any>([]);
   const {user} = useSelector((state: any) => state.user);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [clicked, setClicked] = useState(false);
 
   useEffect(() => {
     Post('/api/Shared/GetCompanySharedDetail', {
@@ -29,7 +30,11 @@ const FirmSharings = ({route}: props) => {
     }).then(res => {
       setSharings(res.data);
     });
-  }, []);
+
+    if (clicked) {
+      setClicked(false);
+    }
+  }, [clicked]);
 
   const onViewCallBack = React.useCallback((viewableItems: any) => {
     setCurrentIndex(viewableItems?.viewableItems[0]?.index);
@@ -54,6 +59,7 @@ const FirmSharings = ({route}: props) => {
               key={item.sharedID}
               item={item}
               isFocus={index === currentIndex && screenIsFocused}
+              setClicked={setClicked}
             />
           )}
         />

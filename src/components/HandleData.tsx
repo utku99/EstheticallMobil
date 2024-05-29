@@ -6,7 +6,7 @@ import LottieView from 'lottie-react-native';
 
 interface props {
   data?: any;
-  loading: boolean;
+  loading?: boolean;
   title?: any;
   children?: React.ReactNode;
 }

@@ -253,7 +253,7 @@ const CustomInputs: React.FC<props> = ({
       )}
       {type == 'rating' && (
         <Rating
-          startingValue={value}
+          startingValue={value ? value : 0}
           onFinishRating={onChange}
           ratingCount={5}
           imageSize={14}

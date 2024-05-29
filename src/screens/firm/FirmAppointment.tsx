@@ -7,7 +7,7 @@ import {SIZES} from '../../constants/constants';
 import {useNavigation} from '@react-navigation/native';
 import {useFormik} from 'formik';
 import {useSelector} from 'react-redux';
-import WebClient from '../../utility/WebClient';
+import WebClient, {toast} from '../../utility/WebClient';
 import IntLabel from '../../components/IntLabel';
 import * as Yup from 'yup';
 import moment from 'moment';
@@ -64,9 +64,9 @@ const FirmAppointment = ({route}: props) => {
       operation: Yup.object().required(
         IntLabel('validation_message_this_field_is_required'),
       ),
-      suboperation: Yup.object().required(
-        IntLabel('validation_message_this_field_is_required'),
-      ),
+      // suboperation: Yup.object().required(
+      //   IntLabel('validation_message_this_field_is_required'),
+      // ),
       title: Yup.string().required(
         IntLabel('validation_message_this_field_is_required'),
       ),
@@ -83,26 +83,25 @@ const FirmAppointment = ({route}: props) => {
         IntLabel('validation_message_this_field_is_required'),
       ),
     }),
-    onSubmit: values => {
-      Post(
-        '/api/Appointments/RequestAppointment',
-        {
-          userID: user?.id,
-          companyID: company?.value,
-          companyOfficeID: company?.officeID,
-          serviceID: values.operation.value,
-          serviceSubId: values.suboperation.value ?? 0,
-          doctorId: values.doctor.value ?? 0,
-          title: values.title,
-          content: values.content,
-          startDate: values.startDate,
-          endDate: values.endDate,
-        },
-        true,
-        true,
-      ).then(res => {
+    onSubmit: (values, {resetForm}) => {
+      Post('/api/Appointments/RequestAppointment', {
+        userID: user?.id,
+        companyID: company?.value,
+        companyOfficeID: company?.officeID,
+        serviceID: values.operation.value,
+        serviceSubId: values.suboperation.value ?? 0,
+        doctorId: values.doctor.value ?? 0,
+        title: values.title,
+        content: values.content,
+        startDate: values.startDate,
+        endDate: values.endDate,
+        appointmentType: values.meeting.value,
+      }).then(res => {
         if (res.data.code == '100') {
-          navigation.goBack();
+          resetForm();
+          toast(res.data.message);
+        } else {
+          toast(res.data.message);
         }
       });
     },

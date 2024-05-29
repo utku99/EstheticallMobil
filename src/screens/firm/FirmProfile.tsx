@@ -44,10 +44,9 @@ const FirmProfile = ({route}: props) => {
             </Text>
             <View className="border-b h-1 flex-1"></View>
           </View>
-          <RenderHTML
-            contentWidth={SIZES.width}
-            source={{html: info?.description}}
-          />
+          <Text className="font-poppinsRegular text-customGray text-sm my-2">
+            {info?.description}
+          </Text>
         </View>
 
         {/* carousel */}

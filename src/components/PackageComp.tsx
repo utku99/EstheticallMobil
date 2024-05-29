@@ -17,20 +17,10 @@ import {useFormik} from 'formik';
 import CommunicationModal from './CommunicationModal';
 import IntLabel from './IntLabel';
 import BlueTick from '../assets/svg/common/BlueTick';
+import CompanyHeaderComp from './CompanyHeaderComp';
+import DoctorHeaderComp from './DoctorHeaderComp';
 
-const PackageComp = ({
-  item,
-  onClickable = false,
-  setClicked,
-  companyID,
-  companyOfficeID,
-}: {
-  item: any;
-  onClickable?: boolean;
-  setClicked?: any;
-  companyID?: number;
-  companyOfficeID?: number;
-}) => {
+const PackageComp = ({item, setClicked}: {item: any; setClicked: any}) => {
   const [seeAll, setSeeAll] = useState(false);
   const [index, setIndex] = useState<any>(0);
   const isCarousel = useRef(null);
@@ -39,82 +29,26 @@ const PackageComp = ({
   const {Post} = WebClient();
   const {user} = useSelector((state: any) => state.user);
 
-  const handlePoint = () => {
-    if (item?.companyPoint) {
-      return item?.companyPoint?.split('/')[0] / 20;
-    } else {
-      return (item?.doctor?.commentPoint ?? item?.doctorCommentPoint) / 20;
-    }
-  };
+  console.log(item);
 
   return (
     <View
-      className={`h-fit border border-customLightGray rounded-xl bg-white `}
+      className={`h-fit border border-customLightGray rounded-xl bg-white overflow-hidden`}
       style={{width: SIZES.width * 0.95}}>
-      {/* header */}
-      <View className="flex-row justify-between items-center p-[10px]">
-        <TouchableOpacity
-          onPress={() =>
-            onClickable &&
-            navigation.navigate('firmprofile', {
-              companyId: item?.companyId ?? item?.companyID,
-              companyOfficeId: item?.companyOfficeId ?? item?.companyOfficeID,
-            })
-          }
-          className="flex-row items-center w-[60%] ">
-          <View className="w-[55px] h-[55px] overflow-hidden rounded-full border-[0.6px] border-customGray">
-            <Image
-              source={{uri: item?.headerModel?.logo ?? item?.logo}}
-              className="w-full h-full"
-              resizeMode="cover"
-            />
-          </View>
-          <View className="pl-2 flex-shrink">
-            <View className="flex-row items-center space-x-1">
-              <Text
-                numberOfLines={1}
-                className="text-customGray text-xs font-poppinsSemiBold">
-                {item?.headerModel?.companyName ?? item?.companyName}
-              </Text>
-              {(item?.isApprovedAccount ??
-                item?.headerModel?.isApprovementAccount) && <BlueTick />}
-            </View>
-
-            {(item?.companyBranch ??
-              item?.doctorBranch ??
-              item?.headerModel?.companyBranch) && (
-              <Text
-                numberOfLines={1}
-                className="text-customGray  text-xs font-poppinsRegular">
-                {item?.companyBranch ??
-                  item?.doctorBranch ??
-                  item.headerModel.companyBranch}
-              </Text>
-            )}
-            <Text
-              numberOfLines={1}
-              className="text-customGray  text-xs font-poppinsRegular">
-              {item?.headerModel?.location ?? item?.location}
-            </Text>
-          </View>
-        </TouchableOpacity>
-        <View className="items-center">
-          <Text className="text-customGray font-poppinsRegular text-xxs">
-            {IntLabel('comments')}
-          </Text>
-          <CustomInputs
-            type="rating"
-            value={
-              Number(item?.headerModel?.commentPoint ?? item?.companyPoint) / 20
-            }
-          />
-        </View>
-        <LikeUnlikeComp
-          item={item}
-          setClicked={setClicked}
-          isFavorite={item?.doctorIsFavorite}
-        />
-      </View>
+      <CompanyHeaderComp
+        item={item?.headerModel ?? item}
+        setClicked={setClicked}
+        rating={
+          parseFloat(item?.headerModel?.commentPoint ?? item?.companyPoint) / 20
+        }
+        companyId={item?.companyID ?? item?.headerModel?.companyID}
+        officeId={item?.companyOfficeID ?? item?.headerModel?.companyOfficeID}
+        isFavorite={item?.isFavorite ?? item?.headerModel?.isFavorite}
+        isApproved={
+          item?.isApprovedAccount ?? item?.headerModel?.isApprovementAccount
+        }
+        style={{padding: 10}}
+      />
 
       {/* carousel */}
       <View className="w-full aspect-[1.5]">
@@ -175,7 +109,7 @@ const PackageComp = ({
 
       {seeAll && (
         <>
-          {item?.doctorBranch && (
+          {(item?.doctorBranch ?? item?.doctor?.doctorBranch) && (
             <>
               <View className="px-[10px] space-y-3 flex-row">
                 <Text className="font-poppinsMedium text-sm text-customGray">
@@ -183,52 +117,25 @@ const PackageComp = ({
                 </Text>
                 <View className="h-[0.5px] bg-black/[.5] flex-1"></View>
               </View>
-              <View className="flex-row items-center p-[10px] justify-between">
-                <View className="w-[60px] h-[60px] overflow-hidden rounded-full border-[0.6px] border-customGray">
-                  <Image
-                    source={{uri: item?.doctor?.logo ?? item?.doctorLogo}}
-                    className="w-full h-full"
-                    resizeMode="cover"
-                  />
-                </View>
-                <View className=" w-[40%]">
-                  <Text
-                    numberOfLines={1}
-                    className="text-customGray  text-xs font-poppinsSemiBold">
-                    {item?.doctor?.doctorName ?? item?.doctorName}
-                  </Text>
-                  <Text
-                    numberOfLines={1}
-                    className="text-customGray  text-xs font-poppinsRegular">
-                    {item?.doctorBranch}
-                  </Text>
-                  <Text
-                    numberOfLines={1}
-                    className="text-customGray  text-xs font-poppinsRegular">
-                    {item?.doctor?.location ?? item?.doctorLocation}
-                  </Text>
-                </View>
-                <View className="items-center">
-                  <Text className="text-customGray font-poppinsRegular text-xs">
-                    {handlePoint()}/5
-                  </Text>
-                  <Text className="text-customGray font-poppinsRegular text-xs">
-                    {IntLabel('comments')}
-                  </Text>
-                </View>
-                <View className="items-center space-y-2">
-                  <ShareIcon />
-                  <View>
-                    <LikeUnlikeComp
-                      item={item}
-                      readOnly
-                      isFavorite={
-                        item?.doctor?.isFavorite ?? item?.doctorIsFavorite
-                      }
-                    />
-                  </View>
-                </View>
-              </View>
+              <DoctorHeaderComp
+                item={item}
+                rating={
+                  parseFloat(
+                    item?.doctorCommentPoint ?? item?.doctor?.commentPoint,
+                  ) / 20
+                }
+                companyId={item?.companyID ?? item?.headerModel?.companyID}
+                officeId={
+                  item?.companyOfficeID ?? item?.headerModel?.companyOfficeID
+                }
+                doctorId={
+                  item?.doctor?.companyDoctorId ?? item?.companyDoctorsId
+                }
+                isFavorite={item?.doctorIsFavorite ?? item?.doctor?.isFavorite}
+                setClicked={setClicked}
+                isApproved={false}
+                style={{padding: 10}}
+              />
             </>
           )}
 
@@ -238,10 +145,9 @@ const PackageComp = ({
             </Text>
             <View className="h-[0.5px] bg-black/[.5] flex-1"></View>
           </View>
-          <RenderHTML
-            source={{html: item?.footerModel?.content ?? item?.content}}
-            contentWidth={SIZES.width}
-          />
+          <Text className="text-customGray font-poppinsRegular p-[10]">
+            {item?.footerModel?.content ?? item?.content}
+          </Text>
           <View className="pb-[30px]">
             <CustomButtons
               onPress={() => setVisible(true)}

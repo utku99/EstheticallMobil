@@ -15,19 +15,26 @@ const FirmPackages = ({route}: props) => {
   const {Post, loading} = WebClient();
   const {user} = useSelector((state: any) => state.user);
   const [packages, setPackages] = useState<any>([]);
+  const [clicked, setClicked] = useState(false);
 
   useEffect(() => {
-    const fetch = async () => {
-      await Post('/api/Package/GetPackagesWeb', {
-        companyID: route.params.companyId,
-        companyOfficeID: route.params.companyOfficeId,
-        userId: user?.id ?? 0,
-      }).then(res => {
-        setPackages(res.data.object);
-      });
-    };
-    fetch();
-  }, []);
+    Post('/api/Package/GetPackagesWeb', {
+      companyID: route.params.companyId,
+      companyOfficeID: route.params.companyOfficeId,
+      userId: user?.id ?? 0,
+    }).then(res => {
+      let temp = res.data.object.map((item: any) => ({
+        images: item.sliders.unshift(item.footerModel?.displayImage),
+        ...item,
+      }));
+
+      setPackages(temp);
+    });
+
+    if (clicked) {
+      setClicked(false);
+    }
+  }, [clicked]);
 
   return (
     <FirmWrapper>
@@ -39,12 +46,7 @@ const FirmPackages = ({route}: props) => {
           contentContainerStyle={{display: 'flex', gap: 15, paddingBottom: 20}}
           data={packages}
           renderItem={({item, index}) => (
-            <PackageComp
-              key={index}
-              item={item}
-              companyID={route.params.companyId}
-              companyOfficeID={route.params.companyOfficeId}
-            />
+            <PackageComp key={index} item={item} setClicked={setClicked} />
           )}
         />
       </HandleData>

@@ -30,6 +30,7 @@ import {FormattedMessage, useIntl} from 'react-intl';
 import UnMuted from '../assets/svg/homepages/UnMuted';
 import Muted from '../assets/svg/homepages/Muted';
 import Share from 'react-native-share';
+import CompanyHeaderComp from './CompanyHeaderComp';
 
 const CommentComp = ({item}: any) => {
   const {Post, loading} = WebClient();
@@ -91,12 +92,10 @@ const CommentComp = ({item}: any) => {
 const SharingComp = ({
   item,
   setClicked,
-  readOnly,
   isFocus,
 }: {
   item: any;
-  setClicked?: any;
-  readOnly?: boolean;
+  setClicked: any;
   isFocus?: boolean;
 }) => {
   const [seeComments, setSeeComments] = useState(false);
@@ -123,88 +122,22 @@ const SharingComp = ({
 
   return (
     <View
-      className={`h-fit border border-customLightGray rounded-xl bg-white `}
+      className={`h-fit border border-customLightGray rounded-xl overflow-hidden bg-white `}
       style={{width: SIZES.width * 0.95}}>
-      {/* header */}
-      <View className="flex-row justify-between items-center p-[10px]">
-        <TouchableOpacity
-          onPress={() =>
-            navigation.navigate('firmprofile', {
-              companyId: item?.companyId,
-              companyOfficeId: item?.companyOfficeId,
-            })
-          }
-          className="flex-row items-center w-[60%] ">
-          <View className="w-[55px] h-[55px] overflow-hidden rounded-full border-[0.6px] border-customGray">
-            <Image
-              source={{uri: item?.logo ?? item?.parentModel?.logo}}
-              className="w-full h-full"
-              resizeMode="cover"
-            />
-          </View>
-          <View className="pl-2 flex-shrink">
-            <View className="flex-row items-center space-x-1">
-              <Text
-                numberOfLines={1}
-                className="text-customGray  text-xs font-poppinsSemiBold">
-                {item?.name ?? item?.parentModel?.name}
-              </Text>
-              {(item?.isApprovedAccount ??
-                item?.parentModel?.isApprovedAccount) && <BlueTick />}
-            </View>
-
-            {(item?.companyBranch ??
-              item?.doctorBranch ??
-              item?.parentModel?.companyBranch) && (
-              <Text
-                numberOfLines={1}
-                className="text-customGray text-xs font-poppinsRegular ">
-                {item?.companyBranch ??
-                  item?.doctorBranch ??
-                  item?.parentModel?.companyBranch}
-              </Text>
-            )}
-            <Text
-              numberOfLines={1}
-              className="text-customGray text-xs font-poppinsRegular ">
-              {item?.location ?? item?.parentModel?.location}
-            </Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate('firmcomments', {
-              companyId: item?.companyId,
-              companyOfficeId: item?.companyOfficeId,
-            });
-          }}
-          className="items-center">
-          <Text className="text-customGray font-poppinsRegular text-xxs">
-            {IntLabel('comments')}
-          </Text>
-          {item?.companyPoint ? (
-            <CustomInputs
-              type="rating"
-              value={Number(item?.companyPoint) / 20}
-            />
-          ) : (
-            <CustomInputs
-              type="rating"
-              value={
-                item?.parentModel?.companyPoint
-                  ? item?.parentModel?.companyPoint / 20
-                  : 0
-              }
-            />
-          )}
-        </TouchableOpacity>
-        <LikeUnlikeComp
-          item={item}
-          setClicked={setClicked}
-          readOnly={readOnly}
-          isFavorite={item?.isFavorite ?? item?.parentModel?.isFavorite}
-        />
-      </View>
+      <CompanyHeaderComp
+        item={item?.parentModel ?? item}
+        setClicked={setClicked}
+        rating={
+          parseFloat(item?.companyPoint ?? item?.parentModel?.companyPoint) / 20
+        }
+        companyId={item?.companyId}
+        officeId={item?.companyOfficeId}
+        isFavorite={item?.parentModel?.isFavorite ?? item?.isFavorite}
+        isApproved={
+          item?.isApprovedAccount ?? item?.parentModel?.isApprovedAccount
+        }
+        style={{padding: 10}}
+      />
 
       {/* carousel */}
       <View className="w-full aspect-[1.3]">

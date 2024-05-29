@@ -9,8 +9,16 @@ import {SIZES} from '../constants/constants';
 import LikeUnlikeComp from './LikeUnlikeComp';
 import IntLabel from './IntLabel';
 import {useNavigation} from '@react-navigation/native';
+import DoctorHeaderComp from './DoctorHeaderComp';
+import CompanyHeaderComp from './CompanyHeaderComp';
 
-const CommentToCompanyComp = ({item}: any) => {
+const CommentToCompanyComp = ({
+  item,
+  setClicked,
+}: {
+  item: any;
+  setClicked: any;
+}) => {
   const [seeAll, setSeeAll] = useState(false);
   const navigation = useNavigation();
 
@@ -50,7 +58,7 @@ const CommentToCompanyComp = ({item}: any) => {
               </Text>
               <CustomInputs
                 type="rating"
-                value={Number(item?.commentPoint) / 20}
+                value={parseFloat(item?.commentPoint) / 20}
               />
             </View>
           </View>
@@ -97,69 +105,32 @@ const CommentToCompanyComp = ({item}: any) => {
       </View>
 
       {/* doctor */}
-      <View className="space-y-2">
-        <Text className="text-sm font-poppinsRegular text-customGray">
+      <View className="">
+        <Text className="text-sm font-poppinsRegular text-customGray mb-2">
           {IntLabel('performing_the_operation')}
         </Text>
-        <View className="flex-row items-center justify-between">
-          <TouchableOpacity
-            onPress={() => {
-              if (item?.companyDoctorsId == 0) {
-                navigation.navigate('firmprofile', {
-                  companyId: item?.commentID,
-                  companyOfficeId: item?.companyID,
-                });
-              } else {
-                navigation.navigate('firmdoctordetail', {
-                  companyId: item?.commentID,
-                  companyOfficeId: item?.companyID,
-                  doctorId: item?.companyDoctorsId,
-                });
-              }
-            }}
-            className="w-[60px] h-[60px] overflow-hidden rounded-full border-[0.6px] border-customGray">
-            <Image
-              source={{uri: item?.doctorLogo}}
-              className="w-full h-full"
-              resizeMode="cover"
-            />
-          </TouchableOpacity>
-          <TouchableOpacity className="w-[40%]">
-            <Text
-              numberOfLines={1}
-              className="text-customGray font-poppins text-xs font-poppinsSemiBold">
-              {item?.nameWithTitle}
-            </Text>
-            <Text
-              numberOfLines={1}
-              className="text-customGray font-poppinsRegular text-xs">
-              {item?.doctorBranch}
-            </Text>
-            <Text
-              numberOfLines={1}
-              className="text-customGray font-poppinsRegular text-xs">
-              {item?.doctorLocation}
-            </Text>
-          </TouchableOpacity>
-          <View className="items-center ">
-            <Text className="text-customGray font-poppinsRegular text-xs">
-              {item?.doctorPoint.split('.')[0] / 20}/5
-            </Text>
-            <Text className="text-customGray font-poppinsRegular text-xs">
-              {IntLabel('comments')}
-            </Text>
-          </View>
-          <View className="items-center space-y-2">
-            <ShareIcon />
-            <View>
-              <LikeUnlikeComp
-                item={item}
-                readOnly
-                isFavorite={item?.isFavorite}
-              />
-            </View>
-          </View>
-        </View>
+        {(item?.companyDoctorsId ?? item?.companyDoctorId) == 0 ? (
+          <CompanyHeaderComp
+            item={item}
+            setClicked={setClicked}
+            rating={parseFloat(item.doctorPoint) / 20}
+            companyId={item?.companyID ?? item?.companyId}
+            officeId={item?.companyOfficeID}
+            isFavorite={item?.isFavorite ?? item?.doctor?.isDoctorFavorite}
+            isApproved={item?.isAprrovedAccount}
+          />
+        ) : (
+          <DoctorHeaderComp
+            item={item}
+            setClicked={setClicked}
+            rating={parseFloat(item.doctorPoint) / 20}
+            companyId={item?.companyID ?? item?.companyId}
+            officeId={item?.companyOfficeID}
+            doctorId={item?.companyDoctorsId ?? item?.companyDoctorId}
+            isFavorite={item?.isFavorite ?? item?.doctor?.isDoctorFavorite}
+            isApproved={item?.isAprrovedAccount}
+          />
+        )}
       </View>
     </View>
   );

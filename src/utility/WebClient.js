@@ -8,14 +8,13 @@ import { deviceLanguage } from "../constants/constants";
 
 const WebClient = () => {
   const [loading, setLoading] = useState(false);
-  const { user ,language} = useSelector(state => state.user)
-
+  const { user, language } = useSelector(state => state.user)
 
   const defaultConfig = {
     baseURL: "https://estheticallv2-api.ranna.com.tr",
     headers: {
       'Content-Type': 'application/json',
-      "LanguageId": language? language?.type : deviceLanguage=="tr" ? 1 : 2
+      "LanguageId": language ? language?.type : deviceLanguage == "tr" ? 1 : 2
     },
   };
 
@@ -80,7 +79,7 @@ export default WebClient;
 
 
 
-export const toast = (message,delay=0) => {
+export const toast = (message, delay = 0) => {
   Toast.show(message, {
     duration: Toast.durations.SHORT,
     position: Toast.positions.BOTTOM,
