@@ -59,7 +59,7 @@ const CommentComp = ({item}: any) => {
         {translatedText ?? item?.comment}
       </Text>
 
-      <View className="flex items-center justify-between">
+      <View className="flex flex-row items-center justify-between ">
         <Text className="text-xxs text-customGray font-poppinsRegular">
           {item?.createdDate}
         </Text>
@@ -90,13 +90,11 @@ const CommentComp = ({item}: any) => {
 
 const SharingComp = ({
   item,
-  onClickable = false,
   setClicked,
   readOnly,
   isFocus,
 }: {
   item: any;
-  onClickable?: boolean;
   setClicked?: any;
   readOnly?: boolean;
   isFocus?: boolean;
@@ -131,7 +129,6 @@ const SharingComp = ({
       <View className="flex-row justify-between items-center p-[10px]">
         <TouchableOpacity
           onPress={() =>
-            onClickable &&
             navigation.navigate('firmprofile', {
               companyId: item?.companyId,
               companyOfficeId: item?.companyOfficeId,
@@ -174,7 +171,14 @@ const SharingComp = ({
             </Text>
           </View>
         </TouchableOpacity>
-        <View className="items-center">
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate('firmcomments', {
+              companyId: item?.companyId,
+              companyOfficeId: item?.companyOfficeId,
+            });
+          }}
+          className="items-center">
           <Text className="text-customGray font-poppinsRegular text-xxs">
             {IntLabel('comments')}
           </Text>
@@ -193,7 +197,7 @@ const SharingComp = ({
               }
             />
           )}
-        </View>
+        </TouchableOpacity>
         <LikeUnlikeComp
           item={item}
           setClicked={setClicked}
@@ -312,8 +316,9 @@ const SharingComp = ({
               isActive: true,
               typeID: viewedType.sharing,
               userID: user?.id ?? 0,
-            }).then(res => {});
-            setSeeComments(!seeComments);
+            }).then(res => {
+              setSeeComments(!seeComments);
+            });
           }}
           className="text-white text-xs font-poppinsRegular flex-1">
           {seeComments ? IntLabel('hide_comments') : IntLabel('see_comments')}
@@ -326,8 +331,9 @@ const SharingComp = ({
                 isActive: true,
                 typeID: viewedType.sharing,
                 userID: user?.id ?? 0,
-              }).then(res => {});
-              setSeeComments(!seeComments);
+              }).then(res => {
+                setSeeComments(!seeComments);
+              });
             }}>
             <SharingMessageIcon />
           </TouchableOpacity>

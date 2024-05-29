@@ -1,4 +1,4 @@
-import {View, Text, Image, Pressable} from 'react-native';
+import {View, Text, Image, Pressable, TouchableOpacity} from 'react-native';
 import React, {useState} from 'react';
 import CustomInputs from './CustomInputs';
 import LikeIcon from '../assets/svg/common/LikeIcon';
@@ -8,9 +8,13 @@ import SeeAllArrow from '../assets/svg/homepages/SeeAllArrow';
 import {SIZES} from '../constants/constants';
 import LikeUnlikeComp from './LikeUnlikeComp';
 import IntLabel from './IntLabel';
+import {useNavigation} from '@react-navigation/native';
 
 const CommentToCompanyComp = ({item}: any) => {
   const [seeAll, setSeeAll] = useState(false);
+  const navigation = useNavigation();
+
+  console.log(item);
 
   return (
     <View
@@ -40,7 +44,10 @@ const CommentToCompanyComp = ({item}: any) => {
                 {item?.userLocation}
               </Text>
             </View>
-            <View className="">
+            <View className="flex-col items-center">
+              <Text className="text-xs font-poppinsRegular font-normal text-customGray mb-1">
+                {IntLabel('given_point')}
+              </Text>
               <CustomInputs
                 type="rating"
                 value={Number(item?.commentPoint) / 20}
@@ -95,14 +102,29 @@ const CommentToCompanyComp = ({item}: any) => {
           {IntLabel('performing_the_operation')}
         </Text>
         <View className="flex-row items-center justify-between">
-          <View className="w-[60px] h-[60px] overflow-hidden rounded-full border-[0.6px] border-customGray">
+          <TouchableOpacity
+            onPress={() => {
+              if (item?.companyDoctorsId == 0) {
+                navigation.navigate('firmprofile', {
+                  companyId: item?.commentID,
+                  companyOfficeId: item?.companyID,
+                });
+              } else {
+                navigation.navigate('firmdoctordetail', {
+                  companyId: item?.commentID,
+                  companyOfficeId: item?.companyID,
+                  doctorId: item?.companyDoctorsId,
+                });
+              }
+            }}
+            className="w-[60px] h-[60px] overflow-hidden rounded-full border-[0.6px] border-customGray">
             <Image
               source={{uri: item?.doctorLogo}}
               className="w-full h-full"
               resizeMode="cover"
             />
-          </View>
-          <View className="w-[40%]">
+          </TouchableOpacity>
+          <TouchableOpacity className="w-[40%]">
             <Text
               numberOfLines={1}
               className="text-customGray font-poppins text-xs font-poppinsSemiBold">
@@ -118,7 +140,7 @@ const CommentToCompanyComp = ({item}: any) => {
               className="text-customGray font-poppinsRegular text-xs">
               {item?.doctorLocation}
             </Text>
-          </View>
+          </TouchableOpacity>
           <View className="items-center ">
             <Text className="text-customGray font-poppinsRegular text-xs">
               {item?.doctorPoint.split('.')[0] / 20}/5

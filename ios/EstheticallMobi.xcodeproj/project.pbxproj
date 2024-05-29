@@ -24,7 +24,7 @@
 		822690C977A24ED7B976EAC1 /* Poppins-ExtraLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A43A6AEA655A4BF5A08666F5 /* Poppins-ExtraLightItalic.ttf */; };
 		8F7F452A9D9C431ABBD9D9DE /* Poppins-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AC4AF2C126AB4E309E823E0D /* Poppins-Thin.ttf */; };
 		947E8303349B441E934F1E76 /* Poppins-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F727BEF92F7149F282BC32E5 /* Poppins-MediumItalic.ttf */; };
-		AC1E71CD2B989B550068F4DD /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = AC1E71CC2B989B550068F4DD /* main.jsbundle */; };
+		AC1B0A4C2C071D5100D48156 /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = AC1B0A4B2C071D5100D48156 /* main.jsbundle */; };
 		AC56704A2B7B6BA100033541 /* fonts in Resources */ = {isa = PBXBuildFile; fileRef = AC5670492B7B6BA100033541 /* fonts */; };
 		BD9CA237892543038CC04962 /* Poppins-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7155DD4D7575474386EAD475 /* Poppins-Bold.ttf */; };
 		BF156578F5F84732963CCCFC /* Poppins-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8684AED9F56348D68F4AEB85 /* Poppins-ExtraBold.ttf */; };
@@ -70,7 +70,7 @@
 		95A242DD0B784031855471B4 /* Poppins-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Light.ttf"; path = "../src/assets/fonts/Poppins-Light.ttf"; sourceTree = "<group>"; };
 		A43A6AEA655A4BF5A08666F5 /* Poppins-ExtraLightItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-ExtraLightItalic.ttf"; path = "../src/assets/fonts/Poppins-ExtraLightItalic.ttf"; sourceTree = "<group>"; };
 		A66086A6C22C4C4E967F34C1 /* Poppins-ExtraLight.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-ExtraLight.ttf"; path = "../src/assets/fonts/Poppins-ExtraLight.ttf"; sourceTree = "<group>"; };
-		AC1E71CC2B989B550068F4DD /* main.jsbundle */ = {isa = PBXFileReference; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
+		AC1B0A4B2C071D5100D48156 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = main.jsbundle; path = EstheticallMobi/main.jsbundle; sourceTree = "<group>"; };
 		AC4AF2C126AB4E309E823E0D /* Poppins-Thin.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-Thin.ttf"; path = "../src/assets/fonts/Poppins-Thin.ttf"; sourceTree = "<group>"; };
 		AC5670492B7B6BA100033541 /* fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; path = fonts; sourceTree = "<group>"; };
 		AF126279D1D349239041629E /* Poppins-BlackItalic.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Poppins-BlackItalic.ttf"; path = "../src/assets/fonts/Poppins-BlackItalic.ttf"; sourceTree = "<group>"; };
@@ -156,7 +156,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				AC1E71CC2B989B550068F4DD /* main.jsbundle */,
+				AC1B0A4B2C071D5100D48156 /* main.jsbundle */,
 				AC5670492B7B6BA100033541 /* fonts */,
 				13B07FAE1A68108700A75B9A /* EstheticallMobi */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
@@ -310,7 +310,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AC1E71CD2B989B550068F4DD /* main.jsbundle in Resources */,
 				AC56704A2B7B6BA100033541 /* fonts in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
@@ -330,6 +329,7 @@
 				189457D725BF4302B38974DA /* Poppins-Regular.ttf in Resources */,
 				5602F42D4D2848189F5B6CCF /* Poppins-SemiBold.ttf in Resources */,
 				F02C7EDADC2142D387196617 /* Poppins-SemiBoldItalic.ttf in Resources */,
+				AC1B0A4C2C071D5100D48156 /* main.jsbundle in Resources */,
 				8F7F452A9D9C431ABBD9D9DE /* Poppins-Thin.ttf in Resources */,
 				D0A9CB06351F4E909B25D992 /* Poppins-ThinItalic.ttf in Resources */,
 			);

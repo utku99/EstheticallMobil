@@ -54,12 +54,10 @@ const FirmWrapper: React.FC<props> = ({children}) => {
     {id: 8, label: IntLabel('packages'), name: 'firmpackages'},
   ];
 
-  console.log(firmLeftInfo);
-
   useEffect(() => {
     Post('/api/Company/GetCompanyInfoWeb', {
-      companyId: route.params?.companyId ?? 42,
-      companyOfficeId: route.params?.companyOfficeId ?? 0,
+      companyId: route.params?.companyId,
+      companyOfficeId: route.params?.companyOfficeId,
       userId: user?.id ?? 0,
     }).then(res => {
       if (res.data.code === '100') {
@@ -81,8 +79,8 @@ const FirmWrapper: React.FC<props> = ({children}) => {
     });
 
     Post('/api/CompanyServices/WebListCompanyServices', {
-      companyId: route.params?.companyId ?? 42,
-      companyOfficeId: route.params?.companyOfficeId ?? 0,
+      companyId: route.params?.companyId,
+      companyOfficeId: route.params?.companyOfficeId,
     }).then((res: any) => {
       const newServices = res.data.object.map((item: any) => ({
         value: item.serviceId,

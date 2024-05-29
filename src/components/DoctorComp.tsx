@@ -11,14 +11,21 @@ interface props {
   item?: any;
   setClicked?: any;
   readOnly?: boolean;
+
+  className?: string;
 }
 
-const DoctorComp: React.FC<props> = ({item, setClicked, readOnly}) => {
+const DoctorComp: React.FC<props> = ({
+  item,
+  setClicked,
+  readOnly,
+  className,
+}) => {
   const navigation = useNavigation();
 
   return (
     <View
-      className={` border border-customLightGray rounded-xl bg-white p-[10px] flex-row items-center justify-between`}
+      className={`${className} border border-customLightGray rounded-xl bg-white p-[10px] flex-row items-center justify-between`}
       style={{width: SIZES.width * 0.95}}>
       <Pressable
         onPress={() =>

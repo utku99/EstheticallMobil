@@ -1,17 +1,13 @@
 import {View, Text, FlatList} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import FirmWrapper from './FirmWrapper';
+import HandleData from '../../components/HandleData';
 import WebClient from '../../utility/WebClient';
 import {useSelector} from 'react-redux';
-import HandleData from '../../components/HandleData';
-import FirmDoctorComp from '../../components/FirmDoctorComp';
 import IntLabel from '../../components/IntLabel';
+import FirmDoctorComp from '../../components/FirmDoctorComp';
 
-interface props {
-  route?: any;
-}
-
-const FirmDoctors = ({route}: props) => {
+const FirmDoctorDetail = ({route}: any) => {
   const {Post, loading} = WebClient();
   const {user} = useSelector((state: any) => state.user);
   const [doctors, setDoctors] = useState<any>([]);
@@ -22,12 +18,13 @@ const FirmDoctors = ({route}: props) => {
       companyOfficeId: route.params.companyOfficeId,
       userId: user?.id,
     }).then(res => {
-      setDoctors(res.data.object);
+      let temp = res.data.object.filter(
+        (item: any) =>
+          item?.headerModel?.companyDoctorId == route.params.doctorId,
+      );
+      setDoctors(temp);
     });
   }, []);
-
-  console.log(doctors);
-
   return (
     <FirmWrapper>
       <HandleData
@@ -46,4 +43,4 @@ const FirmDoctors = ({route}: props) => {
   );
 };
 
-export default FirmDoctors;
+export default FirmDoctorDetail;
