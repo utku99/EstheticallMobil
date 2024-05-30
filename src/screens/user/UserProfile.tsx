@@ -47,78 +47,55 @@ const UserProfile = () => {
       city: cities?.find((item: any) => item.value === userInfo?.cityId) ?? 0,
     } as any,
     onSubmit: values => {
-      Post(
-        '/api/User/WebEditUser',
-        {
-          userId: user.id,
-          logo: selectedImage,
-          name: values.name,
-          surname: values.surname,
-          userName: values.nickname,
-          mail: values.email,
-          birthDate: values.date,
-          gender: values.gender?.value,
-          countryId: values.country?.value,
-          cityId: values.city?.value,
-        },
-        false,
-        false,
-      ).then(res => {
+      Post('/api/User/WebEditUser', {
+        userId: user.id,
+        logo: selectedImage,
+        name: values.name,
+        surname: values.surname,
+        userName: values.nickname,
+        mail: values.email,
+        birthDate: values.date,
+        gender: values.gender?.value,
+        countryId: values.country?.value,
+        cityId: values.city?.value,
+      }).then(res => {
         toast(res.data.message);
       });
     },
   });
 
   useEffect(() => {
-    const getProfilInfo = async () => {
-      await Post(
-        '/api/User/WebGetUser',
-        {
-          userId: user?.id,
-        },
-        false,
-        false,
-      )
-        .then(res => {
-          if (res.data.code === '100') {
-            setUserInfo(res.data.object);
-          }
-        })
-        .finally(() => {
-          GetCountries();
-        });
-    };
-    getProfilInfo();
+    Post('/api/User/WebGetUser', {
+      userId: user?.id,
+    }).then(res => {
+      if (res.data.code === '100') {
+        setUserInfo(res.data.object);
+      }
+    });
 
-    const GetCountries = () => {
-      Post('/api/Common/GetCountries', {})
-        .then(res => {
-          if (res.data.code === '100') {
-            const countries = res.data.object.map((item: any) => ({
-              value: item.countryID,
-              label: item.countryName,
-            }));
-            setCountries(countries);
-          }
-        })
-        .finally(() => {
-          getCities();
-        });
-    };
-
-    const getCities = () => {
-      Post('/api/Common/GetCities', {
-        countryID: formik.values.country?.value,
-      }).then(res => {
+    Post('/api/Common/GetCountries', {})
+      .then(res => {
         if (res.data.code === '100') {
-          const cities = res.data.object.map((item: any) => ({
-            value: item.cityID,
-            label: item.name,
+          const countries = res.data.object.map((item: any) => ({
+            value: item.countryID,
+            label: item.countryName,
           }));
-          setCities(cities);
+          setCountries(countries);
         }
+      })
+      .finally(() => {
+        Post('/api/Common/GetCities', {
+          countryID: formik.values.country?.value,
+        }).then(res => {
+          if (res.data.code === '100') {
+            const cities = res.data.object.map((item: any) => ({
+              value: item.cityID,
+              label: item.name,
+            }));
+            setCities(cities);
+          }
+        });
       });
-    };
   }, [formik.values.country?.value]);
 
   return (
@@ -209,7 +186,13 @@ const UserProfile = () => {
               <CustomInputs
                 type="dropdown"
                 value={formik.values.country}
-                onChange={(e: any) => formik.setFieldValue('country', e)}
+                onChange={(e: any) => {
+                  formik.setValues({
+                    ...formik.values,
+                    country: e,
+                    city: '',
+                  });
+                }}
                 dropdownData={countries}
                 placeholder={IntLabel('country')}
                 onBlur={formik.handleBlur('country')}
