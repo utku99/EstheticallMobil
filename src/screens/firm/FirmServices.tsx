@@ -100,11 +100,9 @@ const FirmServices = ({route}: props) => {
               autoplay={true}
             />
           </View>
-
-          <RenderHTML
-            contentWidth={SIZES.width}
-            source={{html: selectedSub?.description}}
-          />
+          <Text className="font-poppinsRegular text-customGray text-sm">
+            {selectedSub?.description}
+          </Text>
         </View>
       </HandleData>
     </FirmWrapper>

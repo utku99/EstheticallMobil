@@ -41,3 +41,10 @@ export const messageEnum ={
     package:3,
     general:4,
 }
+
+export const companyType = {
+    hospital: 1,
+    beauty_center: 2,
+    clinic: 3,
+    doctor: 4,
+}

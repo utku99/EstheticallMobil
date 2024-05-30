@@ -7,6 +7,8 @@ import IntLabel from './IntLabel';
 import {useNavigation} from '@react-navigation/native';
 import BlueTick from '../assets/svg/common/BlueTick';
 import CustomInputs from './CustomInputs';
+import ShareIcon from '../assets/svg/homepages/ShareIcon';
+import Share from 'react-native-share';
 
 interface props {
   item?: any;
@@ -17,6 +19,7 @@ interface props {
   isApproved: boolean;
   rating: any;
   setClicked?: any;
+  showShareIcon?: boolean;
 }
 
 const CompanyHeaderComp: React.FC<props> = ({
@@ -28,8 +31,9 @@ const CompanyHeaderComp: React.FC<props> = ({
   isFavorite,
   rating,
   setClicked,
+  showShareIcon = false,
 }) => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
 
   const handleTableId = () => {
     if (officeId == 0) {
@@ -115,12 +119,25 @@ const CompanyHeaderComp: React.FC<props> = ({
         <CustomInputs type="rating" value={rating} readonly />
       </TouchableOpacity>
 
-      <LikeUnlikeComp
-        setClicked={setClicked}
-        isFavorite={isFavorite}
-        tableId={handleTableId()}
-        typeId={handleTypeId()}
-      />
+      <View>
+        {showShareIcon && (
+          <TouchableOpacity
+            onPress={() => {
+              Share.open({
+                url: `https://dev.estheticall.com/yorum/${item?.commentID}`,
+              });
+            }}
+            className="mb-2">
+            <ShareIcon />
+          </TouchableOpacity>
+        )}
+        <LikeUnlikeComp
+          setClicked={setClicked}
+          isFavorite={isFavorite}
+          tableId={handleTableId()}
+          typeId={handleTypeId()}
+        />
+      </View>
     </View>
   );
 };

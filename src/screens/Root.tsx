@@ -66,6 +66,7 @@ import PrivacyPolicy from './user/legalTexts/PrivacyPolicy';
 import AboutUs from './user/legalTexts/AboutUs';
 import ForgetPassword from './auth/ForgetPassword';
 import LogOutIcon from '../assets/svg/userMenu/LogOutIcon';
+import FirmCompanyDoctorInfo from './firm/FirmCompanyDoctorInfo';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -157,6 +158,10 @@ const UserStack = ({route}: any) => {
         <Stack.Screen name="firmcomments" component={FirmComments} />
         <Stack.Screen name="firmservices" component={FirmServices} />
         <Stack.Screen name="firmdoctors" component={FirmDoctors} />
+        <Stack.Screen
+          name="firmcompanydoctorinfo"
+          component={FirmCompanyDoctorInfo}
+        />
         <Stack.Screen name="firmappointment" component={FirmAppointment} />
         <Stack.Screen name="firmoffer" component={FirmOffer} />
         <Stack.Screen name="firmpackages" component={FirmPackages} />

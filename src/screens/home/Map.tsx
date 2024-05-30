@@ -5,6 +5,8 @@ import {
   ScrollView,
   FlatList,
   TouchableOpacity,
+  Pressable,
+  Linking,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import HomeWrapper from './HomeWrapper';
@@ -23,7 +25,7 @@ import {useNavigation} from '@react-navigation/native';
 const Map = () => {
   const {Post} = WebClient();
   const dispatch = useDispatch();
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
   const {
     country,
     city,
@@ -120,22 +122,32 @@ const Map = () => {
                 </Text>
               </View>
             </TouchableOpacity>
-            <View className="flex-row items-center space-x-3 text">
+            <Pressable
+              onPress={() => {
+                const address = encodeURIComponent(selectedCompany.address);
+                const url = `https://www.google.com/maps/search/?api=1&query=${address}`;
+                Linking.openURL(url);
+              }}
+              className="flex-row items-center space-x-3 text">
               <FirmInfoLocationIcon />
               <Text
-                className="text-customGray  text-xs font-poppinsRegular flex-shrink"
+                className="text-blue-400  text-xs font-poppinsRegular underline flex-shrink"
                 numberOfLines={2}>
                 {selectedCompany?.address}
               </Text>
-            </View>
-            <View className="flex-row items-center space-x-3 text">
+            </Pressable>
+            <Pressable
+              onPress={() =>
+                Linking.openURL(`tel:${selectedCompany.phoneNumber}`)
+              }
+              className="flex-row items-center space-x-3 text">
               <PhoneIcon />
               <Text
-                className="text-customGray  text-xs font-poppinsRegular"
+                className="text-blue-400  text-xs font-poppinsRegular underline"
                 numberOfLines={1}>
                 {selectedCompany?.phoneNumber}
               </Text>
-            </View>
+            </Pressable>
           </View>
         )}
       </ScrollView>

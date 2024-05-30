@@ -24,6 +24,7 @@ import MessageIcon from '../../assets/svg/userMenu/MessageIcon';
 import {useFormik} from 'formik';
 import * as Yup from 'yup';
 import AdvertisementList from '../../components/AdvertisementList';
+import {companyType} from '../../constants/enum';
 
 interface props {
   children?: React.ReactNode;
@@ -152,6 +153,7 @@ const HomeWrapper: React.FC<props> = ({children}) => {
     validationSchema: Yup.object().shape({
       institution: Yup.object().required(IntLabel('company_required')),
       operation: Yup.object().required(IntLabel('operation_required')),
+      subOperation: Yup.object().required(IntLabel('sub_operation_required')),
       title: Yup.string().required(IntLabel('text_required')),
       content: Yup.string().required(IntLabel('text_required')),
     }),
@@ -163,7 +165,7 @@ const HomeWrapper: React.FC<props> = ({children}) => {
           companyID: values.institution.value,
           companyOfficeID: values.institution.officeID,
           serviceID: values.operation.value,
-          serviceSubID: values.subOperation.value ?? 0,
+          serviceSubID: values.subOperation.value,
           doctorID: values.doctor.value ?? 0,
           subject: values.title,
           content: values.content,
@@ -172,6 +174,7 @@ const HomeWrapper: React.FC<props> = ({children}) => {
         true,
         true,
       ).then(res => {
+        console.log(res.data);
         if (res.data.code === '100') {
           resetForm();
           setVisible2(false);
@@ -385,7 +388,10 @@ const HomeWrapper: React.FC<props> = ({children}) => {
       {/* comment */}
       <Modal
         visible={visible2}
-        onDismiss={() => setVisible2(false)}
+        onDismiss={() => {
+          setVisible2(false);
+          formik.resetForm();
+        }}
         style={{alignItems: 'center'}}
         contentContainerStyle={{
           padding: 20,
@@ -400,7 +406,15 @@ const HomeWrapper: React.FC<props> = ({children}) => {
           dropdownData={allCompanies}
           placeholder={IntLabel('select_institution')}
           isSearchable
-          onChange={(value: any) => formik.setFieldValue('institution', value)}
+          onChange={(value: any) => {
+            formik.setValues({
+              ...formik.values,
+              institution: value,
+              operation: '',
+              subOperation: '',
+              doctor: '',
+            });
+          }}
         />
         {!formik.values.operation.value ? (
           <CustomInputs
@@ -410,21 +424,20 @@ const HomeWrapper: React.FC<props> = ({children}) => {
             dropdownData={servicesCompany}
             placeholder={IntLabel('select_operation')}
             isSearchable
-            onChange={(value: any) => formik.setFieldValue('operation', value)}
+            onChange={(value: any) => {
+              formik.setValues({
+                ...formik.values,
+                operation: value,
+                subOperation: '',
+              });
+            }}
           />
         ) : (
           <CustomInputs
             type="dropdown"
-            value={{
-              value: formik.values.subOperation.value,
-              label:
-                formik.values.operation.label +
-                ' / ' +
-                (formik.values.subOperation.value
-                  ? formik.values.subOperation.label
-                  : IntLabel('select_sub_operation')),
-            }}
+            value={formik.values.subOperation}
             error={formik.errors.subOperation}
+            placeholder={IntLabel('select_sub_operation')}
             dropdownData={subServicesCompany}
             isSearchable
             onChange={(value: any) =>
@@ -433,15 +446,18 @@ const HomeWrapper: React.FC<props> = ({children}) => {
           />
         )}
 
-        <CustomInputs
-          type="dropdown"
-          value={formik.values.doctor}
-          error={formik.errors.doctor}
-          dropdownData={doctors}
-          placeholder={IntLabel('select_doctor')}
-          isSearchable
-          onChange={(value: any) => formik.setFieldValue('doctor', value)}
-        />
+        {formik.values.institution?.companyType != companyType.doctor &&
+          formik.values.institution?.value && (
+            <CustomInputs
+              type="dropdown"
+              value={formik.values.doctor}
+              error={formik.errors.doctor}
+              dropdownData={doctors}
+              placeholder={IntLabel('select_doctor')}
+              isSearchable
+              onChange={(value: any) => formik.setFieldValue('doctor', value)}
+            />
+          )}
 
         <CustomInputs
           type="textareasmall"
@@ -466,8 +482,8 @@ const HomeWrapper: React.FC<props> = ({children}) => {
           </Text>
           <CustomInputs
             type="rating"
-            value={formik.values.rank}
-            onChange={(e: number) => formik.setFieldValue('rank', e)}
+            value={formik.values.rank / 20}
+            onChange={(e: number) => formik.setFieldValue('rank', e * 20)}
             readonly={false}
           />
         </View>

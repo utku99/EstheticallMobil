@@ -38,17 +38,28 @@ const FirmWrapper: React.FC<props> = ({children}) => {
   const {selectedService} = useSelector((state: any) => state.common);
   const [firmLeftInfo, setFirmLeftInfo] = useState<any>();
   const route = useRoute<any>();
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
   const [visible, setVisible] = useState(false);
   const [clicked, setClicked] = useState(false);
-  const [services, setServices] = useState();
+  const [services, setServices] = useState<any>();
 
   const buttonData = [
     {id: 1, label: IntLabel('profile'), name: 'firmprofile'},
     {id: 2, label: IntLabel('sharings'), name: 'firmsharings'},
     {id: 3, label: IntLabel('comments'), name: 'firmcomments'},
-    {id: 4, label: IntLabel('operations'), name: 'firmservices'},
+    {id: 4, label: IntLabel('services'), name: 'firmservices'},
     {id: 5, label: IntLabel('doctors'), name: 'firmdoctors'},
+    {id: 6, label: IntLabel('take_appointment'), name: 'firmappointment'},
+    {id: 7, label: IntLabel('take_offer'), name: 'firmoffer'},
+    {id: 8, label: IntLabel('packages'), name: 'firmpackages'},
+  ];
+
+  const buttonDataCompanyDoctor = [
+    {id: 1, label: IntLabel('profile'), name: 'firmprofile'},
+    {id: 2, label: IntLabel('sharings'), name: 'firmsharings'},
+    {id: 3, label: IntLabel('comments'), name: 'firmcomments'},
+    {id: 4, label: IntLabel('services'), name: 'firmservices'},
+    {id: 5, label: IntLabel('my_informations'), name: 'firmcompanydoctorinfo'},
     {id: 6, label: IntLabel('take_appointment'), name: 'firmappointment'},
     {id: 7, label: IntLabel('take_offer'), name: 'firmoffer'},
     {id: 8, label: IntLabel('packages'), name: 'firmpackages'},
@@ -89,6 +100,10 @@ const FirmWrapper: React.FC<props> = ({children}) => {
       }));
       setServices(newServices);
     });
+
+    if (clicked) {
+      setClicked(false);
+    }
   }, [clicked]);
 
   return (
@@ -132,7 +147,12 @@ const FirmWrapper: React.FC<props> = ({children}) => {
             <View>
               <LikeUnlikeComp
                 isFavorite={firmLeftInfo?.isFavorite}
-                item={firmLeftInfo}
+                tableId={
+                  firmLeftInfo?.companyOfficeID == 0
+                    ? firmLeftInfo?.companyID
+                    : firmLeftInfo?.companyOfficeID
+                }
+                typeId={firmLeftInfo?.companyOfficeID == 0 ? 2 : 3}
                 setClicked={setClicked}
               />
             </View>
@@ -186,7 +206,7 @@ const FirmWrapper: React.FC<props> = ({children}) => {
             className="my-4"
             data={
               firmLeftInfo?.companyTypeID == 4
-                ? buttonData.filter((tab: any) => tab.id != 5)
+                ? buttonDataCompanyDoctor
                 : buttonData
             }
             renderItem={({item}) => (
@@ -220,69 +240,88 @@ const FirmWrapper: React.FC<props> = ({children}) => {
           <Text className="font-poppinsSemiBold text-customGray text-base">
             {IntLabel('our_esthetic_operations')}
           </Text>
-          <FlatList
-            data={services}
-            renderItem={({item}) =>
-              item.serviceTypeId === 4 && (
-                <Pressable
-                  key={item.value}
-                  onPress={() => {
-                    setVisible(false);
-                    navigation.navigate('firmservices', {
-                      serviceId: item.value,
-                      serviceName: item.label,
-                      type: item.serviceTypeId,
-                      companyId: route.params.companyId,
-                      companyOfficeId: route.params.companyOfficeId,
-                    });
-                    dispatch(setSelectedService(item));
-                  }}>
-                  <Text
-                    className={`font-poppinsRegular  ${
-                      selectedService?.value == item.value
-                        ? 'text-customOrange'
-                        : 'text-customGray'
-                    } `}>
-                    {item.label}
-                  </Text>
-                </Pressable>
-              )
-            }
-            contentContainerStyle={{gap: 5}}
-          />
+          <View>
+            {services?.filter((item: any) => item.serviceTypeId === 4)
+              ?.length == 0 ? (
+              <Text className="font-poppinsRegular text-customGray text-sm">
+                {IntLabel('firm_doesnt_have_esthetic_operation')}
+              </Text>
+            ) : (
+              <FlatList
+                data={services}
+                renderItem={({item}) =>
+                  item.serviceTypeId === 4 && (
+                    <Pressable
+                      key={item.value}
+                      onPress={() => {
+                        setVisible(false);
+                        navigation.navigate('firmservices', {
+                          serviceId: item.value,
+                          serviceName: item.label,
+                          type: item.serviceTypeId,
+                          companyId: route.params.companyId,
+                          companyOfficeId: route.params.companyOfficeId,
+                        });
+                        dispatch(setSelectedService(item));
+                      }}>
+                      <Text
+                        className={`font-poppinsRegular  ${
+                          selectedService?.value == item.value
+                            ? 'text-customOrange'
+                            : 'text-customGray'
+                        } `}>
+                        {item.label}
+                      </Text>
+                    </Pressable>
+                  )
+                }
+                keyExtractor={item => item.value.toString()}
+                contentContainerStyle={{gap: 5}}
+              />
+            )}
+          </View>
           <Text className="font-poppinsSemiBold text-customGray text-base">
             {IntLabel('our_beauty_operations')}
           </Text>
-          <FlatList
-            data={services}
-            renderItem={({item}) =>
-              item.serviceTypeId === 6 && (
-                <Pressable
-                  key={item.value}
-                  onPress={() => {
-                    setVisible(false);
-                    navigation.navigate('firmservices', {
-                      serviceId: item.value,
-                      serviceName: item.label,
-                      type: item.serviceTypeId,
-                      companyId: route.params.companyId,
-                      companyOfficeId: route.params.companyOfficeId,
-                    });
-                    dispatch(setSelectedService(item));
-                  }}>
-                  <Text
-                    className={`font-poppinsRegular  ${
-                      selectedService?.value == item.value
-                        ? 'text-customOrange'
-                        : 'text-customGray'
-                    } `}>
-                    {item.label}
-                  </Text>
-                </Pressable>
-              )
-            }
-            contentContainerStyle={{gap: 5}}
-          />
+          <View>
+            {services?.filter((item: any) => item.serviceTypeId === 6)
+              ?.length == 0 ? (
+              <Text className="font-poppinsRegular text-customGray text-sm">
+                {IntLabel('firm_doesnt_have_beauty_operation')}
+              </Text>
+            ) : (
+              <FlatList
+                data={services}
+                renderItem={({item}) =>
+                  item.serviceTypeId === 6 && (
+                    <Pressable
+                      key={item.value}
+                      onPress={() => {
+                        setVisible(false);
+                        navigation.navigate('firmservices', {
+                          serviceId: item.value,
+                          serviceName: item.label,
+                          type: item.serviceTypeId,
+                          companyId: route.params.companyId,
+                          companyOfficeId: route.params.companyOfficeId,
+                        });
+                        dispatch(setSelectedService(item));
+                      }}>
+                      <Text
+                        className={`font-poppinsRegular  ${
+                          selectedService?.value == item.value
+                            ? 'text-customOrange'
+                            : 'text-customGray'
+                        } `}>
+                        {item.label}
+                      </Text>
+                    </Pressable>
+                  )
+                }
+                contentContainerStyle={{gap: 5}}
+              />
+            )}
+          </View>
         </View>
       </ModalWrapper>
     </ScrollView>

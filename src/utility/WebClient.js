@@ -54,7 +54,7 @@ const WebClient = () => {
     try {
       const res = await axiosInstance.post(path, data);
 
-      if (res.data.code === "100" && success) {
+      if (success) {
         toast(res.data.message);
       } else if (error) {
         toast(res.data.message);

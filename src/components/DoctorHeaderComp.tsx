@@ -7,6 +7,8 @@ import IntLabel from './IntLabel';
 import {useNavigation} from '@react-navigation/native';
 import BlueTick from '../assets/svg/common/BlueTick';
 import CustomInputs from './CustomInputs';
+import ShareIcon from '../assets/svg/homepages/ShareIcon';
+import Share from 'react-native-share';
 
 interface props {
   item?: any;
@@ -18,6 +20,7 @@ interface props {
   isApproved: boolean;
   rating: any;
   setClicked?: any;
+  showShareIcon?: boolean;
 }
 
 const DoctorHeaderComp: React.FC<props> = ({
@@ -30,6 +33,7 @@ const DoctorHeaderComp: React.FC<props> = ({
   isFavorite,
   rating,
   setClicked,
+  showShareIcon = false,
 }) => {
   const navigation = useNavigation<any>();
 
@@ -108,12 +112,25 @@ const DoctorHeaderComp: React.FC<props> = ({
         <CustomInputs type="rating" value={rating} readonly />
       </TouchableOpacity>
 
-      <LikeUnlikeComp
-        isFavorite={isFavorite}
-        tableId={doctorId}
-        typeId={1}
-        setClicked={setClicked}
-      />
+      <View>
+        {showShareIcon && (
+          <TouchableOpacity
+            onPress={() => {
+              Share.open({
+                url: `https://dev.estheticall.com/yorum/${item?.commentID}`,
+              });
+            }}
+            className="mb-2">
+            <ShareIcon />
+          </TouchableOpacity>
+        )}
+        <LikeUnlikeComp
+          isFavorite={isFavorite}
+          tableId={doctorId}
+          typeId={1}
+          setClicked={setClicked}
+        />
+      </View>
     </View>
   );
 };

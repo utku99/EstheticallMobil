@@ -104,7 +104,7 @@ const SharingComp = ({
   const {Post, loading} = WebClient();
   const {user, isLoggedIn, language} = useSelector((state: any) => state.user);
   const [translatedText, setTranslatedText] = useState(null);
-  const isCarousel = useRef(null);
+  const isCarousel = useRef<any>(null);
   const navigation = useNavigation();
   const [addComment, setAddComment] = useState(null);
   const [isMuted, setIsMuted] = useState(true);

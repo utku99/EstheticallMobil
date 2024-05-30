@@ -47,6 +47,7 @@ const Appointment = () => {
   const [services, setServices] = useState([]);
   const [subServices, setSubServices] = useState([]);
   const [doctors, setDoctors] = useState([]);
+  const [filterInstitution, setFilterInstitution] = useState<any>([]);
 
   const formik = useFormik({
     initialValues: {
@@ -54,6 +55,7 @@ const Appointment = () => {
       city: '',
       town: '',
       institution: '',
+      institutionType: '',
       operation: '',
       suboperation: '',
       doctor: '',
@@ -64,24 +66,18 @@ const Appointment = () => {
       meeting: '',
     } as any,
     validationSchema: Yup.object().shape({
-      // country: Yup.object().required(
-      //   IntLabel('validation_message_this_field_is_required'),
-      // ),
-      // city: Yup.object().required(
-      //   IntLabel('validation_message_this_field_is_required'),
-      // ),
-      // town: Yup.object().required(
-      //   IntLabel('validation_message_this_field_is_required'),
-      // ),
       institution: Yup.object().required(
+        IntLabel('validation_message_this_field_is_required'),
+      ),
+      institutionType: Yup.object().required(
         IntLabel('validation_message_this_field_is_required'),
       ),
       operation: Yup.object().required(
         IntLabel('validation_message_this_field_is_required'),
       ),
-      suboperation: Yup.object().required(
-        IntLabel('validation_message_this_field_is_required'),
-      ),
+      // suboperation: Yup.object().required(
+      //   IntLabel('validation_message_this_field_is_required'),
+      // ),
       title: Yup.string().required(
         IntLabel('validation_message_this_field_is_required'),
       ),
@@ -155,8 +151,6 @@ const Appointment = () => {
             Post('/api/Common/GetTownsAsync', {
               cityID: formik.values.city.value,
             }).then(res => {
-              console.log(res);
-
               const towns = res.data.map((item: any) => ({
                 value: item.townID,
                 label: item.name,
@@ -166,43 +160,60 @@ const Appointment = () => {
           });
       });
 
-    Post('/api/Common/CompaniesFilterAsync', {
-      countryID: formik.values.country.value,
-      cityID: formik.values.city.value,
-      townID: formik.values.town.value,
-      distinctID: 0,
+    Post('/api/Common/CompanyFilterListShort', {
+      countryId: formik.values.country?.value ?? 0,
+      cityId: formik.values.city?.value ?? 0,
+      townId: formik.values.town?.value ?? 0,
+      companyType: formik.values.institutionType?.value ?? 0,
+      serviceId: formik.values.operation?.value ?? 0,
+      serviceSubId: formik.values.suboperation?.value ?? 0,
     }).then((res: any) => {
       setCompany(res.data);
     });
 
-    Post('/api/Common/CompanyServicesFilters', {
-      companyID: formik.values.institution.value,
-      companyOfficeID: formik.values.institution.officeID,
-    })
+    Post('/api/Service/ServiceList', {})
       .then((res: any) => {
-        setServices(res.data);
+        if (res.data.code === '100') {
+          const newServices = res.data.object.map((item: any) => ({
+            value: item.serviceId,
+            label: item.serviceName,
+            ...item,
+          }));
+          setServices(newServices);
+        }
       })
       .finally(() => {
-        Post('/api/CompanyDoctor/AppointmentDoctorList', {
+        Post('/api/Service/GetSubServicesByService', {
           serviceId: formik.values.operation.value,
-          companyId: formik.values.institution.value,
-          companyOfficeId: formik.values.institution.officeID,
-        }).then((res: any) => {
-          setDoctors(res.data);
-        });
-        Post('/api/Common/CompanySubServicesFilters', {
-          companyID: formik.values.institution.value,
-          companyOfficeID: formik.values.institution.officeID,
-          serviceID: formik.values.operation.value,
         }).then((res: any) => {
           setSubServices(res.data);
         });
       });
+
+    Post('/api/CompanyDoctor/AppointmentDoctorList', {
+      serviceId: formik.values.operation.value,
+      companyId: formik.values.institution.value,
+      companyOfficeId: formik.values.institution.officeID,
+    }).then((res: any) => {
+      setDoctors(res.data);
+    });
+
+    Post('/api/Common/ListCompanyTypesByServices', {
+      serviceId: formik.values.operation.value ?? 0,
+    }).then((res: any) => {
+      let temp = res.data.map((item: any) => ({
+        ...item,
+        value: item.companyTypeId,
+        label: item.companyTypeName,
+      }));
+      setFilterInstitution(temp ?? []);
+    });
   }, [
     formik.values?.country?.value,
     formik.values?.city?.value,
     formik.values?.town?.value,
     formik.values?.institution?.value,
+    formik.values.institutionType?.value,
     formik.values.operation.value,
   ]);
 
@@ -259,24 +270,19 @@ const Appointment = () => {
           />
         )}
 
-        <CustomInputs
-          type="dropdown"
-          dropdownData={company}
-          placeholder={IntLabel('select_institution')}
-          isSearchable
-          value={formik.values.institution}
-          onChange={(e: any) => formik.setFieldValue('institution', e)}
-          style={{width: '75%', height: 32}}
-          error={formik.errors.institution}
-        />
-
         {!formik.values.operation.value && (
           <CustomInputs
             type="dropdown"
             dropdownData={services}
             placeholder={IntLabel('select_operation')}
             value={formik.values.operation}
-            onChange={(e: any) => formik.setFieldValue('operation', e)}
+            onChange={(e: any) => {
+              formik.setValues({
+                ...formik.values,
+                operation: e,
+                institutionType: '',
+              });
+            }}
             style={{width: '75%', height: 32}}
             error={formik.errors.operation}
           />
@@ -293,6 +299,29 @@ const Appointment = () => {
             error={formik.errors.suboperation}
           />
         )}
+
+        <CustomInputs
+          type="dropdown"
+          dropdownData={filterInstitution}
+          placeholder={IntLabel('select_institution_type')}
+          value={formik.values.institutionType}
+          onChange={(e: any) => {
+            formik.setFieldValue('institutionType', e);
+          }}
+          style={{width: '75%', height: 32}}
+          error={formik.errors.institutionType}
+        />
+
+        <CustomInputs
+          type="dropdown"
+          dropdownData={company}
+          placeholder={IntLabel('select_institution')}
+          isSearchable
+          value={formik.values.institution}
+          onChange={(e: any) => formik.setFieldValue('institution', e)}
+          style={{width: '75%', height: 32}}
+          error={formik.errors.institution}
+        />
 
         {doctors?.length != 0 && (
           <CustomInputs

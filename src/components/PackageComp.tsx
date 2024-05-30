@@ -26,8 +26,9 @@ const PackageComp = ({item, setClicked}: {item: any; setClicked: any}) => {
   const isCarousel = useRef(null);
   const navigation = useNavigation();
   const [visible, setVisible] = useState(false);
-  const {Post} = WebClient();
-  const {user} = useSelector((state: any) => state.user);
+  const {Post, loading} = WebClient();
+  const {user, language} = useSelector((state: any) => state.user);
+  const [translatedText, setTranslatedText] = useState(null);
 
   console.log(item);
 
@@ -97,14 +98,35 @@ const PackageComp = ({item, setClicked}: {item: any; setClicked: any}) => {
       <Text
         numberOfLines={seeAll ? 20 : 1}
         className="text-customGray text-xs font-poppinsRegular p-[10px]">
-        {IntLabel('packet_name')}:{' '}
+        <Text className="font-bold">{IntLabel('packet_name')}: </Text>
         {item?.footerModel?.packageName ?? item?.packageName}
       </Text>
 
       <Text
         numberOfLines={seeAll ? 20 : 2}
         className="text-customGray text-xs font-poppinsRegular px-[10px] pb-[10px]">
-        {item?.footerModel?.subject ?? item?.subject}
+        {translatedText ?? item?.footerModel?.subject ?? item?.subject}
+      </Text>
+
+      <Text
+        onPress={() => {
+          if (translatedText) {
+            setTranslatedText(null);
+          } else {
+            Post('/api/Common/TranslateText', {
+              text: item?.footerModel?.subject ?? item?.subject,
+              targetLanguage: language?.language_code,
+            }).then(res => {
+              setTranslatedText(res.data.trans);
+            });
+          }
+        }}
+        className="self-end text-xs text-blue-400 px-[10px] pb-[10px]">
+        {translatedText
+          ? IntLabel('see_original')
+          : loading
+          ? IntLabel('loading')
+          : IntLabel('see_translate')}
       </Text>
 
       {seeAll && (

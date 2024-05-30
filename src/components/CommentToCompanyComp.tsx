@@ -11,6 +11,8 @@ import IntLabel from './IntLabel';
 import {useNavigation} from '@react-navigation/native';
 import DoctorHeaderComp from './DoctorHeaderComp';
 import CompanyHeaderComp from './CompanyHeaderComp';
+import WebClient from '../utility/WebClient';
+import {useSelector} from 'react-redux';
 
 const CommentToCompanyComp = ({
   item,
@@ -21,6 +23,9 @@ const CommentToCompanyComp = ({
 }) => {
   const [seeAll, setSeeAll] = useState(false);
   const navigation = useNavigation();
+  const [translatedText, setTranslatedText] = useState(null);
+  const {Post, loading} = WebClient();
+  const {language} = useSelector((state: any) => state.user);
 
   console.log(item);
 
@@ -91,7 +96,7 @@ const CommentToCompanyComp = ({
               ? 'h-[130px]'
               : 'h-fit'
           }`}>
-          {item?.content}
+          {translatedText ?? item?.content}
         </Text>
         {!seeAll && item?.content?.length > 400 && (
           <LinearGradient
@@ -103,6 +108,27 @@ const CommentToCompanyComp = ({
           </LinearGradient>
         )}
       </View>
+
+      <Text
+        onPress={() => {
+          if (translatedText) {
+            setTranslatedText(null);
+          } else {
+            Post('/api/Common/TranslateText', {
+              text: item?.content,
+              targetLanguage: language?.language_code,
+            }).then(res => {
+              setTranslatedText(res.data.trans);
+            });
+          }
+        }}
+        className="self-end text-xs text-blue-400">
+        {translatedText
+          ? IntLabel('see_original')
+          : loading
+          ? IntLabel('loading')
+          : IntLabel('see_translate')}
+      </Text>
 
       {/* doctor */}
       <View className="">
@@ -118,6 +144,7 @@ const CommentToCompanyComp = ({
             officeId={item?.companyOfficeID}
             isFavorite={item?.isFavorite ?? item?.doctor?.isDoctorFavorite}
             isApproved={item?.isAprrovedAccount}
+            showShareIcon
           />
         ) : (
           <DoctorHeaderComp
@@ -129,6 +156,7 @@ const CommentToCompanyComp = ({
             doctorId={item?.companyDoctorsId ?? item?.companyDoctorId}
             isFavorite={item?.isFavorite ?? item?.doctor?.isDoctorFavorite}
             isApproved={item?.isAprrovedAccount}
+            showShareIcon
           />
         )}
       </View>

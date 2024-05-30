@@ -18,17 +18,17 @@ const Packages = () => {
   const [country, setCountry] = useState<any>(null);
   const [city, setCity] = useState<any>(null);
   const [town, setTown] = useState<any>(null);
+  const [district, setDistrict] = useState<any>(null);
   const [institution, setInstitution] = useState<any>(null);
   const [operation, setOperation] = useState<any>(null);
   const [suboperation, setSuboperation] = useState<any>(null);
 
-  const [clickedLike, setClickedLike] = useState(false);
-
   const [clicked, setClicked] = useState(false);
   const [visible, setVisible] = useState(false);
-  const [countries, setCountries] = useState([]);
-  const [cities, setCities] = useState([]);
-  const [towns, setTowns] = useState([]);
+  const [countries, setCountries] = useState<any>([]);
+  const [cities, setCities] = useState<any>([]);
+  const [towns, setTowns] = useState<any>([]);
+  const [districts, setDistricts] = useState<any>([]);
 
   const institutionData = [
     {value: 1, label: IntLabel('hospital')},
@@ -38,6 +38,8 @@ const Packages = () => {
   ];
   const [services, setServices] = useState<any>([]);
   const [serviceSubs, setServiceSubs] = useState<any>([]);
+
+  const [filterInstitution, setFilterInstitution] = useState<any>([]);
 
   useEffect(() => {
     Post('/api/Common/GetCountriesAsync', {})
@@ -49,36 +51,40 @@ const Packages = () => {
         setCountries(countries);
       })
       .finally(() => {
-        getCities();
-      });
-
-    const getCities = () => {
-      Post('/api/Common/GetCitiesAsync', {
-        countryID: country?.value,
-      })
-        .then(res => {
-          const cities = res.data.map((item: any) => ({
-            value: item.cityID,
-            label: item.name,
-          }));
-          setCities(cities);
+        Post('/api/Common/GetCitiesAsync', {
+          countryID: country?.value,
         })
-        .finally(() => {
-          getTown();
-        });
-    };
-
-    const getTown = () => {
-      Post('/api/Common/GetTownsAsync', {
-        cityID: city?.value,
-      }).then(res => {
-        const towns = res.data.map((item: any) => ({
-          value: item.townID,
-          label: item.name,
-        }));
-        setTowns(towns);
+          .then(res => {
+            const cities = res.data.map((item: any) => ({
+              value: item.cityID,
+              label: item.name,
+            }));
+            setCities(cities);
+          })
+          .finally(() => {
+            Post('/api/Common/GetTownsAsync', {
+              cityID: city?.value,
+            })
+              .then(res => {
+                const towns = res.data.map((item: any) => ({
+                  value: item.townID,
+                  label: item.name,
+                }));
+                setTowns(towns);
+              })
+              .finally(() => {
+                Post('/api/Common/GetDistinctsAsync', {
+                  townID: town?.value,
+                }).then(res => {
+                  const districts = res.data.map((item: any) => ({
+                    value: item.districtID,
+                    label: item.name,
+                  }));
+                  setDistricts(districts);
+                });
+              });
+          });
       });
-    };
 
     Post('/api/Service/GetAllServices', {})
       .then((res: any) => {
@@ -95,6 +101,18 @@ const Packages = () => {
           setServiceSubs(temp);
         });
       });
+
+    Post('/api/Common/ListCompanyTypesByServices', {
+      serviceId: operation?.value ?? 0,
+    }).then((res: any) => {
+      let temp = res.data.map((item: any) => ({
+        ...item,
+        value: item.companyTypeId,
+        label: item.companyTypeName,
+      }));
+
+      setFilterInstitution(temp ?? []);
+    });
 
     Post('/api/Package/GetPackagesListAsync', {
       countryId: country?.value ?? 0,
@@ -113,9 +131,10 @@ const Packages = () => {
       setPackages(temp);
     });
 
-    setClicked(false);
-    setClickedLike(false);
-  }, [clicked, clickedLike, language, country, city]);
+    if (clicked) {
+      setClicked(false);
+    }
+  }, [clicked, language, country, city, town, operation]);
 
   return (
     <View className="bg-[#FAFAFA] flex-1 relative">
@@ -143,7 +162,7 @@ const Packages = () => {
             <PackageComp
               key={item.packageID}
               item={item}
-              setClicked={setClickedLike}
+              setClicked={setClicked}
             />
           )}
         />
@@ -182,7 +201,7 @@ const Packages = () => {
             onChange={(e: any) => setCity(e)}
           />
         )}
-        {city && (
+        {city && !town && (
           <CustomInputs
             type="dropdown"
             value={town}
@@ -192,14 +211,16 @@ const Packages = () => {
             onChange={(e: any) => setTown(e)}
           />
         )}
-
-        <CustomInputs
-          type="dropdown"
-          value={institution}
-          dropdownData={institutionData}
-          placeholder={IntLabel('select_institution_type')}
-          onChange={(e: any) => setInstitution(e)}
-        />
+        {town && (
+          <CustomInputs
+            type="dropdown"
+            value={district}
+            dropdownData={districts}
+            placeholder={IntLabel('select_district')}
+            isSearchable
+            onChange={(e: any) => setDistrict(e)}
+          />
+        )}
 
         {!operation && (
           <CustomInputs
@@ -221,6 +242,14 @@ const Packages = () => {
             onChange={(e: any) => setSuboperation(e)}
           />
         )}
+
+        <CustomInputs
+          type="dropdown"
+          value={institution}
+          dropdownData={filterInstitution}
+          placeholder={IntLabel('select_institution_type')}
+          onChange={(e: any) => setInstitution(e)}
+        />
 
         <View className="flex-row  justify-between">
           <CustomButtons
