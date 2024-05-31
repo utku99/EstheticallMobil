@@ -14,15 +14,17 @@ import {useFormik} from 'formik';
 import ModalWrapper from './ModalWrapper';
 import CommunicationModal from './CommunicationModal';
 import IntLabel from './IntLabel';
+import CompanyHeaderComp from './CompanyHeaderComp';
+import DoctorHeaderComp from './DoctorHeaderComp';
 
 const OfferComp = ({
   item,
-  offerID,
   completed = false,
+  setClicked,
 }: {
   item?: any;
-  offerID?: number;
   completed?: boolean;
+  setClicked: any;
 }) => {
   const [seeAll, setSeeAll] = useState(false);
   const isCarousel = useRef(null);
@@ -30,31 +32,6 @@ const OfferComp = ({
   const [visible, setVisible] = useState(false);
   const {Post, loading} = WebClient();
   const {user} = useSelector((state: any) => state.user);
-
-  const formik = useFormik({
-    initialValues: {
-      title: '',
-      content: '',
-    },
-    onSubmit: values => {
-      Post(
-        '/api/Offers/AskQuestionOffer',
-        {
-          userID: user?.id,
-          offerID: offerID,
-          offerInfoID: item?.offerInfoID,
-          title: values.title,
-          content: values.content,
-        },
-        true,
-        true,
-      ).then(res => {
-        if (res.data.code == '100') {
-          setVisible(false);
-        }
-      });
-    },
-  });
 
   return (
     <View
@@ -65,43 +42,15 @@ const OfferComp = ({
         <Text className="text-customGray font-poppinsRegular text-xs">
           {item?.offerInfoCreatedDate}
         </Text>
-        <View className="flex-row justify-between items-center">
-          <View className="flex-row items-center space-x-2  w-[60%]">
-            <View className="w-[55px] h-[55px] overflow-hidden rounded-full border-[0.6px] border-customGray">
-              <Image
-                source={{uri: item?.logo}}
-                className="w-full h-full"
-                resizeMode="cover"
-              />
-            </View>
-            <View className="flex-shrink">
-              <Text
-                numberOfLines={1}
-                className="text-customGray font-poppinsSemiBold text-xs ">
-                {item?.name}
-              </Text>
-              {(item?.companyBranch ?? item?.doctorBranch) && (
-                <Text
-                  numberOfLines={1}
-                  className="text-customGray font-poppinsRegular text-xs ">
-                  {item?.companyBranch ?? item?.doctorBranch}
-                </Text>
-              )}
-              <Text
-                numberOfLines={1}
-                className="text-customGray font-poppinsRegular text-xs ">
-                {item?.location}
-              </Text>
-            </View>
-          </View>
-          <View className="items-center">
-            <Text className="text-customGray font-poppinsRegular text-xs">
-              {IntLabel('comments')}
-            </Text>
-            <CustomInputs type="rating" value={item?.commentsPoint / 20} />
-          </View>
-          <LikeUnlikeComp item={item} readOnly isFavorite={item?.isFavorite} />
-        </View>
+        <CompanyHeaderComp
+          item={item}
+          setClicked={setClicked}
+          rating={parseFloat(item?.commentsPoint) / 20}
+          companyId={item?.companyID}
+          officeId={item?.companyOfficeID}
+          isFavorite={item?.isFavorite}
+          isApproved={item?.isApprovedAccount}
+        />
       </View>
 
       {seeAll && (
@@ -110,7 +59,10 @@ const OfferComp = ({
           <View className="w-full aspect-[1.5]">
             <Carousel
               ref={isCarousel}
-              data={item?.images?.map((img: any) => ({imgUrl: img, title: ''}))}
+              data={(item?.image ?? item?.images)?.map((img: any) => ({
+                imgUrl: img,
+                title: '',
+              }))}
               renderItem={({item}: any) => (
                 <Image
                   source={{uri: item?.imgUrl}}
@@ -241,44 +193,16 @@ const OfferComp = ({
                   <View className="h-[0.5px] bg-black/[.5] w-full self-center"></View>
                 </View>
 
-                <View className="flex-row items-center justify-between">
-                  <View className="w-[60px] h-[60px] overflow-hidden rounded-full border-[0.6px] border-customGray">
-                    <Image
-                      source={{uri: item?.doctorLogo}}
-                      className="w-full h-full object-cover"
-                    />
-                  </View>
-                  <View className="w-[40%] ">
-                    <Text
-                      numberOfLines={1}
-                      className="text-customGray font-poppinsSemiBold text-xs ">
-                      {item?.doctorName}
-                    </Text>
-                    <Text
-                      numberOfLines={1}
-                      className="text-customGray font-poppinsRegular text-xs">
-                      {item?.doctorBranch}
-                    </Text>
-                    <Text
-                      numberOfLines={1}
-                      className="text-customGray font-poppinsRegular text-xs">
-                      {item?.location}
-                    </Text>
-                  </View>
-                  <View className="items-center">
-                    <Text className="text-customGray font-poppinsRegular text-xs">
-                      {item?.doctorCommentPoint / 20}/5
-                    </Text>
-                    <Text className="text-customGray font-poppinsRegular text-xs">
-                      {IntLabel('comments')}
-                    </Text>
-                  </View>
-                  <LikeUnlikeComp
-                    item={item}
-                    readOnly
-                    isFavorite={item?.isDoctorFavorite}
-                  />
-                </View>
+                <DoctorHeaderComp
+                  item={item}
+                  setClicked={setClicked}
+                  rating={parseFloat(item?.doctorCommentPoint) / 20}
+                  companyId={item?.companyID}
+                  officeId={item?.companyOfficeID}
+                  doctorId={item?.companyDoctorId}
+                  isFavorite={item?.isDoctorFavorite}
+                  isApproved={false}
+                />
               </>
             )}
 

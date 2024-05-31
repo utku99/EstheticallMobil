@@ -6,9 +6,11 @@ import NotificationIcon from '../assets/svg/userMenu/NotificationIcon';
 import CustomInputs from './CustomInputs';
 import WebClient from '../utility/WebClient';
 import IntLabel from './IntLabel';
+import {useNavigation} from '@react-navigation/native';
 
-const OfferRequestComp = ({item, setClicked, setSelectedRequest}: any) => {
+const OfferRequestComp = ({item, setClicked}: any) => {
   const {Post} = WebClient();
+  const navigation = useNavigation<any>();
 
   return (
     <View
@@ -23,7 +25,13 @@ const OfferRequestComp = ({item, setClicked, setSelectedRequest}: any) => {
             {item?.offerID}
           </Text>
         </View>
-        <NotificationIcon />
+
+        {Number(item?.incomingOffersCount?.split(' - ')[1]?.split(' ')[0]) !=
+          0 && (
+          <View className="">
+            <NotificationIcon />
+          </View>
+        )}
         <View className="">
           <Text className="text-customGray  text-sm font-poppinsMedium ">
             {IntLabel('date')}:{' '}
@@ -112,11 +120,18 @@ const OfferRequestComp = ({item, setClicked, setSelectedRequest}: any) => {
             });
           }}
         />
-        <CustomButtons
-          type="solid"
-          label={IntLabel('review_offers')}
-          onPress={() => setSelectedRequest(item)}
-        />
+        {item?.incomingOffers?.length != 0 && (
+          <CustomButtons
+            type="solid"
+            label={IntLabel('review_offers')}
+            onPress={() =>
+              navigation.navigate('userincomingoffers', {
+                offerID: item?.offerID,
+                createdDate: item?.createdDate,
+              })
+            }
+          />
+        )}
       </View>
     </View>
   );

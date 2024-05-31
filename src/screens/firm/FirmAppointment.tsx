@@ -255,6 +255,7 @@ const FirmAppointment = ({route}: props) => {
                     formik.setFieldValue('meeting', item);
                   }
                 }}
+                readonly={false}
               />
             ))}
           </View>

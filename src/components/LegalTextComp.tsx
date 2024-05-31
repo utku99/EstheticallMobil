@@ -60,7 +60,12 @@ const LegalTextComp = ({value, onChange, type, error}: props) => {
       {type == 'auth' && (
         <View className="mb-3">
           <View className="flex-row space-x-2">
-            <CustomInputs type="checkbox" value={value} onChange={onChange} />
+            <CustomInputs
+              type="checkbox"
+              value={value}
+              onChange={onChange}
+              readonly={false}
+            />
 
             <Text className="text-xs font-poppinsRegular text-black flex-shrink">
               <FormattedMessage
@@ -130,7 +135,12 @@ const LegalTextComp = ({value, onChange, type, error}: props) => {
       {type == 'companyRegister' && (
         <View className="mb-3">
           <View className="flex-row space-x-2">
-            <CustomInputs type="checkbox" value={value} onChange={onChange} />
+            <CustomInputs
+              type="checkbox"
+              value={value}
+              onChange={onChange}
+              readonly={false}
+            />
 
             <Text className="text-xs font-poppinsRegular text-black flex-shrink">
               <FormattedMessage
@@ -206,7 +216,12 @@ const LegalTextComp = ({value, onChange, type, error}: props) => {
       {type == 'question' && (
         <View className="mb-3">
           <View className="flex-row space-x-2">
-            <CustomInputs type="checkbox" value={value} onChange={onChange} />
+            <CustomInputs
+              type="checkbox"
+              value={value}
+              onChange={onChange}
+              readonly={false}
+            />
 
             <Text className="text-xs font-poppinsRegular text-customGray flex-shrink">
               <FormattedMessage

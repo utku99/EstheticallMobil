@@ -171,6 +171,7 @@ const FirmOffer = ({route}: any) => {
               onChange={() =>
                 formik.setFieldValue('transport', !formik.values.transport)
               }
+              readonly={false}
             />
             <CustomInputs
               type="checkbox"
@@ -182,6 +183,7 @@ const FirmOffer = ({route}: any) => {
                   !formik.values.accomodation,
                 )
               }
+              readonly={false}
             />
             <CustomInputs
               type="checkbox"
@@ -190,6 +192,7 @@ const FirmOffer = ({route}: any) => {
               onChange={() =>
                 formik.setFieldValue('escort', !formik.values.escort)
               }
+              readonly={false}
             />
           </View>
         </View>

@@ -18,7 +18,7 @@ import {useNavigation} from '@react-navigation/native';
 import IntLabel from './IntLabel';
 
 const DrawerBar = ({props}: any) => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
 
   return (
     <DrawerContentScrollView>
@@ -35,7 +35,7 @@ const DrawerBar = ({props}: any) => {
       />
       <DrawerItem
         label={IntLabel('my_offers')}
-        onPress={() => navigation.navigate('useroffer')}
+        onPress={() => navigation.navigate('userofferrequests')}
         icon={() => <OfferIcon />}
         pressColor="#8F7A6C"
         labelStyle={{

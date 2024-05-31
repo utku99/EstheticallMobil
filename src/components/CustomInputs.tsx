@@ -241,7 +241,10 @@ const CustomInputs: React.FC<props> = ({
           onPress={onChange}
           className="flex-row items-center mb-3"
           style={style}>
-          <View className="w-[30px] h-[30px] rounded-lg border border-customLightGray bg-white items-center justify-center">
+          <View
+            className={`w-[30px] h-[30px] rounded-lg border border-customLightGray ${
+              readonly ? 'bg-customLightGray' : 'bg-white'
+            }  items-center justify-center`}>
             {value && <Tick />}
           </View>
           {title && (

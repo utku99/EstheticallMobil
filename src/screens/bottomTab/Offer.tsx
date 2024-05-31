@@ -214,6 +214,7 @@ const Offer = () => {
               onChange={() =>
                 formik.setFieldValue('transport', !formik.values.transport)
               }
+              readonly={false}
             />
             <CustomInputs
               type="checkbox"
@@ -225,6 +226,7 @@ const Offer = () => {
                   !formik.values.accomodation,
                 )
               }
+              readonly={false}
             />
             <CustomInputs
               type="checkbox"
@@ -233,6 +235,7 @@ const Offer = () => {
               onChange={() =>
                 formik.setFieldValue('escort', !formik.values.escort)
               }
+              readonly={false}
             />
           </View>
         </View>

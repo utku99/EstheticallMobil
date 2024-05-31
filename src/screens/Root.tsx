@@ -30,7 +30,7 @@ import FirmCommunication from './firm/FirmCommunication';
 import FirmCommunicationQuestion from './firm/FirmCommunicationQuestion';
 import DrawerBar from '../components/DrawerBar';
 import UserProfile from './user/UserProfile';
-import UserOffer from './user/UserOffer';
+import UserOffer from './user/offer/UserOffer';
 import UserAppointment from './user/UserAppointment';
 import UserMessage from './user/message/UserMessage';
 import UserNotification from './user/UserNotification';
@@ -67,6 +67,9 @@ import AboutUs from './user/legalTexts/AboutUs';
 import ForgetPassword from './auth/ForgetPassword';
 import LogOutIcon from '../assets/svg/userMenu/LogOutIcon';
 import FirmCompanyDoctorInfo from './firm/FirmCompanyDoctorInfo';
+import UserOfferRequests from './user/offer/UserOfferRequests';
+import UserIncomingOffers from './user/offer/UserIncomingOffers';
+import UserCompletedOffers from './user/offer/UserCompletedOffers';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -93,7 +96,7 @@ function BottomTabs() {
 }
 
 const UserStack = ({route}: any) => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
   const {isGuest, isLoggedIn} = useSelector((state: any) => state.user);
   const dispatch = useDispatch();
 
@@ -179,7 +182,17 @@ const UserStack = ({route}: any) => {
       {/* user */}
       <Stack.Group>
         <Stack.Screen name="userprofile" component={UserProfile} />
-        <Stack.Screen name="useroffer" component={UserOffer} />
+
+        <Stack.Screen name="userofferrequests" component={UserOfferRequests} />
+        <Stack.Screen
+          name="userincomingoffers"
+          component={UserIncomingOffers}
+        />
+        <Stack.Screen
+          name="usercompletedoffers"
+          component={UserCompletedOffers}
+        />
+
         <Stack.Screen name="userappointment" component={UserAppointment} />
         <Stack.Screen
           name="userincomingmessage"
