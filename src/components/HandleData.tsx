@@ -24,7 +24,7 @@ const HandleData = ({data, loading, title, children}: props) => {
     );
   } else if (loading) {
     return (
-      <View className="w-full h-full items-center justify-center ">
+      <View className="w-full h-full items-center justify-center">
         <View className="w-[80px] h-[80px] items-center justify-center">
           <LottieView
             source={require('../assets/lottie/data2.json')}

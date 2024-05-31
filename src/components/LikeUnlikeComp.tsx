@@ -1,11 +1,12 @@
 import {View, Text, Pressable, TouchableOpacity} from 'react-native';
 import React from 'react';
-import WebClient, {toast} from '../utility/WebClient';
+import WebClient, {Spinner, toast} from '../utility/WebClient';
 import {useSelector} from 'react-redux';
 import LikeIcon from '../assets/svg/common/LikeIcon';
 import UnLikeIcon from '../assets/svg/common/UnLikeIcon';
 import {makeFavoriteType} from '../constants/enum';
 import {useIntl} from 'react-intl';
+import SpinnerComp from './SpinnerComp';
 
 const LikeUnlikeComp = ({
   setClicked,
@@ -18,7 +19,7 @@ const LikeUnlikeComp = ({
   isFavorite: boolean;
   setClicked: any;
 }) => {
-  const {Post} = WebClient();
+  const {Post, loading} = WebClient();
   const {user} = useSelector((state: any) => state.user);
   const intl = useIntl();
 
@@ -45,7 +46,13 @@ const LikeUnlikeComp = ({
             );
           }
         }}>
-        {isFavorite ? <LikeIcon width={23} height={23} /> : <UnLikeIcon />}
+        {loading ? (
+          <SpinnerComp width={23} height={23} />
+        ) : isFavorite ? (
+          <LikeIcon width={23} height={23} />
+        ) : (
+          <UnLikeIcon />
+        )}
       </TouchableOpacity>
     </>
   );

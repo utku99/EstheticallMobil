@@ -3,6 +3,8 @@ import { useState } from "react";
 import Toast from 'react-native-root-toast';
 import { useSelector } from "react-redux";
 import { deviceLanguage } from "../constants/constants";
+import LottieView from "lottie-react-native";
+import { View } from "react-native";
 
 
 

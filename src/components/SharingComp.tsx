@@ -31,6 +31,7 @@ import UnMuted from '../assets/svg/homepages/UnMuted';
 import Muted from '../assets/svg/homepages/Muted';
 import Share from 'react-native-share';
 import CompanyHeaderComp from './CompanyHeaderComp';
+import SpinnerComp from './SpinnerComp';
 
 const CommentComp = ({item}: any) => {
   const {Post, loading} = WebClient();
@@ -285,7 +286,11 @@ const SharingComp = ({
                 });
               }}>
               {item?.isSaved ?? item?.parentModel?.isSaved ? (
-                <SharingSavedIcon />
+                loading ? (
+                  <SpinnerComp width={16} height={23} />
+                ) : (
+                  <SharingSavedIcon />
+                )
               ) : (
                 <SharingSaveIcon />
               )}
