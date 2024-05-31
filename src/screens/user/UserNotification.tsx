@@ -21,7 +21,9 @@ const UserNotification = () => {
       setNotifications(res.data.object);
     });
 
-    setClicked(false);
+    if (clicked) {
+      setClicked(false);
+    }
   }, [clicked, language]);
 
   return (

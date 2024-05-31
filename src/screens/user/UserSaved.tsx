@@ -20,7 +20,9 @@ const UserSaved = () => {
     }).then(res => {
       setUserSaved(res.data);
     });
-    setClicked(false);
+    if (clicked) {
+      setClicked(false);
+    }
   }, [clicked]);
 
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -48,8 +50,6 @@ const UserSaved = () => {
             <SharingComp
               item={item}
               setClicked={setClicked}
-              readOnly
-              onClickable
               isFocus={index === currentIndex && screenIsFocused}
             />
           )}

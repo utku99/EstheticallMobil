@@ -12,8 +12,31 @@ import WebClient from '../utility/WebClient';
 import ModalWrapper from './ModalWrapper';
 import CommunicationModal from './CommunicationModal';
 import IntLabel from './IntLabel';
+import CompanyHeaderComp from './CompanyHeaderComp';
+import {FormattedMessage} from 'react-intl';
 
-const AppointmentComp = ({item}: {item: any}) => {
+const interviewData = [
+  {
+    value: 1,
+    label: (
+      <FormattedMessage
+        id="online_meeting_request"
+        defaultMessage={'Online Görüşme Talebi'}
+      />
+    ),
+  },
+  {
+    value: 2,
+    label: (
+      <FormattedMessage
+        id="live_meeting_request"
+        defaultMessage={'Canlı Görüşme Talebi'}
+      />
+    ),
+  },
+];
+
+const AppointmentComp = ({item, setClicked}: any) => {
   const [visible, setVisible] = useState(false);
   const {Post, loading} = WebClient();
   const {user} = useSelector((state: any) => state.user);
@@ -53,58 +76,28 @@ const AppointmentComp = ({item}: {item: any}) => {
           {item?.createdDate}
         </Text>
 
-        {/* header */}
-        <View className="flex-row justify-between items-center ">
-          <View className="flex-row items-center space-x-2  w-[60%]">
-            <View className="w-[60px] h-[60px] overflow-hidden rounded-full border-[0.6px] border-customGray">
-              <Image
-                source={{uri: item?.companyModel?.companyLogo}}
-                className="w-full h-full"
-                resizeMode="cover"
-              />
-            </View>
-            <View className="flex-shrink">
-              <Text
-                numberOfLines={1}
-                className="text-customGray font-poppinsSemiBold text-sm ">
-                {item?.companyModel?.companyName}
-              </Text>
-              {item?.companyModel?.companyBranch && (
-                <Text
-                  numberOfLines={1}
-                  className="text-customGray font-poppinsRegular text-xs ">
-                  {item?.companyModel?.companyBranch}
-                </Text>
-              )}
-              <Text
-                numberOfLines={1}
-                className="text-customGray font-poppinsRegular text-xs ">
-                {item?.companyModel?.location}
-              </Text>
-            </View>
-          </View>
-          <View className="items-center">
-            <Text className="text-customGray font-poppinsRegular text-xs">
-              {IntLabel('comments')}
-            </Text>
-            <CustomInputs
-              type="rating"
-              value={Number(item?.companyModel?.companyPoint) / 20}
-            />
-          </View>
-          <LikeUnlikeComp
-            item={item}
-            isFavorite={item?.companyModel?.isCompanyFavorite}
-            readOnly
-          />
-        </View>
+        <CompanyHeaderComp
+          item={item?.companyModel}
+          rating={parseFloat(item?.companyModel?.companyPoint) / 20}
+          companyId={item?.companyModel?.companyID}
+          officeId={item?.companyModel?.companyOfficeID}
+          isFavorite={item?.companyModel?.isCompanyFavorite}
+          setClicked={setClicked}
+          isApproved={item?.isApprovedAccount}
+        />
 
         <View>
           <Text className="text-customGray text-sm font-poppinsMedium ">
-            {IntLabel('operations')}:{' '}
+            {IntLabel('appointment_meeting_type')}:{' '}
           </Text>
-          <Text className="text-customGray  text-sm font-poppinsRegular">
-            {item?.serviceName}
+          <Text
+            numberOfLines={3}
+            className="text-customGray  text-sm font-poppinsRegular">
+            {
+              interviewData?.find(
+                (tmp: any) => tmp.value == item?.appointmentType,
+              )?.label
+            }
           </Text>
         </View>
 
@@ -116,6 +109,15 @@ const AppointmentComp = ({item}: {item: any}) => {
             numberOfLines={3}
             className="text-customGray  text-sm font-poppinsRegular">
             {item?.description ? item?.description : 'Açıklama yapılmadı'}
+          </Text>
+        </View>
+
+        <View>
+          <Text className="text-customGray text-sm font-poppinsMedium ">
+            {IntLabel('operations')}:{' '}
+          </Text>
+          <Text className="text-customGray  text-sm font-poppinsRegular">
+            {item?.serviceName}
           </Text>
         </View>
 

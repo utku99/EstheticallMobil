@@ -30,5 +30,7 @@ Platform.OS === 'ios'
     package :0,
     company:1,
     office:2,
-    sharing:4
+    sharing:4,
+    offer: 5,
+    notification: 6
 }

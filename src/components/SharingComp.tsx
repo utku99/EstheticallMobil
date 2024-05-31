@@ -277,7 +277,9 @@ const SharingComp = ({
                 Post('/api/Common/SaveShared', {
                   userID: user?.id,
                   sharedID: item?.sharedID,
-                  isSaved: !item?.isSaved ?? !item?.parentModel?.isSaved,
+                  isSaved: item?.isSaved
+                    ? !item?.isSaved
+                    : !item?.parentModel?.isSaved,
                 }).then(res => {
                   setClicked(true);
                 });

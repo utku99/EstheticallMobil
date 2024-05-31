@@ -10,10 +10,11 @@ import {useSelector} from 'react-redux';
 import IntLabel from '../../components/IntLabel';
 
 const UserAppointment = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
   const {Post, loading} = WebClient();
   const [userAppointments, setUserAppointments] = useState<any>([]);
   const {user} = useSelector((state: any) => state.user);
+  const [clicked, setClicked] = useState(false);
 
   useEffect(() => {
     Post('/api/Appointments/MyAppointments', {
@@ -21,7 +22,11 @@ const UserAppointment = () => {
     }).then(res => {
       setUserAppointments(res.data.object);
     });
-  }, []);
+
+    if (clicked) {
+      setClicked(false);
+    }
+  }, [clicked]);
 
   return (
     <UserWrapper>
@@ -46,7 +51,9 @@ const UserAppointment = () => {
         <FlatList
           contentContainerStyle={{display: 'flex', gap: 15, paddingBottom: 20}}
           data={userAppointments}
-          renderItem={({item}) => <AppointmentComp item={item} />}
+          renderItem={({item}) => (
+            <AppointmentComp item={item} setClicked={setClicked} />
+          )}
         />
       </HandleData>
     </UserWrapper>

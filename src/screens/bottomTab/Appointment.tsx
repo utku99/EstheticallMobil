@@ -398,6 +398,7 @@ const Appointment = () => {
                     formik.setFieldValue('meeting', item);
                   }
                 }}
+                readonly={false}
               />
             ))}
           </View>
