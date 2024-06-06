@@ -16,7 +16,7 @@ import IntLabel from '../../components/IntLabel';
 import {useIntl} from 'react-intl';
 
 const WelcomePage = () => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
   const [currentPage, setCurrentPage] = useState<any>(0);
   const flatListRef = useRef<any>(null);
   const intl = useIntl();
@@ -93,7 +93,7 @@ const WelcomePage = () => {
                 )}
 
                 <View className="justify-center flex-row mb-[30px] space-x-3">
-                  {data.map(dataItem => (
+                  {data?.map(dataItem => (
                     <Pressable
                       onPress={handleNextPage}
                       key={dataItem.key}
