@@ -1,20 +1,20 @@
-import {View, Text, TextInput} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import { View, Text, TextInput } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import FirmWrapper from './FirmWrapper';
 import CustomInputs from '../../components/CustomInputs';
-import WebClient, {toast} from '../../utility/WebClient';
-import {SIZES} from '../../constants/constants';
+import WebClient, { toast } from '../../utility/WebClient';
+import { SIZES } from '../../constants/constants';
 import CustomButtons from '../../components/CustomButtons';
 import AddPhotoComp from '../../components/AddPhotoComp';
-import {useFormik} from 'formik';
-import {useSelector} from 'react-redux';
+import { useFormik } from 'formik';
+import { useSelector } from 'react-redux';
 import * as Yup from 'yup';
 import IntLabel from '../../components/IntLabel';
 import moment from 'moment';
 
-const FirmOffer = ({route}: any) => {
-  const {Post, loading} = WebClient();
-  const {user} = useSelector((state: any) => state.user);
+const FirmOffer = ({ route }: any) => {
+  const { Post, loading } = WebClient();
+  const { user } = useSelector((state: any) => state.user);
 
   const [services, setServices] = useState([]);
   const [subServices, setSubServices] = useState([]);
@@ -22,6 +22,7 @@ const FirmOffer = ({route}: any) => {
   const [company, setCompany] = useState<any>(null);
 
   const formik = useFormik({
+    validateOnChange: false,
     initialValues: {
       operation: '',
       suboperation: '',
@@ -52,7 +53,7 @@ const FirmOffer = ({route}: any) => {
         IntLabel('validation_message_this_field_is_required'),
       ),
     }),
-    onSubmit: (values, {resetForm}) => {
+    onSubmit: (values, { resetForm }) => {
       Post('/api/Offers/RequestOffer', {
         userID: user?.id,
         companyID: route.params.companyId,
@@ -110,12 +111,12 @@ const FirmOffer = ({route}: any) => {
 
   return (
     <FirmWrapper>
-      <View className=" h-full w-full" style={{width: SIZES.width * 0.95}}>
+      <View className=" h-full w-full" style={{ width: SIZES.width * 0.95 }}>
         <CustomInputs
           type="dropdown"
           value={company}
           dropdownData={[company]}
-          style={{width: '75%', height: 32}}
+          style={{ width: '75%', height: 32 }}
           disable
         />
 
@@ -127,7 +128,7 @@ const FirmOffer = ({route}: any) => {
             placeholder={IntLabel('select_operation')}
             value={formik.values.operation}
             onChange={(e: any) => formik.setFieldValue('operation', e)}
-            style={{width: '75%', height: 32}}
+            style={{ width: '75%', height: 32 }}
             error={formik.errors.operation}
           />
         )}
@@ -140,7 +141,7 @@ const FirmOffer = ({route}: any) => {
             placeholder={IntLabel('select_sub_operation')}
             value={formik.values.suboperation}
             onChange={(e: any) => formik.setFieldValue('suboperation', e)}
-            style={{width: '75%', height: 32}}
+            style={{ width: '75%', height: 32 }}
           />
         )}
 
@@ -212,7 +213,7 @@ const FirmOffer = ({route}: any) => {
                 formik.setFieldValue('startDate', e);
                 formik.setFieldValue('endDate', '');
               }}
-              style={{width: '75%'}}
+              style={{ width: '75%' }}
             />
             <CustomInputs
               type="date"
@@ -224,7 +225,7 @@ const FirmOffer = ({route}: any) => {
               value={formik.values.endDate}
               error={formik.errors.endDate}
               onChange={(e: any) => formik.setFieldValue('endDate', e)}
-              style={{width: '75%'}}
+              style={{ width: '75%' }}
             />
           </View>
         </View>
@@ -242,7 +243,7 @@ const FirmOffer = ({route}: any) => {
           label={IntLabel('send')}
           icon="send"
           theme="big"
-          style={{width: 180, alignSelf: 'center'}}
+          style={{ width: 180, alignSelf: 'center' }}
           onPress={formik.handleSubmit}
         />
       </View>

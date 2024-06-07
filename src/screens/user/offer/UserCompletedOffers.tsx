@@ -1,21 +1,23 @@
-import {View, Text, FlatList} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import { View, Text, FlatList } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import UserWrapper from '../UserWrapper';
-import {useNavigation, useRoute} from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import CustomButtons from '../../../components/CustomButtons';
 import IntLabel from '../../../components/IntLabel';
 import WebClient from '../../../utility/WebClient';
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 import HandleData from '../../../components/HandleData';
 import OfferComp from '../../../components/OfferComp';
 
 const UserCompletedOffers = () => {
   const navigation = useNavigation<any>();
   const route = useRoute();
-  const {Post, loading} = WebClient();
-  const {user} = useSelector((state: any) => state.user);
+  const { Post, } = WebClient();
+  const { user } = useSelector((state: any) => state.user);
   const [completedOffers, setCompletedOffers] = useState<any>([]);
   const [clicked, setClicked] = useState(false);
+  const [loading, setLoading] = useState(true);
+
 
   useEffect(() => {
     Post('/api/Offers/CompletedOffersWeb', {
@@ -24,11 +26,11 @@ const UserCompletedOffers = () => {
       if (res.data.code === '100') {
         setCompletedOffers(res.data.object);
       }
-    });
-
-    if (clicked) {
+    }).finally(() => {
+      setLoading(false)
       setClicked(false);
-    }
+    })
+
   }, [clicked]);
 
   return (
@@ -61,7 +63,7 @@ const UserCompletedOffers = () => {
             paddingBottom: 20,
           }}
           data={completedOffers}
-          renderItem={({item, index}) => (
+          renderItem={({ item, index }) => (
             <OfferComp
               key={index}
               item={item}

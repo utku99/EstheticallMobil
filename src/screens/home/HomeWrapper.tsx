@@ -1,12 +1,12 @@
-import {View, Text, ScrollView, TouchableOpacity} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import FitlerIcon from '../../assets/svg/homepages/FitlerIcon';
 import CustomButtons from '../../components/CustomButtons';
-import {useNavigation, useRoute} from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import CustomInputs from '../../components/CustomInputs';
-import {Modal} from 'react-native-paper';
+import { Modal } from 'react-native-paper';
 import WebClient from '../../utility/WebClient';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   resetFilters,
   setCity,
@@ -18,27 +18,27 @@ import {
   setSubOperation,
   setTown,
 } from '../../redux/slices/filter';
-import {SIZES} from '../../constants/constants';
+import { SIZES } from '../../constants/constants';
 import IntLabel from '../../components/IntLabel';
 import MessageIcon from '../../assets/svg/userMenu/MessageIcon';
-import {useFormik} from 'formik';
+import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import AdvertisementList from '../../components/AdvertisementList';
-import {companyType} from '../../constants/enum';
+import { companyType } from '../../constants/enum';
 
 interface props {
   children?: React.ReactNode;
 }
 
-const HomeWrapper: React.FC<props> = ({children}) => {
-  const navigation = useNavigation();
+const HomeWrapper: React.FC<props> = ({ children }) => {
+  const navigation = useNavigation<any>();
   const [visible, setVisible] = useState(false);
   const [visible2, setVisible2] = useState(false);
   const route = useRoute();
-  const {Post} = WebClient();
-  const {user, isLoggedIn, language} = useSelector((state: any) => state.user);
+  const { Post } = WebClient();
+  const { user, isLoggedIn, language } = useSelector((state: any) => state.user);
 
-  const {country, city, town, district, institution, operation, suboperation} =
+  const { country, city, town, district, institution, operation, suboperation } =
     useSelector((state: any) => state.filter);
 
   const dispatch = useDispatch();
@@ -58,10 +58,10 @@ const HomeWrapper: React.FC<props> = ({children}) => {
   const [filterInstitution, setFilterInstitution] = useState<any>([]);
 
   let institutionData = [
-    {value: 1, label: IntLabel('hospital')},
-    {value: 2, label: IntLabel('beauty_center')},
-    {value: 3, label: IntLabel('clinic')},
-    {value: 4, label: IntLabel('doctor')},
+    { value: 1, label: IntLabel('hospital') },
+    { value: 2, label: IntLabel('beauty_center') },
+    { value: 3, label: IntLabel('clinic') },
+    { value: 4, label: IntLabel('doctor') },
   ];
 
   // filter
@@ -113,7 +113,7 @@ const HomeWrapper: React.FC<props> = ({children}) => {
     Post('/api/Service/GetAllServices', {})
       .then((res: any) => {
         let temp = res.data;
-        temp.unshift({value: 0, label: 'Tümü'});
+        temp.unshift({ value: 0, label: 'Tümü' });
         setServices(temp);
       })
       .finally(() => {
@@ -121,7 +121,7 @@ const HomeWrapper: React.FC<props> = ({children}) => {
           serviceId: operation?.value,
         }).then(res => {
           let temp = res.data;
-          temp.unshift({value: 0, label: 'Tümü'});
+          temp.unshift({ value: 0, label: 'Tümü' });
           setServiceSubs(temp);
         });
       });
@@ -157,7 +157,7 @@ const HomeWrapper: React.FC<props> = ({children}) => {
       title: Yup.string().required(IntLabel('text_required')),
       content: Yup.string().required(IntLabel('text_required')),
     }),
-    onSubmit: (values, {resetForm}) => {
+    onSubmit: (values, { resetForm }) => {
       Post(
         '/api/Company/CommentToCompany',
         {
@@ -174,7 +174,6 @@ const HomeWrapper: React.FC<props> = ({children}) => {
         true,
         true,
       ).then(res => {
-        console.log(res.data);
         if (res.data.code === '100') {
           resetForm();
           setVisible2(false);
@@ -217,6 +216,7 @@ const HomeWrapper: React.FC<props> = ({children}) => {
     });
   }, [formik.values.institution.value, formik.values.operation.value]);
 
+
   return (
     <View className="bg-[#FAFAFA] flex-1">
       {/* tabs */}
@@ -238,21 +238,21 @@ const HomeWrapper: React.FC<props> = ({children}) => {
             type={route.name == 'sharing' ? 'solid' : 'outlined'}
             label={IntLabel('sharings')}
             onPress={() => {
-              navigation.navigate('sharing', {tab: 1});
+              navigation.navigate('sharing', { tab: 1 });
             }}
           />
           <CustomButtons
             type={route.name == 'comment' ? 'solid' : 'outlined'}
             label={IntLabel('comments')}
             onPress={() => {
-              navigation.navigate('comment', {tab: 2});
+              navigation.navigate('comment', { tab: 2 });
             }}
           />
           <CustomButtons
             type={route.name == 'list' ? 'solid' : 'outlined'}
             label={IntLabel('list')}
             onPress={() => {
-              navigation.navigate('list', {tab: 3});
+              navigation.navigate('list', { tab: 3 });
             }}
           />
           <CustomButtons
@@ -260,7 +260,7 @@ const HomeWrapper: React.FC<props> = ({children}) => {
             icon="location"
             label={IntLabel('map')}
             onPress={() => {
-              navigation.navigate('map', {tab: 4});
+              navigation.navigate('map', { tab: 4 });
             }}
           />
         </ScrollView>
@@ -280,7 +280,7 @@ const HomeWrapper: React.FC<props> = ({children}) => {
       <Modal
         visible={visible}
         onDismiss={() => setVisible(false)}
-        style={{justifyContent: 'flex-start'}}
+        style={{ justifyContent: 'flex-start' }}
         contentContainerStyle={{
           padding: 30,
           backgroundColor: 'white',
@@ -365,7 +365,7 @@ const HomeWrapper: React.FC<props> = ({children}) => {
             type="solid"
             label={IntLabel('list_filter')}
             theme="middle"
-            style={{width: 90}}
+            style={{ width: 90 }}
             onPress={() => {
               dispatch(setListFilters(true));
               setVisible(false);
@@ -375,11 +375,10 @@ const HomeWrapper: React.FC<props> = ({children}) => {
             type="outlined"
             label={IntLabel('reset')}
             theme="middle"
-            style={{width: 90}}
+            style={{ width: 90 }}
             onPress={() => {
               dispatch(setListFilters(true));
               dispatch(resetFilters());
-              setVisible(false);
             }}
           />
         </View>
@@ -392,7 +391,7 @@ const HomeWrapper: React.FC<props> = ({children}) => {
           setVisible2(false);
           formik.resetForm();
         }}
-        style={{alignItems: 'center'}}
+        style={{ alignItems: 'center' }}
         contentContainerStyle={{
           padding: 20,
           backgroundColor: 'white',
@@ -471,9 +470,7 @@ const HomeWrapper: React.FC<props> = ({children}) => {
           type="textareabig"
           value={formik.values.content}
           onChangeText={formik.handleChange('content')}
-          onBlur={formik.handleBlur('content')}
           error={formik.errors.content}
-          touched={formik.touched.content}
           placeholder={IntLabel('comment_text')}
         />
         <View className=" items-start">
@@ -493,7 +490,7 @@ const HomeWrapper: React.FC<props> = ({children}) => {
           icon="send"
           label={IntLabel('make_comment')}
           theme="middle"
-          style={{marginTop: 20, width: '60%', alignSelf: 'center'}}
+          style={{ marginTop: 20, width: '60%', alignSelf: 'center' }}
           onPress={formik.handleSubmit}
         />
       </Modal>

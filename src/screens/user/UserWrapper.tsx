@@ -1,4 +1,4 @@
-import {View, Text, ScrollView} from 'react-native';
+import { View, Text, ScrollView } from 'react-native';
 import React from 'react';
 import NotificationIcon2 from '../../assets/svg/userMenu/NotificationIcon2';
 
@@ -8,12 +8,12 @@ interface props {
   showBellIcon?: boolean;
 }
 
-const UserWrapper = ({children, title, showBellIcon = false}: props) => {
+const UserWrapper = ({ children, title, showBellIcon = false }: props) => {
   return (
     <View className="bg-[#FAFAFA] flex-1">
       {title && (
         <>
-          <Text className="font-poppinsMedium  text-customGray text-base text-center mb-[20px] ">
+          <Text className="font-poppinsMedium  text-customGray text-base text-center  ">
             {title}
           </Text>
           {showBellIcon && (

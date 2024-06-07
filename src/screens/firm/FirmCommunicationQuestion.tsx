@@ -1,34 +1,35 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import FirmWrapper from './FirmWrapper';
 import HandleData from '../../components/HandleData';
-import WebClient, {toast} from '../../utility/WebClient';
-import {Text, TextInput, View} from 'react-native';
-import {SIZES} from '../../constants/constants';
+import WebClient, { toast } from '../../utility/WebClient';
+import { Text, TextInput, View } from 'react-native';
+import { SIZES } from '../../constants/constants';
 import CustomInputs from '../../components/CustomInputs';
 import CustomButtons from '../../components/CustomButtons';
 import AddPhotoComp from '../../components/AddPhotoComp';
 import LegalTextComp from '../../components/LegalTextComp';
-import {useNavigation} from '@react-navigation/native';
-import {useFormik} from 'formik';
-import {useSelector} from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
+import { useFormik } from 'formik';
+import { useSelector } from 'react-redux';
 import IntLabel from '../../components/IntLabel';
 import * as Yup from 'yup';
-import {messageEnum, messageTypeEnum} from '../../constants/enum';
+import { messageEnum, messageTypeEnum } from '../../constants/enum';
 
 interface props {
   route?: any;
 }
 
-const FirmCommunicationQuestion = ({route}: props) => {
-  const {Post, loading} = WebClient();
+const FirmCommunicationQuestion = ({ route }: props) => {
+  const { Post, loading } = WebClient();
   const [services, setServices] = useState([]);
   const [company, setCompany] = useState<any>(null);
-  const {user} = useSelector((state: any) => state.user);
+  const { user } = useSelector((state: any) => state.user);
 
   let warning = IntLabel('message_created_warning');
 
   const formik = useFormik({
     enableReinitialize: true,
+    validateOnChange: false,
     initialValues: {
       operation: '',
       content: '',
@@ -47,7 +48,7 @@ const FirmCommunicationQuestion = ({route}: props) => {
         .oneOf([true], IntLabel('accept_text_warning'))
         .required(IntLabel('accept_text_warning')),
     }),
-    onSubmit: (values, {resetForm}) => {
+    onSubmit: (values, { resetForm }) => {
       Post('/api/Chatting/FirstMessage', {
         senderId: user?.id,
         senderType: messageTypeEnum.user,
@@ -94,7 +95,7 @@ const FirmCommunicationQuestion = ({route}: props) => {
 
   return (
     <FirmWrapper>
-      <View className=" h-full w-full" style={{width: SIZES.width * 0.95}}>
+      <View className=" h-full w-full" style={{ width: SIZES.width * 0.95 }}>
         <Text className="font-medium text-customGray text-base font-poppins mb-3">
           {IntLabel('contact')}
         </Text>
@@ -103,7 +104,7 @@ const FirmCommunicationQuestion = ({route}: props) => {
           type="dropdown"
           value={company}
           dropdownData={[company]}
-          style={{width: '75%', height: 32}}
+          style={{ width: '75%', height: 32 }}
           disable
         />
 
@@ -113,7 +114,7 @@ const FirmCommunicationQuestion = ({route}: props) => {
           value={formik.values.operation}
           onChange={(e: any) => formik.setFieldValue('operation', e)}
           placeholder={IntLabel('select_operation')}
-          style={{width: '75%', height: 32}}
+          style={{ width: '75%', height: 32 }}
           error={formik.errors.operation}
         />
 
@@ -146,7 +147,7 @@ const FirmCommunicationQuestion = ({route}: props) => {
           icon="send"
           theme="big"
           onPress={formik.handleSubmit}
-          style={{alignSelf: 'center'}}
+          style={{ alignSelf: 'center' }}
         />
       </View>
     </FirmWrapper>

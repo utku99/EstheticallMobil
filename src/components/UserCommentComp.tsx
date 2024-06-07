@@ -1,22 +1,24 @@
-import {View, Text, Image, Pressable} from 'react-native';
-import React, {useState} from 'react';
+import { View, Text, Image, Pressable } from 'react-native';
+import React, { useState } from 'react';
 import CustomInputs from './CustomInputs';
 import LikeIcon from '../assets/svg/common/LikeIcon';
 import ShareIcon from '../assets/svg/homepages/ShareIcon';
 import LinearGradient from 'react-native-linear-gradient';
 import SeeAllArrow from '../assets/svg/homepages/SeeAllArrow';
-import {SIZES} from '../constants/constants';
+import { SIZES } from '../constants/constants';
 import TrashIcon from '../assets/svg/userMenu/TrashIcon';
 import EditUserCommentIcon from '../assets/svg/userMenu/EditUserCommentIcon';
 import WebClient from '../utility/WebClient';
 import ModalWrapper from './ModalWrapper';
 import CustomButtons from './CustomButtons';
 import LikeUnlikeComp from './LikeUnlikeComp';
-import {useFormik} from 'formik';
+import { useFormik } from 'formik';
 import IntLabel from './IntLabel';
+import CompanyHeaderComp from './CompanyHeaderComp';
+import DoctorHeaderComp from './DoctorHeaderComp';
 
-const UserCommentComp = ({item, setClicked}: any) => {
-  const {Post} = WebClient();
+const UserCommentComp = ({ item, setClicked }: any) => {
+  const { Post } = WebClient();
   const [seeAll, setSeeAll] = useState(false);
   const [visible, setVisible] = useState(false);
   const [rating, setRating] = useState(item?.point / 20);
@@ -45,13 +47,13 @@ const UserCommentComp = ({item, setClicked}: any) => {
   return (
     <View
       className={` border border-customLightGray rounded-xl bg-white p-[10px] space-y-4`}
-      style={{width: SIZES.width * 0.95}}>
+      style={{ width: SIZES.width * 0.95 }}>
       {/* header */}
       <View className="flex-row items-center justify-between">
         <View className="flex-row items-center space-x-2  w-[70%]">
           <View className="w-[60px] h-[60px] overflow-hidden rounded-full border-[0.6px] border-customGray">
             <Image
-              source={{uri: item?.userLogo}}
+              source={{ uri: item?.userLogo }}
               className="w-full h-full"
               resizeMode="cover"
             />
@@ -109,13 +111,12 @@ const UserCommentComp = ({item, setClicked}: any) => {
 
       <View>
         <Text
-          className={`text-xs font-poppinsRegular text-customGray ${
-            seeAll
-              ? 'h-fit'
-              : item?.comment?.length > 400
+          className={`text-xs font-poppinsRegular text-customGray ${seeAll
+            ? 'h-fit'
+            : item?.comment?.length > 400
               ? 'h-[130px]'
               : 'h-fit'
-          }`}>
+            }`}>
           {item?.comment}
         </Text>
         {!seeAll && item?.comment?.length > 400 && (
@@ -130,58 +131,34 @@ const UserCommentComp = ({item, setClicked}: any) => {
       </View>
 
       {/* doctor */}
-      <View className="space-y-2">
-        <Text className="text-sm font-poppinsMedium text-customGray">
+      <View className="">
+        <Text className="text-sm font-poppinsRegular text-customGray mb-2">
           {IntLabel('performing_the_operation')}
         </Text>
-
-        <View className="flex-row items-center justify-between">
-          <View className="flex-row items-center space-x-2 w-[60%] ">
-            <View className="w-[60px] h-[60px] overflow-hidden rounded-full border-[0.6px] border-customGray">
-              <Image
-                source={{uri: item?.doctor?.doctorLogo}}
-                className="w-full h-full"
-                resizeMode="cover"
-              />
-            </View>
-            <View className="flex-shrink">
-              <Text
-                numberOfLines={1}
-                className="text-customGray font-poppinsSemiBold text-xs ">
-                {item?.doctor?.doctorNameWithTitle}
-              </Text>
-              <Text
-                numberOfLines={1}
-                className="text-customGray font-poppinsMedium text-xs">
-                {item?.doctor?.doctorBranch}
-              </Text>
-              <Text
-                numberOfLines={1}
-                className="text-customGray font-poppinsMedium text-xs">
-                {item?.doctor?.doctorLocation}
-              </Text>
-            </View>
-          </View>
-
-          <View className="items-center ">
-            <Text className="text-customGray font-poppinsRegular text-xs">
-              {item?.doctor?.doctorCommentPoint / 20}/5
-            </Text>
-            <Text className="text-customGray font-poppinsRegular text-xs">
-              {IntLabel('comments')}
-            </Text>
-          </View>
-          <View className="items-center space-y-2">
-            <ShareIcon />
-            <View>
-              <LikeUnlikeComp
-                item={item}
-                readOnly
-                isFavorite={item?.doctor?.isDoctorFavorite}
-              />
-            </View>
-          </View>
-        </View>
+        {(item?.companyDoctorId) == 0 ? (
+          <CompanyHeaderComp
+            item={item}
+            setClicked={setClicked}
+            rating={parseFloat(item?.doctor?.doctorCommentPoint) / 20}
+            companyId={item?.companyId}
+            officeId={item?.companyOfficeId}
+            isFavorite={item?.doctor?.isDoctorFavorite}
+            isApproved={item?.isConfirmed}
+            showShareIcon
+          />
+        ) : (
+          <DoctorHeaderComp
+            item={item}
+            setClicked={setClicked}
+            rating={parseFloat(item?.doctor?.doctorCommentPoint) / 20}
+            companyId={item?.companyId}
+            officeId={item?.companyOfficeId}
+            isFavorite={item?.doctor?.isDoctorFavorite}
+            isApproved={false}
+            showShareIcon
+            doctorId={item?.companyDoctorId}
+          />
+        )}
       </View>
 
       <ModalWrapper visible={visible} setVisible={setVisible}>
@@ -220,7 +197,7 @@ const UserCommentComp = ({item, setClicked}: any) => {
           <View className="flex-row items-center justify-center space-x-2">
             <CustomButtons
               type="outlined"
-              label={IntLabel('give_up')}
+              label={IntLabel('cancel')}
               onPress={() => setVisible(false)}
             />
             <CustomButtons

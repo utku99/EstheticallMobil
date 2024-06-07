@@ -7,62 +7,63 @@ import {
   Pressable,
   TouchableOpacity,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
-import WebClient, {toast} from '../../utility/WebClient';
-import {useDispatch, useSelector} from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import WebClient, { toast } from '../../utility/WebClient';
+import { useDispatch, useSelector } from 'react-redux';
 import BlueTick from '../../assets/svg/common/BlueTick';
 import CommunicationItem from '../../assets/svg/firm/CommunicationItem';
 import ShareIcon from '../../assets/svg/firm/ShareIcon';
 import UnLikeIcon from '../../assets/svg/common/UnLikeIcon';
 import CustomButtons from '../../components/CustomButtons';
-import {SIZES, viewedType} from '../../constants/constants';
-import {useNavigation, useRoute} from '@react-navigation/native';
+import { SIZES, viewedType } from '../../constants/constants';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import ModalWrapper from '../../components/ModalWrapper';
 import HandleData from '../../components/HandleData';
 import CustomInputs from '../../components/CustomInputs';
 import LikeUnlikeComp from '../../components/LikeUnlikeComp';
-import {setSelectedService} from '../../redux/slices/common';
+import { setSelectedService } from '../../redux/slices/common';
 import IntLabel from '../../components/IntLabel';
-import {useIntl} from 'react-intl';
+import { useIntl } from 'react-intl';
 import Share from 'react-native-share';
 
 interface props {
   children?: React.ReactNode;
 }
 
-const FirmWrapper: React.FC<props> = ({children}) => {
-  const {Post, loading} = WebClient();
+const FirmWrapper: React.FC<props> = ({ children }) => {
+  const { Post, } = WebClient();
   const dispatch = useDispatch();
   const intl = useIntl();
-  const {user, language} = useSelector((state: any) => state.user);
-  const {selectedService} = useSelector((state: any) => state.common);
+  const { user, isGuest, isLoggedIn } = useSelector((state: any) => state.user);
+  const { selectedService } = useSelector((state: any) => state.common);
   const [firmLeftInfo, setFirmLeftInfo] = useState<any>();
   const route = useRoute<any>();
   const navigation = useNavigation<any>();
   const [visible, setVisible] = useState(false);
   const [clicked, setClicked] = useState(false);
   const [services, setServices] = useState<any>();
+  const [loading, setLoading] = useState(true);
 
   const buttonData = [
-    {id: 1, label: IntLabel('profile'), name: 'firmprofile'},
-    {id: 2, label: IntLabel('sharings'), name: 'firmsharings'},
-    {id: 3, label: IntLabel('comments'), name: 'firmcomments'},
-    {id: 4, label: IntLabel('services'), name: 'firmservices'},
-    {id: 5, label: IntLabel('doctors'), name: 'firmdoctors'},
-    {id: 6, label: IntLabel('take_appointment'), name: 'firmappointment'},
-    {id: 7, label: IntLabel('take_offer'), name: 'firmoffer'},
-    {id: 8, label: IntLabel('packages'), name: 'firmpackages'},
+    { id: 1, label: IntLabel('profile'), name: 'firmprofile' },
+    { id: 2, label: IntLabel('sharings'), name: 'firmsharings' },
+    { id: 3, label: IntLabel('comments'), name: 'firmcomments' },
+    { id: 4, label: IntLabel('services'), name: 'firmservices' },
+    { id: 5, label: IntLabel('doctors'), name: 'firmdoctors' },
+    { id: 6, label: IntLabel('take_appointment'), name: 'firmappointment' },
+    { id: 7, label: IntLabel('take_offer'), name: 'firmoffer' },
+    { id: 8, label: IntLabel('packages'), name: 'firmpackages' },
   ];
 
   const buttonDataCompanyDoctor = [
-    {id: 1, label: IntLabel('profile'), name: 'firmprofile'},
-    {id: 2, label: IntLabel('sharings'), name: 'firmsharings'},
-    {id: 3, label: IntLabel('comments'), name: 'firmcomments'},
-    {id: 4, label: IntLabel('services'), name: 'firmservices'},
-    {id: 5, label: IntLabel('my_informations'), name: 'firmcompanydoctorinfo'},
-    {id: 6, label: IntLabel('take_appointment'), name: 'firmappointment'},
-    {id: 7, label: IntLabel('take_offer'), name: 'firmoffer'},
-    {id: 8, label: IntLabel('packages'), name: 'firmpackages'},
+    { id: 1, label: IntLabel('profile'), name: 'firmprofile' },
+    { id: 2, label: IntLabel('sharings'), name: 'firmsharings' },
+    { id: 3, label: IntLabel('comments'), name: 'firmcomments' },
+    { id: 4, label: IntLabel('services'), name: 'firmservices' },
+    { id: 5, label: IntLabel('my_informations'), name: 'firmcompanydoctorinfo' },
+    { id: 6, label: IntLabel('take_appointment'), name: 'firmappointment' },
+    { id: 7, label: IntLabel('take_offer'), name: 'firmoffer' },
+    { id: 8, label: IntLabel('packages'), name: 'firmpackages' },
   ];
 
   useEffect(() => {
@@ -85,9 +86,14 @@ const FirmWrapper: React.FC<props> = ({children}) => {
               ? viewedType.company
               : viewedType.office,
           userID: user?.id ?? 0,
-        }).then(res => {});
+        }).then(res => {
+
+        });
       }
-    });
+    }).finally(() => {
+      setLoading(false)
+      setClicked(false);
+    })
 
     Post('/api/CompanyServices/WebListCompanyServices', {
       companyId: route.params?.companyId,
@@ -101,21 +107,18 @@ const FirmWrapper: React.FC<props> = ({children}) => {
       setServices(newServices);
     });
 
-    if (clicked) {
-      setClicked(false);
-    }
   }, [clicked]);
 
   return (
     <ScrollView
       className="bg-[#FAFAFA] "
       nestedScrollEnabled
-      contentContainerStyle={{flexGrow: 1, paddingBottom: 30}}>
+      contentContainerStyle={{ flexGrow: 1, paddingBottom: 30 }}>
       <HandleData loading={loading}>
         {/* banner */}
         <View className="w-full h-[230px] relative">
           <Image
-            source={{uri: firmLeftInfo?.coverPhoto}}
+            source={{ uri: firmLeftInfo?.coverPhoto }}
             className="w-full h-full"
             resizeMode="cover"
           />
@@ -162,10 +165,10 @@ const FirmWrapper: React.FC<props> = ({children}) => {
         <View className="-mt-[40px]">
           <View
             className="bg-white h-[80px] rounded-lg px-[20px] self-center flex-row items-center justify-between"
-            style={{width: SIZES.width * 0.95}}>
+            style={{ width: SIZES.width * 0.95 }}>
             <View className="w-[60px] h-[60px] overflow-hidden rounded-full border-[0.6px] border-customGray">
               <Image
-                source={{uri: firmLeftInfo?.logo}}
+                source={{ uri: firmLeftInfo?.logo }}
                 className="w-full h-full"
                 resizeMode="cover"
               />
@@ -209,17 +212,25 @@ const FirmWrapper: React.FC<props> = ({children}) => {
                 ? buttonDataCompanyDoctor
                 : buttonData
             }
-            renderItem={({item}) => (
+            renderItem={({ item }) => (
               <CustomButtons
                 type={route.name == item.name ? 'brownsolid' : 'brownoutlined'}
                 label={item.label}
                 onPress={() => {
-                  item.id == 4
-                    ? setVisible(true)
-                    : navigation.navigate(item.name, {
-                        companyId: route.params.companyId,
-                        companyOfficeId: route.params.companyOfficeId,
-                      });
+                  const navigateTo = () => navigation.navigate(item.name, {
+                    companyId: route.params.companyId,
+                    companyOfficeId: route.params.companyOfficeId,
+                  });
+
+                  if (item.id == 4) {
+                    setVisible(true);
+                  } else if (isLoggedIn && !isGuest) {
+                    navigateTo();
+                  } else if (item.id == 6 || item.id == 7) {
+                    toast(intl.formatMessage({ id: 'login_required_warning', defaultMessage: 'login_required_warning' }));
+                  } else {
+                    navigateTo();
+                  }
                 }}
               />
             )}
@@ -249,7 +260,7 @@ const FirmWrapper: React.FC<props> = ({children}) => {
             ) : (
               <FlatList
                 data={services}
-                renderItem={({item}) =>
+                renderItem={({ item }) =>
                   item.serviceTypeId === 4 && (
                     <Pressable
                       key={item.value}
@@ -265,18 +276,17 @@ const FirmWrapper: React.FC<props> = ({children}) => {
                         dispatch(setSelectedService(item));
                       }}>
                       <Text
-                        className={`font-poppinsRegular  ${
-                          selectedService?.value == item.value
-                            ? 'text-customOrange'
-                            : 'text-customGray'
-                        } `}>
+                        className={`font-poppinsRegular  ${selectedService?.value == item.value
+                          ? 'text-customOrange'
+                          : 'text-customGray'
+                          } `}>
                         {item.label}
                       </Text>
                     </Pressable>
                   )
                 }
                 keyExtractor={item => item.value.toString()}
-                contentContainerStyle={{gap: 5}}
+                contentContainerStyle={{ gap: 5 }}
               />
             )}
           </View>
@@ -292,7 +302,7 @@ const FirmWrapper: React.FC<props> = ({children}) => {
             ) : (
               <FlatList
                 data={services}
-                renderItem={({item}) =>
+                renderItem={({ item }) =>
                   item.serviceTypeId === 6 && (
                     <Pressable
                       key={item.value}
@@ -308,17 +318,16 @@ const FirmWrapper: React.FC<props> = ({children}) => {
                         dispatch(setSelectedService(item));
                       }}>
                       <Text
-                        className={`font-poppinsRegular  ${
-                          selectedService?.value == item.value
-                            ? 'text-customOrange'
-                            : 'text-customGray'
-                        } `}>
+                        className={`font-poppinsRegular  ${selectedService?.value == item.value
+                          ? 'text-customOrange'
+                          : 'text-customGray'
+                          } `}>
                         {item.label}
                       </Text>
                     </Pressable>
                   )
                 }
-                contentContainerStyle={{gap: 5}}
+                contentContainerStyle={{ gap: 5 }}
               />
             )}
           </View>

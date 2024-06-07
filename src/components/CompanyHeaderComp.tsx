@@ -1,10 +1,10 @@
-import {View, Text, Image, Pressable, TouchableOpacity} from 'react-native';
+import { View, Text, Image, Pressable, TouchableOpacity } from 'react-native';
 import React from 'react';
 import LikeIcon from '../assets/svg/common/LikeIcon';
-import {SIZES} from '../constants/constants';
+import { SIZES } from '../constants/constants';
 import LikeUnlikeComp from './LikeUnlikeComp';
 import IntLabel from './IntLabel';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import BlueTick from '../assets/svg/common/BlueTick';
 import CustomInputs from './CustomInputs';
 import ShareIcon from '../assets/svg/homepages/ShareIcon';
@@ -50,6 +50,8 @@ const CompanyHeaderComp: React.FC<props> = ({
       return 3;
     }
   };
+
+
 
   return (
     <View

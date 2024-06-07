@@ -1,30 +1,30 @@
-import React, {useState} from 'react';
-import {View, Text, TouchableOpacity, Pressable, TextInput} from 'react-native';
-import {Dropdown} from 'react-native-element-dropdown';
+import React, { useState } from 'react';
+import { View, Text, TouchableOpacity, Pressable, TextInput } from 'react-native';
+import { Dropdown } from 'react-native-element-dropdown';
 
 import CalendarIcon from '../assets/svg/common/CalendarIcon';
 import DropdownRightDownIcon from '../assets/svg/common/DropdownRightDownIcon';
 import DropdownRightUpIcon from '../assets/svg/common/DropdownRightUpIcon';
 import EyeOpen from '../assets/svg/auth/EyeOpen';
-import {Rating} from 'react-native-ratings';
+import { Rating } from 'react-native-ratings';
 import Tick from '../assets/svg/common/Tick';
 import moment from 'moment';
 import IntLabel from './IntLabel';
 import DatePicker from 'react-native-date-picker';
-import {useSelector} from 'react-redux';
-import {FormattedDate} from 'react-intl';
-import {useTheme} from '@react-navigation/native';
+import { useSelector } from 'react-redux';
+import { FormattedDate } from 'react-intl';
+import { useTheme } from '@react-navigation/native';
 
 interface props {
   type:
-    | 'text'
-    | 'textarea'
-    | 'date'
-    | 'dropdown'
-    | 'checkbox'
-    | 'rating'
-    | 'textareasmall'
-    | 'textareabig';
+  | 'text'
+  | 'textarea'
+  | 'date'
+  | 'dropdown'
+  | 'checkbox'
+  | 'rating'
+  | 'textareasmall'
+  | 'textareabig';
   value?: any;
   defaultValue?: any;
   placeholder?: string;
@@ -69,7 +69,7 @@ const CustomInputs: React.FC<props> = ({
   const [isFocusDropdown, setIsFocusDropdown] = useState(false);
   const [showDateModal, setShowDateModal] = useState(false);
   const [showSecure, setShowSecure] = useState(secureTextEntry);
-  const {language} = useSelector((state: any) => state.user);
+  const { language } = useSelector((state: any) => state.user);
   const colors = useTheme().colors;
 
   return (
@@ -153,9 +153,8 @@ const CustomInputs: React.FC<props> = ({
             className="h-[40px] bg-white rounded-lg border border-customLightGray px-2 placeholder:text-customGray/[.5] flex-row items-center"
             onPress={() => setShowDateModal(true)}>
             <Text
-              className={`flex-1 text-customGray ${
-                value != '' ? 'opacity-100' : 'opacity-50'
-              }  text-xs font-poppinsRegular `}>
+              className={`flex-1 text-customGray ${value != '' ? 'opacity-100' : 'opacity-50'
+                }  text-xs font-poppinsRegular `}>
               {value != '' ? <FormattedDate value={value} /> : placeholder}
             </Text>
             <CalendarIcon />
@@ -204,7 +203,7 @@ const CustomInputs: React.FC<props> = ({
                 fontSize: 12,
                 fontFamily: 'Poppins-Regular',
               }}
-              itemTextStyle={{color: 'rgba(77, 74, 72, 1)', height: 20}}
+              itemTextStyle={{ color: 'rgba(77, 74, 72, 1)', height: 20 }}
               onFocus={() => setIsFocusDropdown(true)}
               onBlur={() => setIsFocusDropdown(false)}
               value={value}
@@ -230,7 +229,7 @@ const CustomInputs: React.FC<props> = ({
                 },
                 style,
               ]}
-              selectedTextStyle={{fontSize: 14, color: '#4D4A48'}}
+              selectedTextStyle={{ fontSize: 14, color: '#4D4A48' }}
             />
           </View>
           {error && <Text className="text-red-400 text-xs ">{error}</Text>}
@@ -242,9 +241,8 @@ const CustomInputs: React.FC<props> = ({
           className="flex-row items-center mb-3"
           style={style}>
           <View
-            className={`w-[30px] h-[30px] rounded-lg border border-customLightGray ${
-              readonly ? 'bg-customLightGray' : 'bg-white'
-            }  items-center justify-center`}>
+            className={`w-[30px] h-[30px] rounded-lg border border-customLightGray ${readonly ? 'bg-customLightGray' : 'bg-white'
+              }  items-center justify-center`}>
             {value && <Tick />}
           </View>
           {title && (

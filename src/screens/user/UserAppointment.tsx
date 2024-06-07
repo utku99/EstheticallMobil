@@ -1,31 +1,33 @@
-import {View, Text, FlatList} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import { View, Text, FlatList } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import UserWrapper from './UserWrapper';
 import HandleData from '../../components/HandleData';
 import CustomButtons from '../../components/CustomButtons';
 import AppointmentComp from '../../components/AppointmentComp';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import WebClient from '../../utility/WebClient';
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 import IntLabel from '../../components/IntLabel';
 
 const UserAppointment = () => {
   const navigation = useNavigation<any>();
-  const {Post, loading} = WebClient();
+  const { Post, } = WebClient();
   const [userAppointments, setUserAppointments] = useState<any>([]);
-  const {user} = useSelector((state: any) => state.user);
+  const { user } = useSelector((state: any) => state.user);
   const [clicked, setClicked] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     Post('/api/Appointments/MyAppointments', {
       userID: user?.id,
     }).then(res => {
       setUserAppointments(res.data.object);
-    });
-
-    if (clicked) {
+    }).finally(() => {
+      setLoading(false);
       setClicked(false);
-    }
+
+    })
+
   }, [clicked]);
 
   return (
@@ -34,12 +36,12 @@ const UserAppointment = () => {
         <CustomButtons
           type="brownsolid"
           label="Randevularım"
-          style={{width: 130}}
+          style={{ width: 130 }}
         />
         <CustomButtons
           type="brownoutlined"
           label="Yeni Randevu"
-          style={{width: 130}}
+          style={{ width: 130 }}
           onPress={() => navigation.navigate('appointment')}
         />
       </View>
@@ -49,9 +51,9 @@ const UserAppointment = () => {
         title={IntLabel('warning_no_active_record')}
         loading={loading}>
         <FlatList
-          contentContainerStyle={{display: 'flex', gap: 15, paddingBottom: 20}}
+          contentContainerStyle={{ display: 'flex', gap: 15, paddingBottom: 20 }}
           data={userAppointments}
-          renderItem={({item}) => (
+          renderItem={({ item }) => (
             <AppointmentComp item={item} setClicked={setClicked} />
           )}
         />

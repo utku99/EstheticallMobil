@@ -1,22 +1,22 @@
-import {View, Text, ScrollView, Image} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import { View, Text, ScrollView, Image } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import CustomInputs from '../../components/CustomInputs';
 import LikeIcon from '../../assets/svg/common/LikeIcon';
 import CustomButtons from '../../components/CustomButtons';
-import WebClient, {toast} from '../../utility/WebClient';
-import {useDispatch, useSelector} from 'react-redux';
-import {useFormik} from 'formik';
+import WebClient, { toast } from '../../utility/WebClient';
+import { useDispatch, useSelector } from 'react-redux';
+import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import UnLikeIcon from '../../assets/svg/common/UnLikeIcon';
 import moment from 'moment';
-import {useNavigation} from '@react-navigation/core';
+import { useNavigation } from '@react-navigation/core';
 import IntLabel from '../../components/IntLabel';
 
-const FirmAppointmentPayment = ({route}: any) => {
-  const {Post} = WebClient();
+const FirmAppointmentPayment = ({ route }: any) => {
+  const { Post } = WebClient();
   const [paymentInfo, setPaymentInfo] = useState<any>(null);
   const [banks, setBanks] = useState<any>([]);
-  const {user} = useSelector((state: any) => state.user);
+  const { user } = useSelector((state: any) => state.user);
   const dispatch = useDispatch();
   const navigation = useNavigation();
 
@@ -34,7 +34,7 @@ const FirmAppointmentPayment = ({route}: any) => {
     validationSchema: Yup.object().shape({
       bank: Yup.object().required('banka hesabı seçmelisiniz'),
     }),
-    onSubmit: (values, {resetForm}) => {
+    onSubmit: (values, { resetForm }) => {
       Post('/api/Appointments/AppointmentBankTransfer', {
         appointmentID: paymentInfo?.appointmentID,
         companyID: paymentInfo?.companyID,
@@ -78,7 +78,6 @@ const FirmAppointmentPayment = ({route}: any) => {
     });
   }, []);
 
-  console.log(route.params?.item);
 
   return (
     <View className="flex-1 bg-[#FAFAFA]">
@@ -175,7 +174,7 @@ const FirmAppointmentPayment = ({route}: any) => {
         <CustomInputs
           type="dropdown"
           placeholder={IntLabel('select_bank_account')}
-          dropdownContainerStyle={{width: 200}}
+          dropdownContainerStyle={{ width: 200 }}
           value={formik.values.bank}
           onChange={(e: any) => formik.setFieldValue('bank', e)}
           dropdownData={banks}
@@ -197,7 +196,7 @@ const FirmAppointmentPayment = ({route}: any) => {
           label={IntLabel('pay')}
           icon="send"
           theme="big"
-          style={{width: 170, alignSelf: 'center'}}
+          style={{ width: 170, alignSelf: 'center' }}
           onPress={formik.handleSubmit}
         />
       </ScrollView>

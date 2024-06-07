@@ -1,16 +1,16 @@
-import {View, Text, Image, Pressable} from 'react-native';
-import React, {useRef, useState} from 'react';
-import {SIZES} from '../constants/constants';
+import { View, Text, Image, Pressable } from 'react-native';
+import React, { useRef, useState } from 'react';
+import { SIZES } from '../constants/constants';
 import DoctorArrowUpIcon from '../assets/svg/firm/DoctorArrowUpIcon';
 import DoctorArrowDownIcon from '../assets/svg/firm/DoctorArrowDownIcon';
 import CustomButtons from './CustomButtons';
 import LikeIcon from '../assets/svg/common/LikeIcon';
 import CustomInputs from './CustomInputs';
 import LikeUnlikeComp from './LikeUnlikeComp';
-import Carousel, {Pagination} from 'react-native-snap-carousel';
+import Carousel, { Pagination } from 'react-native-snap-carousel';
 import WebClient from '../utility/WebClient';
-import {useSelector} from 'react-redux';
-import {useFormik} from 'formik';
+import { useSelector } from 'react-redux';
+import { useFormik } from 'formik';
 import ModalWrapper from './ModalWrapper';
 import CommunicationModal from './CommunicationModal';
 import IntLabel from './IntLabel';
@@ -30,13 +30,11 @@ const OfferComp = ({
   const isCarousel = useRef(null);
   const [index, setIndex] = useState<any>(0);
   const [visible, setVisible] = useState(false);
-  const {Post, loading} = WebClient();
-  const {user} = useSelector((state: any) => state.user);
 
   return (
     <View
       className={`h-fit border border-customLightGray rounded-xl bg-white `}
-      style={{width: SIZES.width * 0.95}}>
+      style={{ width: SIZES.width * 0.95 }}>
       {/* header */}
       <View className="p-[10px] space-y-1">
         <Text className="text-customGray font-poppinsRegular text-xs">
@@ -46,8 +44,8 @@ const OfferComp = ({
           item={item}
           setClicked={setClicked}
           rating={parseFloat(item?.commentsPoint) / 20}
-          companyId={item?.companyID}
-          officeId={item?.companyOfficeID}
+          companyId={item?.companyID ?? item?.companyId}
+          officeId={item?.companyOfficeID ?? item?.companyOfficeId}
           isFavorite={item?.isFavorite}
           isApproved={item?.isApprovedAccount}
         />
@@ -63,9 +61,9 @@ const OfferComp = ({
                 imgUrl: img,
                 title: '',
               }))}
-              renderItem={({item}: any) => (
+              renderItem={({ item }: any) => (
                 <Image
-                  source={{uri: item?.imgUrl}}
+                  source={{ uri: item?.imgUrl }}
                   className="w-full h-full"
                   resizeMode="cover"
                 />
@@ -211,7 +209,7 @@ const OfferComp = ({
                 type="solid"
                 label={IntLabel('contact')}
                 icon="question"
-                style={{alignSelf: 'center'}}
+                style={{ alignSelf: 'center' }}
                 onPress={() => setVisible(true)}
               />
             )}

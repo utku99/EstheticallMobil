@@ -1,29 +1,34 @@
-import {View, Text, Image} from 'react-native';
+import { View, Text, Image } from 'react-native';
 import React from 'react';
-import {SIZES} from '../constants/constants';
-import MapView, {Marker, PROVIDER_GOOGLE} from 'react-native-maps';
+import { SIZES } from '../constants/constants';
+import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import CustomButtons from './CustomButtons';
 import FirmInfoLocationIcon from '../assets/svg/homepages/FirmInfoLocationIcon';
 import PhoneIcon from '../assets/svg/homepages/PhoneIcon';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import IntLabel from './IntLabel';
+import { useSelector } from 'react-redux';
+import { useIntl } from 'react-intl';
+import { toast } from '../utility/WebClient';
 
 interface props {
   item: any;
 }
 
-const CommunicationComp = ({item}: props) => {
-  const navigation = useNavigation();
+const CommunicationComp = ({ item }: props) => {
+  const navigation = useNavigation<any>();
+  const { isGuest, isLoggedIn } = useSelector((state: any) => state.user);
+  const intl = useIntl()
 
   return (
     <View
       className={`h-fit border border-customLightGray rounded-xl bg-white `}
-      style={{width: SIZES.width * 0.95}}>
+      style={{ width: SIZES.width * 0.95 }}>
       {/* header */}
       <View className="flex-row  items-center p-[10px] space-x-2">
         <View className="w-[55px] h-[55px] overflow-hidden rounded-full border-[0.6px] border-customGray">
           <Image
-            source={{uri: item?.logo}}
+            source={{ uri: item?.logo }}
             className="w-full h-full"
             resizeMode="cover"
           />
@@ -83,12 +88,23 @@ const CommunicationComp = ({item}: props) => {
         type="iconsolid"
         label={IntLabel('ask_question')}
         icon="question"
-        style={{width: 130, alignSelf: 'center', marginBottom: 20}}
-        onPress={() =>
-          navigation.navigate('firmcommunicationquestion', {
-            companyId: item.companyId,
-            companyOfficeId: item.officeId,
-          })
+        style={{ width: 130, alignSelf: 'center', marginBottom: 20 }}
+        onPress={() => {
+          if (isLoggedIn && !isGuest) {
+            navigation.navigate('firmcommunicationquestion', {
+              companyId: item.companyId,
+              companyOfficeId: item.officeId,
+            })
+          } else {
+            toast(
+              intl.formatMessage({
+                id: 'login_required_warning',
+                defaultMessage: 'login_required_warning',
+              }),
+            );
+          }
+        }
+
         }
       />
     </View>

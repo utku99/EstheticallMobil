@@ -1,18 +1,18 @@
-import {View, Text, Image, Pressable, TouchableOpacity} from 'react-native';
-import React, {useState} from 'react';
+import { View, Text, Image, Pressable, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
 import CustomInputs from './CustomInputs';
 import LikeIcon from '../assets/svg/common/LikeIcon';
 import ShareIcon from '../assets/svg/homepages/ShareIcon';
 import LinearGradient from 'react-native-linear-gradient';
 import SeeAllArrow from '../assets/svg/homepages/SeeAllArrow';
-import {SIZES} from '../constants/constants';
+import { SIZES } from '../constants/constants';
 import LikeUnlikeComp from './LikeUnlikeComp';
 import IntLabel from './IntLabel';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import DoctorHeaderComp from './DoctorHeaderComp';
 import CompanyHeaderComp from './CompanyHeaderComp';
 import WebClient from '../utility/WebClient';
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 
 const CommentToCompanyComp = ({
   item,
@@ -24,20 +24,19 @@ const CommentToCompanyComp = ({
   const [seeAll, setSeeAll] = useState(false);
   const navigation = useNavigation();
   const [translatedText, setTranslatedText] = useState(null);
-  const {Post, loading} = WebClient();
-  const {language} = useSelector((state: any) => state.user);
+  const { Post, loading } = WebClient();
+  const { language } = useSelector((state: any) => state.user);
 
-  console.log(item);
 
   return (
     <View
       className={` border border-customLightGray rounded-xl bg-white p-[10px] space-y-4`}
-      style={{width: SIZES.width * 0.95}}>
+      style={{ width: SIZES.width * 0.95 }}>
       {/* header */}
       <View className="flex-row items-center space-x-3">
         <View className="w-[60px] h-[60px] overflow-hidden rounded-full border-[0.6px] border-customGray">
           <Image
-            source={{uri: item?.userLogo}}
+            source={{ uri: item?.userLogo }}
             className="w-full h-full"
             resizeMode="cover"
           />
@@ -89,13 +88,12 @@ const CommentToCompanyComp = ({
 
       <View>
         <Text
-          className={`text-xs font-poppinsRegular text-customGray ${
-            seeAll
+          className={`text-xs font-poppinsRegular text-customGray ${seeAll
               ? 'h-fit'
               : item?.content?.length > 400
-              ? 'h-[130px]'
-              : 'h-fit'
-          }`}>
+                ? 'h-[130px]'
+                : 'h-fit'
+            }`}>
           {translatedText ?? item?.content}
         </Text>
         {!seeAll && item?.content?.length > 400 && (
@@ -126,8 +124,8 @@ const CommentToCompanyComp = ({
         {translatedText
           ? IntLabel('see_original')
           : loading
-          ? IntLabel('loading')
-          : IntLabel('see_translate')}
+            ? IntLabel('loading')
+            : IntLabel('see_translate')}
       </Text>
 
       {/* doctor */}

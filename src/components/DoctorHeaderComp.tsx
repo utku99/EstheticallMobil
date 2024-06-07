@@ -1,10 +1,10 @@
-import {View, Text, Image, Pressable, TouchableOpacity} from 'react-native';
+import { View, Text, Image, Pressable, TouchableOpacity } from 'react-native';
 import React from 'react';
 import LikeIcon from '../assets/svg/common/LikeIcon';
-import {SIZES} from '../constants/constants';
+import { SIZES } from '../constants/constants';
 import LikeUnlikeComp from './LikeUnlikeComp';
 import IntLabel from './IntLabel';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import BlueTick from '../assets/svg/common/BlueTick';
 import CustomInputs from './CustomInputs';
 import ShareIcon from '../assets/svg/homepages/ShareIcon';
@@ -59,7 +59,8 @@ const DoctorHeaderComp: React.FC<props> = ({
                 item?.logo ??
                 item?.image ??
                 item?.picture ??
-                item?.headerModel?.picture,
+                item?.headerModel?.picture ??
+                item?.doctor?.doctorLogo,
             }}
             className="w-full h-full"
             resizeMode="cover"
@@ -75,7 +76,9 @@ const DoctorHeaderComp: React.FC<props> = ({
                 item?.name ??
                 item?.nameWithTitle ??
                 item?.fullNameWithTitle ??
-                item.headerModel.fullNameWithTitle}
+                item.headerModel?.fullNameWithTitle ??
+                item?.doctor?.doctorNameWithTitle
+              }
             </Text>
             {isApproved && <BlueTick />}
           </View>
@@ -88,13 +91,14 @@ const DoctorHeaderComp: React.FC<props> = ({
           </Text>
           {(item?.location ??
             item?.doctor?.location ??
-            item?.doctorLocation) && (
-            <Text
-              numberOfLines={1}
-              className="text-customGray  text-xs font-poppinsRegular">
-              {item?.location ?? item?.doctorLocation ?? item?.doctor?.location}
-            </Text>
-          )}
+            item?.doctorLocation ??
+            item?.doctor?.doctorLocation) && (
+              <Text
+                numberOfLines={1}
+                className="text-customGray  text-xs font-poppinsRegular">
+                {item?.location ?? item?.doctorLocation ?? item?.doctor?.location ?? item?.doctor?.doctorLocation}
+              </Text>
+            )}
         </View>
       </TouchableOpacity>
 

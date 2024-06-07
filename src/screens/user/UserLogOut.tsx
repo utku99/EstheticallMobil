@@ -1,12 +1,12 @@
-import {View, Text, TouchableOpacity} from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
 import React from 'react';
 import UserWrapper from './UserWrapper';
 import CustomButtons from '../../components/CustomButtons';
-import {useDispatch} from 'react-redux';
-import {setGuest, setLoggedIn, setUser} from '../../redux/slices/user';
+import { useDispatch } from 'react-redux';
+import { setGuest, setLoggedIn, setUser } from '../../redux/slices/user';
 import IntLabel from '../../components/IntLabel';
 
-const UserLogOut = ({navigation}: any) => {
+const UserLogOut = ({ navigation }: any) => {
   const dispatch = useDispatch();
 
   return (
@@ -18,7 +18,7 @@ const UserLogOut = ({navigation}: any) => {
         <View className="flex-row items-center justify-evenly">
           <CustomButtons
             type="outlined"
-            label={IntLabel('give_up')}
+            label={IntLabel('cancel')}
             theme="big"
             onPress={() => navigation.goBack()}
           />

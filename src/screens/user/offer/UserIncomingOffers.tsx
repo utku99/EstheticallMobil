@@ -1,20 +1,21 @@
-import {View, Text, FlatList, Pressable} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import { View, Text, FlatList, Pressable } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import UserWrapper from '../UserWrapper';
 import IntLabel from '../../../components/IntLabel';
 import HandleData from '../../../components/HandleData';
 import OfferComp from '../../../components/OfferComp';
 import WebClient from '../../../utility/WebClient';
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 import BackIcon from '../../../assets/svg/userMenu/BackIcon';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 
-const UserIncomingOffers = ({route}: any) => {
-  const {Post, loading} = WebClient();
-  const {user} = useSelector((state: any) => state.user);
+const UserIncomingOffers = ({ route }: any) => {
+  const { Post, } = WebClient();
+  const { user } = useSelector((state: any) => state.user);
   const [incomingOffers, setIncomingOffers] = useState<any>(null);
   const [clicked, setClicked] = useState(false);
   const navigation = useNavigation<any>();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     Post('/api/Offers/CurrentOffers', {
@@ -26,11 +27,11 @@ const UserIncomingOffers = ({route}: any) => {
         )?.incomingOffers;
         setIncomingOffers(temp);
       }
-    });
-
-    if (clicked) {
+    }).finally(() => {
+      setLoading(false)
       setClicked(false);
-    }
+    })
+
   }, [clicked]);
 
   return (
@@ -62,7 +63,7 @@ const UserIncomingOffers = ({route}: any) => {
             paddingBottom: 20,
           }}
           data={incomingOffers}
-          renderItem={({item, index}) => (
+          renderItem={({ item, index }) => (
             <OfferComp key={index} item={item} setClicked={setClicked} />
           )}
         />

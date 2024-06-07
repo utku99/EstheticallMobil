@@ -1,20 +1,20 @@
-import {View, Text} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import { View, Text } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import FirmWrapper from './FirmWrapper';
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 import WebClient from '../../utility/WebClient';
-import {SIZES} from '../../constants/constants';
+import { SIZES } from '../../constants/constants';
 import IntLabel from '../../components/IntLabel';
 
 interface props {
   route?: any;
 }
 
-const FirmCompanyDoctorInfo = ({route}: props) => {
-  const {Post, loading} = WebClient();
-  const {user} = useSelector((state: any) => state.user);
+const FirmCompanyDoctorInfo = ({ route }: props) => {
+  const { Post, loading } = WebClient();
+  const { user } = useSelector((state: any) => state.user);
   const [info, setInfo] = useState<any>({});
-  const {language} = useSelector((state: any) => state.user);
+  const { language } = useSelector((state: any) => state.user);
 
   useEffect(() => {
     Post('/api/CompanyDoctor/WebCompanyDoctorInfo', {
@@ -26,13 +26,12 @@ const FirmCompanyDoctorInfo = ({route}: props) => {
     });
   }, [language]);
 
-  console.log(info);
 
   return (
     <FirmWrapper>
       <View
         className={` border border-customLightGray rounded-xl bg-white `}
-        style={{width: SIZES.width * 0.95}}>
+        style={{ width: SIZES.width * 0.95 }}>
         <View className="p-[10px] space-y-3">
           <View className="flex-row flex-wrap">
             <Text className="text-sm font-poppinsSemiBold text-customGray">

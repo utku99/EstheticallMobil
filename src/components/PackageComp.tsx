@@ -1,41 +1,42 @@
-import {View, Text, TouchableOpacity, Image, Pressable} from 'react-native';
-import React, {useRef, useState} from 'react';
-import {useNavigation} from '@react-navigation/native';
-import {useSelector} from 'react-redux';
-import WebClient from '../utility/WebClient';
-import {SIZES, viewedType} from '../constants/constants';
+import { View, Text, TouchableOpacity, Image, Pressable } from 'react-native';
+import React, { useRef, useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
+import WebClient, { toast } from '../utility/WebClient';
+import { SIZES, viewedType } from '../constants/constants';
 import CustomInputs from './CustomInputs';
 import LikeIcon from '../assets/svg/common/LikeIcon';
-import Carousel, {Pagination} from 'react-native-snap-carousel';
+import Carousel, { Pagination } from 'react-native-snap-carousel';
 import DoctorArrowUpIcon from '../assets/svg/firm/DoctorArrowUpIcon';
 import DoctorArrowDownIcon from '../assets/svg/firm/DoctorArrowDownIcon';
 import ShareIcon from '../assets/svg/homepages/ShareIcon';
 import RenderHTML from 'react-native-render-html';
 import CustomButtons from './CustomButtons';
 import LikeUnlikeComp from './LikeUnlikeComp';
-import {useFormik} from 'formik';
+import { useFormik } from 'formik';
 import CommunicationModal from './CommunicationModal';
 import IntLabel from './IntLabel';
 import BlueTick from '../assets/svg/common/BlueTick';
 import CompanyHeaderComp from './CompanyHeaderComp';
 import DoctorHeaderComp from './DoctorHeaderComp';
+import { useIntl } from 'react-intl';
 
-const PackageComp = ({item, setClicked}: {item: any; setClicked: any}) => {
+const PackageComp = ({ item, setClicked }: { item: any; setClicked: any }) => {
   const [seeAll, setSeeAll] = useState(false);
   const [index, setIndex] = useState<any>(0);
   const isCarousel = useRef(null);
   const navigation = useNavigation();
   const [visible, setVisible] = useState(false);
-  const {Post, loading} = WebClient();
-  const {user, language} = useSelector((state: any) => state.user);
+  const { Post, loading } = WebClient();
+  const { user, language } = useSelector((state: any) => state.user);
   const [translatedText, setTranslatedText] = useState(null);
-
-  console.log(item);
+  const { isGuest, isLoggedIn } = useSelector((state: any) => state.user);
+  const intl = useIntl()
 
   return (
     <View
       className={`h-fit border border-customLightGray rounded-xl bg-white overflow-hidden`}
-      style={{width: SIZES.width * 0.95}}>
+      style={{ width: SIZES.width * 0.95 }}>
       <CompanyHeaderComp
         item={item?.headerModel ?? item}
         setClicked={setClicked}
@@ -48,7 +49,7 @@ const PackageComp = ({item, setClicked}: {item: any; setClicked: any}) => {
         isApproved={
           item?.isApprovedAccount ?? item?.headerModel?.isApprovementAccount
         }
-        style={{padding: 10}}
+        style={{ padding: 10 }}
       />
 
       {/* carousel */}
@@ -59,9 +60,9 @@ const PackageComp = ({item, setClicked}: {item: any; setClicked: any}) => {
             imgUrl: img.image ?? img,
             title: '',
           }))}
-          renderItem={({item}: any) => (
+          renderItem={({ item }: any) => (
             <Image
-              source={{uri: item?.imgUrl}}
+              source={{ uri: item?.imgUrl }}
               className="w-full h-full"
               resizeMode="cover"
             />
@@ -125,8 +126,8 @@ const PackageComp = ({item, setClicked}: {item: any; setClicked: any}) => {
         {translatedText
           ? IntLabel('see_original')
           : loading
-          ? IntLabel('loading')
-          : IntLabel('see_translate')}
+            ? IntLabel('loading')
+            : IntLabel('see_translate')}
       </Text>
 
       {seeAll && (
@@ -156,7 +157,7 @@ const PackageComp = ({item, setClicked}: {item: any; setClicked: any}) => {
                 isFavorite={item?.doctorIsFavorite ?? item?.doctor?.isFavorite}
                 setClicked={setClicked}
                 isApproved={false}
-                style={{padding: 10}}
+                style={{ padding: 10 }}
               />
             </>
           )}
@@ -172,10 +173,21 @@ const PackageComp = ({item, setClicked}: {item: any; setClicked: any}) => {
           </Text>
           <View className="pb-[30px]">
             <CustomButtons
-              onPress={() => setVisible(true)}
+              onPress={() => {
+                if (isLoggedIn && !isGuest) {
+                  setVisible(true)
+                } else {
+                  toast(
+                    intl.formatMessage({
+                      id: 'login_required_warning',
+                      defaultMessage: 'login_required_warning',
+                    }),
+                  );
+                }
+              }}
               type="solid"
               label={IntLabel('contact')}
-              style={{alignSelf: 'center'}}
+              style={{ alignSelf: 'center' }}
               icon="question"
               theme="middle"
             />
@@ -191,7 +203,7 @@ const PackageComp = ({item, setClicked}: {item: any; setClicked: any}) => {
             isActive: true,
             typeID: viewedType.package,
             userID: user?.id ?? 0,
-          }).then(res => {});
+          }).then(res => { });
           setSeeAll(!seeAll);
         }}
         className="bg-customBrown w-full h-[35px] rounded-b-lg flex items-center justify-center">

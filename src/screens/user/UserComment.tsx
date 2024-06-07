@@ -1,21 +1,22 @@
-import {View, Text, FlatList} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import { View, Text, FlatList } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import UserWrapper from './UserWrapper';
 import CustomButtons from '../../components/CustomButtons';
 import UserCommentComp from '../../components/UserCommentComp';
 import WebClient from '../../utility/WebClient';
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 import HandleData from '../../components/HandleData';
 import IntLabel from '../../components/IntLabel';
 
 const UserComment = () => {
   const [activeTab, setActiveTab] = useState(1);
 
-  const {Post, loading} = WebClient();
-  const {user} = useSelector((state: any) => state.user);
+  const { Post, } = WebClient();
+  const { user } = useSelector((state: any) => state.user);
   const [activeComments, setActiveComments] = useState([]);
   const [waitingComments, setWaitingComments] = useState([]);
   const [clicked, setClicked] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     Post('/api/Company/UserMyComments', {
@@ -29,9 +30,11 @@ const UserComment = () => {
       );
       setWaitingComments(waiting);
       setActiveComments(active);
-    });
+    }).finally(() => {
+      setLoading(false)
+      setClicked(false);
+    })
 
-    setClicked(false);
   }, [clicked]);
 
   return (
@@ -40,7 +43,7 @@ const UserComment = () => {
         <CustomButtons
           type={activeTab == 1 ? 'brownsolid' : 'brownoutlined'}
           label={IntLabel('waiting_approvals')}
-          style={{marginRight: 2}}
+          style={{ marginRight: 2 }}
           onPress={() => setActiveTab(1)}
         />
         <CustomButtons
@@ -62,7 +65,7 @@ const UserComment = () => {
               paddingBottom: 20,
             }}
             data={waitingComments}
-            renderItem={({item, index}) => (
+            renderItem={({ item, index }) => (
               <UserCommentComp
                 key={index}
                 item={item}
@@ -84,7 +87,7 @@ const UserComment = () => {
               paddingBottom: 20,
             }}
             data={activeComments}
-            renderItem={({item, index}) => (
+            renderItem={({ item, index }) => (
               <UserCommentComp
                 key={index}
                 item={item}

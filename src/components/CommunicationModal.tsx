@@ -1,15 +1,15 @@
-import {View, Text} from 'react-native';
+import { View, Text } from 'react-native';
 import React from 'react';
 import ModalWrapper from './ModalWrapper';
 import CustomInputs from './CustomInputs';
 import CustomButtons from './CustomButtons';
-import {useFormik} from 'formik';
+import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import WebClient, {toast} from '../utility/WebClient';
-import {useSelector} from 'react-redux';
-import {messageEnum, messageTypeEnum} from '../constants/enum';
+import WebClient, { toast } from '../utility/WebClient';
+import { useSelector } from 'react-redux';
+import { messageEnum, messageTypeEnum } from '../constants/enum';
 import IntLabel from './IntLabel';
-import {useIntl} from 'react-intl';
+import { useIntl } from 'react-intl';
 
 interface props {
   item?: any;
@@ -26,11 +26,10 @@ const CommunicationModal = ({
   title,
   type,
 }: props) => {
-  const {Post} = WebClient();
-  const {user} = useSelector((state: any) => state.user);
+  const { Post } = WebClient();
+  const { user } = useSelector((state: any) => state.user);
   const intl = useIntl();
 
-  console.log(item, '--');
 
   const handleMessageType = () => {
     if (type == 'package') return messageEnum.package;
@@ -57,11 +56,11 @@ const CommunicationModal = ({
             item?.companyModel?.companyOfficeID ??
             item?.headerModel?.companyOfficeID) == 0
             ? item?.companyID ??
-              item?.companyModel?.companyID ??
-              item?.headerModel?.companyID
+            item?.companyModel?.companyID ??
+            item?.headerModel?.companyID
             : item?.companyOfficeID ??
-              item?.companyModel?.companyOfficeID ??
-              item?.headerModel?.companyOfficeID,
+            item?.companyModel?.companyOfficeID ??
+            item?.headerModel?.companyOfficeID,
         receiverType:
           (item?.companyOfficeID ??
             item?.companyModel?.companyOfficeID ??
@@ -120,7 +119,7 @@ const CommunicationModal = ({
         <View className="flex-row items-center justify-center space-x-2">
           <CustomButtons
             type="outlined"
-            label={IntLabel('give_up')}
+            label={IntLabel('cancel')}
             onPress={() => setVisible(false)}
           />
           <CustomButtons

@@ -8,34 +8,34 @@ import {
   TouchableOpacity,
   TouchableHighlight,
 } from 'react-native';
-import React, {useEffect, useRef, useState} from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import CustomInputs from './CustomInputs';
 import SharingMessageIcon from '../assets/svg/homepages/SharingMessageIcon';
 import SharingSaveIcon from '../assets/svg/homepages/SharingSaveIcon';
 import SharingShareIcon from '../assets/svg/homepages/SharingShareIcon';
 import SharingSendMessageIcon from '../assets/svg/homepages/SharingSendMessageIcon';
-import Carousel, {Pagination} from 'react-native-snap-carousel';
-import WebClient, {toast} from '../utility/WebClient';
-import {SIZES, viewedType} from '../constants/constants';
+import Carousel, { Pagination } from 'react-native-snap-carousel';
+import WebClient, { toast } from '../utility/WebClient';
+import { SIZES, viewedType } from '../constants/constants';
 import HandleData from './HandleData';
-import {useIsFocused, useNavigation} from '@react-navigation/native';
-import {useSelector} from 'react-redux';
+import { useIsFocused, useNavigation } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
 import LikeUnlikeComp from './LikeUnlikeComp';
 import SharingSavedIcon from '../assets/svg/homepages/SharingSavedIcon';
 import moment from 'moment';
 import IntLabel from './IntLabel';
 import Video from 'react-native-video';
 import BlueTick from '../assets/svg/common/BlueTick';
-import {FormattedMessage, useIntl} from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import UnMuted from '../assets/svg/homepages/UnMuted';
 import Muted from '../assets/svg/homepages/Muted';
 import Share from 'react-native-share';
 import CompanyHeaderComp from './CompanyHeaderComp';
 import SpinnerComp from './SpinnerComp';
 
-const CommentComp = ({item}: any) => {
-  const {Post, loading} = WebClient();
-  const {language} = useSelector((state: any) => state.user);
+const CommentComp = ({ item }: any) => {
+  const { Post, loading } = WebClient();
+  const { language } = useSelector((state: any) => state.user);
   const [translatedText, setTranslatedText] = useState(null);
 
   return (
@@ -43,7 +43,7 @@ const CommentComp = ({item}: any) => {
       <View className="flex-row items-center space-x-3">
         <View className="w-[55px] h-[55px] overflow-hidden rounded-full border-[0.6px] border-customGray">
           <Image
-            source={{uri: item?.image}}
+            source={{ uri: item?.image }}
             className="w-full h-full"
             resizeMode="cover"
           />
@@ -82,8 +82,8 @@ const CommentComp = ({item}: any) => {
           {translatedText
             ? IntLabel('see_original')
             : loading
-            ? IntLabel('loading')
-            : IntLabel('see_translate')}
+              ? IntLabel('loading')
+              : IntLabel('see_translate')}
         </Text>
       </View>
     </View>
@@ -102,13 +102,14 @@ const SharingComp = ({
   const [seeComments, setSeeComments] = useState(false);
   const [sharedDetail, setSharedDetail] = useState<any>(null);
   const [index, setIndex] = useState<any>(0);
-  const {Post, loading} = WebClient();
-  const {user, isLoggedIn, language} = useSelector((state: any) => state.user);
+  const { Post, loading } = WebClient();
+  const { user, isLoggedIn, language, isGuest } = useSelector((state: any) => state.user);
   const [translatedText, setTranslatedText] = useState(null);
   const isCarousel = useRef<any>(null);
   const navigation = useNavigation();
   const [addComment, setAddComment] = useState(null);
   const [isMuted, setIsMuted] = useState(true);
+  const intl = useIntl()
 
   const warning = IntLabel('login_required_warning');
 
@@ -124,7 +125,7 @@ const SharingComp = ({
   return (
     <View
       className={`h-fit border border-customLightGray rounded-xl overflow-hidden bg-white `}
-      style={{width: SIZES.width * 0.95}}>
+      style={{ width: SIZES.width * 0.95 }}>
       <CompanyHeaderComp
         item={item?.parentModel ?? item}
         setClicked={setClicked}
@@ -137,7 +138,7 @@ const SharingComp = ({
         isApproved={
           item?.isApprovedAccount ?? item?.parentModel?.isApprovedAccount
         }
-        style={{padding: 10}}
+        style={{ padding: 10 }}
       />
 
       {/* carousel */}
@@ -148,7 +149,7 @@ const SharingComp = ({
             imgUrl: img,
             title: '',
           }))}
-          renderItem={({item}: any) =>
+          renderItem={({ item }: any) =>
             item?.imgUrl?.includes('mp4') ? (
               <TouchableHighlight
                 className="relative"
@@ -157,7 +158,7 @@ const SharingComp = ({
                 }}>
                 <>
                   <Video
-                    source={{uri: item?.imgUrl}}
+                    source={{ uri: item?.imgUrl }}
                     repeat
                     muted={isMuted}
                     paused={!isFocus}
@@ -171,7 +172,7 @@ const SharingComp = ({
               </TouchableHighlight>
             ) : (
               <Image
-                source={{uri: item?.imgUrl}}
+                source={{ uri: item?.imgUrl }}
                 className="w-full h-full"
                 resizeMode="cover"
               />
@@ -234,8 +235,8 @@ const SharingComp = ({
             {translatedText
               ? IntLabel('see_original')
               : loading
-              ? IntLabel('loading')
-              : IntLabel('see_translate')}
+                ? IntLabel('loading')
+                : IntLabel('see_translate')}
           </Text>
         </View>
       </View>
@@ -272,9 +273,11 @@ const SharingComp = ({
             <SharingMessageIcon />
           </TouchableOpacity>
 
-          {isLoggedIn ? (
-            <TouchableOpacity
-              onPress={() => {
+
+
+          <TouchableOpacity
+            onPress={() => {
+              if (isLoggedIn && !isGuest) {
                 Post('/api/Common/SaveShared', {
                   userID: user?.id,
                   sharedID: item?.sharedID,
@@ -284,29 +287,31 @@ const SharingComp = ({
                 }).then(res => {
                   setClicked(true);
                 });
-              }}>
-              {item?.isSaved ?? item?.parentModel?.isSaved ? (
-                loading ? (
-                  <SpinnerComp width={16} height={23} />
-                ) : (
-                  <SharingSavedIcon />
-                )
-              ) : (
-                <SharingSaveIcon />
-              )}
-            </TouchableOpacity>
-          ) : (
-            <SharingSaveIcon />
-          )}
+              } else {
+                toast(
+                  intl.formatMessage({
+                    id: 'login_required_warning',
+                    defaultMessage: 'login_required_warning',
+                  }),
+                );
+              }
+            }}>
+            {
+              loading ? <SpinnerComp width={23} height={23} /> :
+                <>
+                  {item?.isSaved ?? item?.parentModel?.isSaved ?
+
+                    <SharingSavedIcon />
+                    :
+                    <SharingSaveIcon />
+                  }
+                </>
+            }
+          </TouchableOpacity>
+
 
           <TouchableOpacity
             onPress={() => {
-              // toast(
-              //   intl.formatMessage({
-              //     id: 'copied_clipboard',
-              //     defaultMessage: 'copied_clipboard',
-              //   }),
-              // );
               Share.open({
                 url: `https://dev.estheticall.com/paylasimlar?id=${item?.sharedID}`,
               });
@@ -326,7 +331,7 @@ const SharingComp = ({
               showsVerticalScrollIndicator
               scrollEnabled
               data={sharedDetail}
-              renderItem={({item}) => (
+              renderItem={({ item }) => (
                 <CommentComp key={item.commentID} item={item} />
               )}
             />

@@ -1,20 +1,21 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import HomeWrapper from './HomeWrapper';
 import CompanyHeaderComp from '../../components/CompanyHeaderComp';
-import {FlatList} from 'react-native';
+import { FlatList } from 'react-native';
 import WebClient from '../../utility/WebClient';
-import {useDispatch, useSelector} from 'react-redux';
-import {setListFilters} from '../../redux/slices/filter';
+import { useDispatch, useSelector } from 'react-redux';
+import { setListFilters } from '../../redux/slices/filter';
 import HandleData from '../../components/HandleData';
 import IntLabel from '../../components/IntLabel';
 import AdvertisementList from '../../components/AdvertisementList';
-import {SIZES} from '../../constants/constants';
+import { SIZES } from '../../constants/constants';
 
 const List = () => {
-  const {Post, loading} = WebClient();
+  const { Post, } = WebClient();
   const dispatch = useDispatch();
-  const {user, language} = useSelector((state: any) => state.user);
+  const { user, language } = useSelector((state: any) => state.user);
   const [clicked, setClicked] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const {
     country,
@@ -40,15 +41,13 @@ const List = () => {
       userId: user?.id ?? 0,
     }).then((res: any) => {
       setDoctors(res.data);
+      setLoading(false)
+      setClicked(false);
+
     });
 
-    if (listFilters) {
-      dispatch(setListFilters(false));
-    }
+    dispatch(setListFilters(false));
 
-    if (clicked) {
-      setClicked(false);
-    }
   }, [listFilters, clicked, language]);
 
   return (
@@ -59,10 +58,10 @@ const List = () => {
         title={IntLabel('warning_no_active_record')}>
         <FlatList
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{display: 'flex', gap: 15, paddingBottom: 20}}
-          style={{width: SIZES.width * 0.95}}
+          contentContainerStyle={{ display: 'flex', gap: 15, paddingBottom: 20 }}
+          style={{ width: SIZES.width * 0.95 }}
           data={doctors}
-          renderItem={({item, index}) => (
+          renderItem={({ item, index }) => (
             <CompanyHeaderComp
               key={index}
               item={item}

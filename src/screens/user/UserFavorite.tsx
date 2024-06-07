@@ -1,31 +1,33 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import UserWrapper from './UserWrapper';
 import DoctorComp from '../../components/CompanyHeaderComp';
 import WebClient from '../../utility/WebClient';
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 import HandleData from '../../components/HandleData';
-import {FlatList} from 'react-native';
+import { FlatList } from 'react-native';
 import IntLabel from '../../components/IntLabel';
 import CompanyHeaderComp from '../../components/CompanyHeaderComp';
 import DoctorHeaderComp from '../../components/DoctorHeaderComp';
-import {SIZES} from '../../constants/constants';
+import { SIZES } from '../../constants/constants';
 
 const UserFavorite = () => {
   const [userFavorites, setUserFavorites] = useState<any>([]);
-  const {Post, loading} = WebClient();
-  const {user} = useSelector((state: any) => state.user);
+  const { Post, } = WebClient();
+  const { user } = useSelector((state: any) => state.user);
   const [clicked, setClicked] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     Post('/api/User/UserMyFavorites', {
       userID: user?.id,
     }).then(res => {
       setUserFavorites(res.data.object);
-    });
-
-    if (clicked) {
+    }).finally(() => {
+      setLoading(false)
       setClicked(false);
-    }
+    })
+
+
   }, [clicked]);
 
   return (
@@ -35,10 +37,10 @@ const UserFavorite = () => {
         loading={loading}
         title={IntLabel('warning_no_active_record')}>
         <FlatList
-          contentContainerStyle={{display: 'flex', gap: 15, paddingBottom: 20}}
-          style={{width: SIZES.width * 0.95}}
+          contentContainerStyle={{ display: 'flex', gap: 15, paddingBottom: 20 }}
+          style={{ width: SIZES.width * 0.95 }}
           data={userFavorites}
-          renderItem={({item}) =>
+          renderItem={({ item }) =>
             item.companyDoctorId == 0 ? (
               <CompanyHeaderComp
                 item={item}
