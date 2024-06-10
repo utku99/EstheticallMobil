@@ -2,7 +2,6 @@ import {View, Text, Image} from 'react-native';
 import React from 'react';
 import {SIZES} from '../constants/constants';
 import {useSelector} from 'react-redux';
-import FastImage from 'react-native-fast-image';
 
 const DoctorMessageComp = ({item}: any) => {
   const {user} = useSelector((state: any) => state.user);
@@ -17,7 +16,7 @@ const DoctorMessageComp = ({item}: any) => {
               item?.image0 != 'NoImage' &&
               !item?.image0.includes('trno') && (
                 <View className="w-[100px] h-[100px] self-end">
-                  <FastImage
+                  <Image
                     source={{uri: item?.image0}}
                     className="w-full h-full"
                     resizeMode="cover"
@@ -28,7 +27,7 @@ const DoctorMessageComp = ({item}: any) => {
               item?.image1 != 'NoImage' &&
               !item?.image1.includes('trno') && (
                 <View className="w-[100px] h-[100px] self-end">
-                  <FastImage
+                  <Image
                     source={{uri: item?.image1}}
                     className="w-full h-full"
                     resizeMode="cover"

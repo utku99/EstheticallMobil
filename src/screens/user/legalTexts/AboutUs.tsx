@@ -5,7 +5,7 @@ import WebClient from '../../../utility/WebClient';
 import {useSelector} from 'react-redux';
 import {legalTextType} from '../../../constants/enum';
 import RenderHTML from 'react-native-render-html';
-import {SIZES} from '../../../constants/constants';
+import {SIZES, isDarkMode} from '../../../constants/constants';
 
 const AboutUs = () => {
   const {Post} = WebClient();
@@ -23,7 +23,9 @@ const AboutUs = () => {
 
   return (
     <UserWrapper>
-      <View className=" w-[90%]">
+      <View
+        className=" w-[90%]"
+        style={{backgroundColor: isDarkMode ? '#4D4A48' : 'white'}}>
         <RenderHTML
           contentWidth={SIZES.width}
           source={{html: legalText?.content}}

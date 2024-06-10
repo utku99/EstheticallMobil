@@ -33,7 +33,6 @@ import Muted from '../assets/svg/homepages/Muted';
 import Share from 'react-native-share';
 import CompanyHeaderComp from './CompanyHeaderComp';
 import SpinnerComp from './SpinnerComp';
-import FastImage from 'react-native-fast-image';
 
 const CommentComp = ({item}: any) => {
   const {Post, loading} = WebClient();
@@ -42,23 +41,6 @@ const CommentComp = ({item}: any) => {
 
   return (
     <View className="space-y-2 mb-2">
-      <View className="flex-row items-center space-x-3">
-        <View className="w-[55px] h-[55px] overflow-hidden rounded-full border-[0.6px] border-customGray">
-          <FastImage
-            source={{uri: item?.image}}
-            className="w-full h-full"
-            resizeMode="cover"
-          />
-        </View>
-        <View>
-          <Text className="text-customGray font-poppinsSemiBold text-xs ">
-            {item?.fullName}
-          </Text>
-          <Text className="text-customGray font-poppinsRegular text-xs">
-            {item?.location}
-          </Text>
-        </View>
-      </View>
       <Text className="text-xs text-customGray font-poppinsRegular">
         {translatedText ?? item?.comment}
       </Text>

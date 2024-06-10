@@ -20,7 +20,6 @@ import {PERMISSIONS, RESULTS, check, request} from 'react-native-permissions';
 import PickGallery from '../assets/svg/bottomTab/PickGallery';
 import PickCamera from '../assets/svg/bottomTab/PickCamera';
 import IntLabel from './IntLabel';
-import FastImage from 'react-native-fast-image';
 
 const AddPhotoComp = ({
   value,
@@ -77,7 +76,7 @@ const AddPhotoComp = ({
           renderItem={({item, index}) => (
             <View className="relative">
               <View className="w-[130px] h-[130px] rounded-lg border border-customLightGray overflow-hidden">
-                <FastImage
+                <Image
                   source={{uri: `data:image/jpg;base64,` + item}}
                   className="w-full h-full"
                 />

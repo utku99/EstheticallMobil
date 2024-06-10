@@ -13,7 +13,6 @@ import DoctorHeaderComp from './DoctorHeaderComp';
 import CompanyHeaderComp from './CompanyHeaderComp';
 import WebClient from '../utility/WebClient';
 import {useSelector} from 'react-redux';
-import FastImage from 'react-native-fast-image';
 
 const CommentToCompanyComp = ({
   item,
@@ -35,7 +34,7 @@ const CommentToCompanyComp = ({
       {/* header */}
       <View className="flex-row items-center space-x-3">
         <View className="w-[60px] h-[60px] overflow-hidden rounded-full border-[0.6px] border-customGray">
-          <FastImage
+          <Image
             source={{uri: item?.userLogo}}
             className="w-full h-full"
             resizeMode="cover"

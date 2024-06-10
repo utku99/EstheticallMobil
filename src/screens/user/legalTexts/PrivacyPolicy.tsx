@@ -5,7 +5,7 @@ import {legalTextType} from '../../../constants/enum';
 import {useSelector} from 'react-redux';
 import WebClient from '../../../utility/WebClient';
 import RenderHTML from 'react-native-render-html';
-import {SIZES} from '../../../constants/constants';
+import {SIZES, isDarkMode} from '../../../constants/constants';
 
 const PrivacyPolicy = () => {
   const {Post} = WebClient();
@@ -22,7 +22,7 @@ const PrivacyPolicy = () => {
   }, [language]);
 
   return (
-    <UserWrapper>
+    <UserWrapper style={{backgroundColor: isDarkMode ? '#4D4A48' : 'white'}}>
       <View className=" w-[90%]">
         <RenderHTML
           contentWidth={SIZES.width}

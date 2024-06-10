@@ -26,7 +26,6 @@ import IntLabel from './IntLabel';
 import Video from 'react-native-video';
 import BlueTick from '../assets/svg/common/BlueTick';
 import {useIntl} from 'react-intl';
-import FastImage from 'react-native-fast-image';
 
 const AdvertisementSharing = ({
   onClickable = false,
@@ -51,7 +50,7 @@ const AdvertisementSharing = ({
       className={`h-fit border border-customLightGray rounded-xl bg-white overflow-hidden`}
       style={{width: SIZES.width * 0.95}}>
       <View className="w-full aspect-[1.3]">
-        <FastImage
+        <Image
           source={{
             uri: 'https://s3-alpha-sig.figma.com/img/324a/0a2a/cd80b33dd871678d4032384eebae07e8?Expires=1716163200&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=RW3iqwI3at~9DCVe-fBNLQvcHv82FEAo44u1bif51-~94p7YcTa2NrtUl6O6MDpA17yR6zbSrPZUBydUpIcdlG8rGZPwPeThSo~4-jCAsFiDQo2uusHFUmr8h-rpyhKta8GceUJLbs-Jp1W0YCFqnOP8fT-nZh8crxfuzOVUdrvOcBFJ7WJs~cR3SbsJEyx6kwWuthchQFLiUT2fwiTuLZogAsPhYfoOXKubxnwDw98Xs8bkxH71FkcUDCrZleq4foFroxTMyTVQ0gMk4DjUhc7Ym2ABb-2eXe2c6P4VLUOZ2oqwC58kpFMWdQVj9D7A3lOyLrpPRVLhHge4KvqbXQ__',
           }}

@@ -9,7 +9,6 @@ import BlueTick from '../assets/svg/common/BlueTick';
 import CustomInputs from './CustomInputs';
 import ShareIcon from '../assets/svg/homepages/ShareIcon';
 import Share from 'react-native-share';
-import FastImage from 'react-native-fast-image';
 
 interface props {
   item?: any;
@@ -52,7 +51,7 @@ const DoctorHeaderComp: React.FC<props> = ({
         }}
         className="flex-row items-center space-x-2 w-[65%] ">
         <View className="w-[60px] h-[60px] overflow-hidden rounded-full border-[0.6px] border-customGray">
-          <FastImage
+          <Image
             source={{
               uri:
                 item?.doctorLogo ??

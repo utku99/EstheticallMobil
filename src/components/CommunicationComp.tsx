@@ -10,7 +10,6 @@ import IntLabel from './IntLabel';
 import {useSelector} from 'react-redux';
 import {useIntl} from 'react-intl';
 import {toast} from '../utility/WebClient';
-import FastImage from 'react-native-fast-image';
 
 interface props {
   item: any;
@@ -28,7 +27,7 @@ const CommunicationComp = ({item}: props) => {
       {/* header */}
       <View className="flex-row  items-center p-[10px] space-x-2">
         <View className="w-[55px] h-[55px] overflow-hidden rounded-full border-[0.6px] border-customGray">
-          <FastImage
+          <Image
             source={{uri: item?.logo}}
             className="w-full h-full"
             resizeMode="cover"
