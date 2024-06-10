@@ -21,6 +21,7 @@ const UserRegister = () => {
   const navigation = useNavigation();
 
   const formik = useFormik({
+    validateOnChange: false,
     initialValues: {
       name: '',
       surname: '',

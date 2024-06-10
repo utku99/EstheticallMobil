@@ -1,4 +1,4 @@
-import {View, Text, Image, Pressable} from 'react-native';
+import {View, Text, Image, Pressable, ScrollView} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import UserWrapper from './UserWrapper';
 import {useSelector} from 'react-redux';
@@ -101,7 +101,7 @@ const UserProfile = () => {
   return (
     <UserWrapper>
       <HandleData loading={loading}>
-        <View className="items-center px-[5%] flex-1">
+        <ScrollView className="items-center px-[5%] flex-1">
           {/* image */}
           <View className="flex-row space-x-1 mb-6">
             <View className="w-[80px] h-[80px] overflow-hidden rounded-full border border-opacity-50 border-customGray">
@@ -223,7 +223,7 @@ const UserProfile = () => {
             onPress={formik.handleSubmit}
             style={{width: '100%'}}
           />
-        </View>
+        </ScrollView>
       </HandleData>
     </UserWrapper>
   );

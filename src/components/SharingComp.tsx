@@ -33,6 +33,7 @@ import Muted from '../assets/svg/homepages/Muted';
 import Share from 'react-native-share';
 import CompanyHeaderComp from './CompanyHeaderComp';
 import SpinnerComp from './SpinnerComp';
+import FastImage from 'react-native-fast-image';
 
 const CommentComp = ({item}: any) => {
   const {Post, loading} = WebClient();
@@ -43,7 +44,7 @@ const CommentComp = ({item}: any) => {
     <View className="space-y-2 mb-2">
       <View className="flex-row items-center space-x-3">
         <View className="w-[55px] h-[55px] overflow-hidden rounded-full border-[0.6px] border-customGray">
-          <Image
+          <FastImage
             source={{uri: item?.image}}
             className="w-full h-full"
             resizeMode="cover"
@@ -354,7 +355,7 @@ const SharingComp = ({
 
           <View className="rounded-xl border border-customLightGray bg-white h-[40px] overflow-hidden flex-row items-center">
             <TextInput
-              className="placeholder flex-1 pl-2"
+              className="placeholder flex-1 pl-2 text-customGray"
               placeholder={IntLabel('write_comment')}
               placeholderTextColor={'#4D4A48'}
               value={addComment}

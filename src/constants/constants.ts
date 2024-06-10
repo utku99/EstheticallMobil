@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Dimensions, NativeModules, Platform, StatusBar } from "react-native";
+import { Appearance, Dimensions, NativeModules, Platform, StatusBar } from "react-native";
 import DeviceInfo from "react-native-device-info";
 
 
@@ -25,6 +25,9 @@ Platform.OS === 'ios'
   ? NativeModules.SettingsManager.settings.AppleLocale ||
     NativeModules.SettingsManager.settings.AppleLanguages[0] //iOS 13
   : NativeModules.I18nManager.localeIdentifier.split("_")[0]
+
+  const colorScheme = Appearance.getColorScheme();
+export const isDarkMode = colorScheme === 'dark';
 
   export const viewedType = {
     package :0,

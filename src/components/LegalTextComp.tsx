@@ -5,7 +5,7 @@ import ModalWrapper from './ModalWrapper';
 import WebClient from '../utility/WebClient';
 import {legalTextType} from '../constants/enum';
 import RenderHTML from 'react-native-render-html';
-import {SIZES} from '../constants/constants';
+import {SIZES, isDarkMode} from '../constants/constants';
 import IntLabel from './IntLabel';
 import {useSelector} from 'react-redux';
 import {FormattedMessage} from 'react-intl';
@@ -116,9 +116,16 @@ const LegalTextComp = ({value, onChange, type, error}: props) => {
               />
             </Text>
 
-            <ModalWrapper visible={visible} setVisible={setVisible}>
+            <ModalWrapper
+              visible={visible}
+              setVisible={setVisible}
+              contentContainerStyle={{
+                backgroundColor: isDarkMode ? '#4D4A48' : 'white',
+              }}>
               {loading ? (
-                <SpinnerComp />
+                <View className="w-full h-full items-center">
+                  <SpinnerComp />
+                </View>
               ) : (
                 <RenderHTML
                   contentWidth={SIZES.width}
@@ -164,7 +171,7 @@ const LegalTextComp = ({value, onChange, type, error}: props) => {
                         setVisible(true);
                       }}
                       className="text-xs font-poppinsRegular text-customOrange flex-shrink">
-                      Kurrumsal Üyelik Sözleşmesini
+                      Kurumsal Üyelik Sözleşmesini
                     </Text>
                   ),
                   text1EN: (
@@ -191,9 +198,16 @@ const LegalTextComp = ({value, onChange, type, error}: props) => {
               />
             </Text>
 
-            <ModalWrapper visible={visible} setVisible={setVisible}>
+            <ModalWrapper
+              visible={visible}
+              setVisible={setVisible}
+              contentContainerStyle={{
+                backgroundColor: isDarkMode ? '#4D4A48' : 'white',
+              }}>
               {loading ? (
-                <SpinnerComp />
+                <View className="w-full h-full items-center">
+                  <SpinnerComp />
+                </View>
               ) : (
                 <RenderHTML
                   contentWidth={SIZES.width}
@@ -212,7 +226,6 @@ const LegalTextComp = ({value, onChange, type, error}: props) => {
           {error && <Text className="text-red-400 text-xs "> {error}</Text>}
         </View>
       )}
-
       {type == 'question' && (
         <View className="mb-3">
           <View className="flex-row space-x-2">
@@ -251,9 +264,16 @@ const LegalTextComp = ({value, onChange, type, error}: props) => {
               />
             </Text>
 
-            <ModalWrapper visible={visible} setVisible={setVisible}>
+            <ModalWrapper
+              visible={visible}
+              setVisible={setVisible}
+              contentContainerStyle={{
+                backgroundColor: isDarkMode ? '#4D4A48' : 'white',
+              }}>
               {loading ? (
-                <SpinnerComp />
+                <View className="w-full h-full items-center">
+                  <SpinnerComp />
+                </View>
               ) : (
                 <RenderHTML
                   contentWidth={SIZES.width}

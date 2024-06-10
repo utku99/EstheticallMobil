@@ -104,7 +104,6 @@ const Sharings = () => {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{display: 'flex', gap: 15, paddingBottom: 20}}
           data={shareds}
-          initialNumToRender={3}
           onViewableItemsChanged={onViewCallBack}
           viewabilityConfig={viewConfigRef.current}
           renderItem={({item, index}) => (

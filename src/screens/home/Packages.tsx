@@ -1,19 +1,19 @@
-import { View, FlatList, TouchableOpacity } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import {View, FlatList, TouchableOpacity} from 'react-native';
+import React, {useEffect, useState} from 'react';
 import HandleData from '../../components/HandleData';
 import WebClient from '../../utility/WebClient';
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
 import PackageComp from '../../components/PackageComp';
-import { Modal } from 'react-native-paper';
+import {Modal} from 'react-native-paper';
 import FitlerIcon from '../../assets/svg/homepages/FitlerIcon';
 import CustomInputs from '../../components/CustomInputs';
 import CustomButtons from '../../components/CustomButtons';
 import IntLabel from '../../components/IntLabel';
 
 const Packages = () => {
-  const { Post, } = WebClient();
+  const {Post} = WebClient();
   const [packages, setPackages] = useState<any>([]);
-  const { user, language } = useSelector((state: any) => state.user);
+  const {user, language} = useSelector((state: any) => state.user);
 
   const [country, setCountry] = useState<any>(null);
   const [city, setCity] = useState<any>(null);
@@ -31,10 +31,10 @@ const Packages = () => {
   const [districts, setDistricts] = useState<any>([]);
 
   const institutionData = [
-    { value: 1, label: IntLabel('hospital') },
-    { value: 4, label: IntLabel('doctor') },
-    { value: 2, label: IntLabel('beauty_center') },
-    { value: 3, label: IntLabel('clinic') },
+    {value: 1, label: IntLabel('hospital')},
+    {value: 4, label: IntLabel('doctor')},
+    {value: 2, label: IntLabel('beauty_center')},
+    {value: 3, label: IntLabel('clinic')},
   ];
   const [services, setServices] = useState<any>([]);
   const [serviceSubs, setServiceSubs] = useState<any>([]);
@@ -90,7 +90,7 @@ const Packages = () => {
     Post('/api/Service/GetAllServices', {})
       .then((res: any) => {
         let temp = res.data;
-        temp.unshift({ value: 0, label: 'Tümü' });
+        temp.unshift({value: 0, label: 'Tümü'});
         setServices(temp);
       })
       .finally(() => {
@@ -98,7 +98,7 @@ const Packages = () => {
           serviceId: operation?.value,
         }).then(res => {
           let temp = res.data;
-          temp.unshift({ value: 0, label: 'Tümü' });
+          temp.unshift({value: 0, label: 'Tümü'});
           setServiceSubs(temp);
         });
       });
@@ -130,10 +130,9 @@ const Packages = () => {
         ...item,
       }));
       setPackages(temp);
-      setLoading(false)
+      setLoading(false);
       setClicked(false);
     });
-
   }, [clicked, language, country, city, town, operation]);
 
   return (
@@ -158,7 +157,7 @@ const Packages = () => {
             alignItems: 'center',
           }}
           data={packages}
-          renderItem={({ item }) => (
+          renderItem={({item}) => (
             <PackageComp
               key={item.packageID}
               item={item}
@@ -171,7 +170,7 @@ const Packages = () => {
       <Modal
         visible={visible}
         onDismiss={() => setVisible(false)}
-        style={{ justifyContent: 'flex-start' }}
+        style={{justifyContent: 'flex-start'}}
         contentContainerStyle={{
           padding: 30,
           backgroundColor: 'white',
@@ -199,6 +198,7 @@ const Packages = () => {
             placeholder={IntLabel('select_city')}
             isSearchable
             onChange={(e: any) => setCity(e)}
+            disable={cities?.length == 0}
           />
         )}
         {city && !town && (
@@ -209,6 +209,7 @@ const Packages = () => {
             placeholder={IntLabel('select_town')}
             isSearchable
             onChange={(e: any) => setTown(e)}
+            disable={towns?.length == 0}
           />
         )}
         {town && (
@@ -219,6 +220,7 @@ const Packages = () => {
             placeholder={IntLabel('select_district')}
             isSearchable
             onChange={(e: any) => setDistrict(e)}
+            disable={districts?.length == 0}
           />
         )}
 
@@ -249,6 +251,7 @@ const Packages = () => {
           dropdownData={filterInstitution}
           placeholder={IntLabel('select_institution_type')}
           onChange={(e: any) => setInstitution(e)}
+          disable={filterInstitution?.length == 0}
         />
 
         <View className="flex-row  justify-between">
@@ -256,7 +259,7 @@ const Packages = () => {
             type="solid"
             label={IntLabel('list_filter')}
             theme="middle"
-            style={{ width: 90 }}
+            style={{width: 90}}
             onPress={() => {
               setClicked(true);
               setVisible(false);
@@ -266,7 +269,7 @@ const Packages = () => {
             type="outlined"
             label={IntLabel('reset')}
             theme="middle"
-            style={{ width: 90 }}
+            style={{width: 90}}
             onPress={() => {
               setClicked(true);
               setCountry(null);

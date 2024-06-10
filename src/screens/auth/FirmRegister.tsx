@@ -20,6 +20,7 @@ const FirmRegister = ({route}: any) => {
   const [districts, setDistricts] = useState([]);
 
   const formik = useFormik({
+    validateOnChange: false,
     enableReinitialize: true,
     initialValues: {
       name: '',
