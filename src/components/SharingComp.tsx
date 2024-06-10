@@ -7,35 +7,36 @@ import {
   FlatList,
   TouchableOpacity,
   TouchableHighlight,
+  ScrollView,
 } from 'react-native';
-import React, { useEffect, useRef, useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import CustomInputs from './CustomInputs';
 import SharingMessageIcon from '../assets/svg/homepages/SharingMessageIcon';
 import SharingSaveIcon from '../assets/svg/homepages/SharingSaveIcon';
 import SharingShareIcon from '../assets/svg/homepages/SharingShareIcon';
 import SharingSendMessageIcon from '../assets/svg/homepages/SharingSendMessageIcon';
-import Carousel, { Pagination } from 'react-native-snap-carousel';
-import WebClient, { toast } from '../utility/WebClient';
-import { SIZES, viewedType } from '../constants/constants';
+import Carousel, {Pagination} from 'react-native-snap-carousel';
+import WebClient, {toast} from '../utility/WebClient';
+import {SIZES, viewedType} from '../constants/constants';
 import HandleData from './HandleData';
-import { useIsFocused, useNavigation } from '@react-navigation/native';
-import { useSelector } from 'react-redux';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
+import {useSelector} from 'react-redux';
 import LikeUnlikeComp from './LikeUnlikeComp';
 import SharingSavedIcon from '../assets/svg/homepages/SharingSavedIcon';
 import moment from 'moment';
 import IntLabel from './IntLabel';
 import Video from 'react-native-video';
 import BlueTick from '../assets/svg/common/BlueTick';
-import { FormattedMessage, useIntl } from 'react-intl';
+import {FormattedMessage, useIntl} from 'react-intl';
 import UnMuted from '../assets/svg/homepages/UnMuted';
 import Muted from '../assets/svg/homepages/Muted';
 import Share from 'react-native-share';
 import CompanyHeaderComp from './CompanyHeaderComp';
 import SpinnerComp from './SpinnerComp';
 
-const CommentComp = ({ item }: any) => {
-  const { Post, loading } = WebClient();
-  const { language } = useSelector((state: any) => state.user);
+const CommentComp = ({item}: any) => {
+  const {Post, loading} = WebClient();
+  const {language} = useSelector((state: any) => state.user);
   const [translatedText, setTranslatedText] = useState(null);
 
   return (
@@ -43,7 +44,7 @@ const CommentComp = ({ item }: any) => {
       <View className="flex-row items-center space-x-3">
         <View className="w-[55px] h-[55px] overflow-hidden rounded-full border-[0.6px] border-customGray">
           <Image
-            source={{ uri: item?.image }}
+            source={{uri: item?.image}}
             className="w-full h-full"
             resizeMode="cover"
           />
@@ -82,8 +83,8 @@ const CommentComp = ({ item }: any) => {
           {translatedText
             ? IntLabel('see_original')
             : loading
-              ? IntLabel('loading')
-              : IntLabel('see_translate')}
+            ? IntLabel('loading')
+            : IntLabel('see_translate')}
         </Text>
       </View>
     </View>
@@ -102,14 +103,18 @@ const SharingComp = ({
   const [seeComments, setSeeComments] = useState(false);
   const [sharedDetail, setSharedDetail] = useState<any>(null);
   const [index, setIndex] = useState<any>(0);
-  const { Post, loading } = WebClient();
-  const { user, isLoggedIn, language, isGuest } = useSelector((state: any) => state.user);
+  const {Post, loading} = WebClient();
+  const {user, isLoggedIn, language, isGuest} = useSelector(
+    (state: any) => state.user,
+  );
   const [translatedText, setTranslatedText] = useState(null);
   const isCarousel = useRef<any>(null);
   const navigation = useNavigation();
-  const [addComment, setAddComment] = useState(null);
+  const [addComment, setAddComment] = useState<any>(null);
   const [isMuted, setIsMuted] = useState(true);
-  const intl = useIntl()
+  const [sentComment, setSentComment] = useState(false);
+  const intl = useIntl();
+  const scrollViewRef = useRef<any>(null);
 
   const warning = IntLabel('login_required_warning');
 
@@ -117,15 +122,19 @@ const SharingComp = ({
     Post('/api/Shared/GetSharedDetailAsync', {
       sharedId: item?.sharedID,
       userID: user?.id ?? 0,
-    }).then(res => {
-      setSharedDetail(res.data);
-    });
-  }, []);
+    })
+      .then(res => {
+        setSharedDetail(res.data);
+      })
+      .finally(() => {
+        setSentComment(false);
+      });
+  }, [sentComment]);
 
   return (
     <View
       className={`h-fit border border-customLightGray rounded-xl overflow-hidden bg-white `}
-      style={{ width: SIZES.width * 0.95 }}>
+      style={{width: SIZES.width * 0.95}}>
       <CompanyHeaderComp
         item={item?.parentModel ?? item}
         setClicked={setClicked}
@@ -138,7 +147,7 @@ const SharingComp = ({
         isApproved={
           item?.isApprovedAccount ?? item?.parentModel?.isApprovedAccount
         }
-        style={{ padding: 10 }}
+        style={{padding: 10}}
       />
 
       {/* carousel */}
@@ -149,7 +158,7 @@ const SharingComp = ({
             imgUrl: img,
             title: '',
           }))}
-          renderItem={({ item }: any) =>
+          renderItem={({item}: any) =>
             item?.imgUrl?.includes('mp4') ? (
               <TouchableHighlight
                 className="relative"
@@ -158,7 +167,7 @@ const SharingComp = ({
                 }}>
                 <>
                   <Video
-                    source={{ uri: item?.imgUrl }}
+                    source={{uri: item?.imgUrl}}
                     repeat
                     muted={isMuted}
                     paused={!isFocus}
@@ -172,7 +181,7 @@ const SharingComp = ({
               </TouchableHighlight>
             ) : (
               <Image
-                source={{ uri: item?.imgUrl }}
+                source={{uri: item?.imgUrl}}
                 className="w-full h-full"
                 resizeMode="cover"
               />
@@ -235,8 +244,8 @@ const SharingComp = ({
             {translatedText
               ? IntLabel('see_original')
               : loading
-                ? IntLabel('loading')
-                : IntLabel('see_translate')}
+              ? IntLabel('loading')
+              : IntLabel('see_translate')}
           </Text>
         </View>
       </View>
@@ -273,8 +282,6 @@ const SharingComp = ({
             <SharingMessageIcon />
           </TouchableOpacity>
 
-
-
           <TouchableOpacity
             onPress={() => {
               if (isLoggedIn && !isGuest) {
@@ -296,19 +303,18 @@ const SharingComp = ({
                 );
               }
             }}>
-            {
-              loading ? <SpinnerComp width={23} height={23} /> :
-                <>
-                  {item?.isSaved ?? item?.parentModel?.isSaved ?
-
-                    <SharingSavedIcon />
-                    :
-                    <SharingSaveIcon />
-                  }
-                </>
-            }
+            {loading ? (
+              <SpinnerComp width={23} height={23} />
+            ) : (
+              <>
+                {item?.isSaved ?? item?.parentModel?.isSaved ? (
+                  <SharingSavedIcon />
+                ) : (
+                  <SharingSaveIcon />
+                )}
+              </>
+            )}
           </TouchableOpacity>
-
 
           <TouchableOpacity
             onPress={() => {
@@ -322,26 +328,36 @@ const SharingComp = ({
       </View>
 
       {seeComments && (
-        <View className="px-[10px] py-[16px] space-y-3 ">
-          <HandleData
-            data={sharedDetail}
-            loading={loading}
-            title={IntLabel('warning_no_active_record')}>
-            <FlatList
-              showsVerticalScrollIndicator
-              scrollEnabled
-              data={sharedDetail}
-              renderItem={({ item }) => (
-                <CommentComp key={item.commentID} item={item} />
-              )}
-            />
-          </HandleData>
+        <View className="px-[10px] py-[16px] space-y-3 flex-1">
+          {sharedDetail?.length == 0 ? (
+            <View className="w-full items-center py-2">
+              <Text className="font-poppinsMedium text-customGray text-xs">
+                {IntLabel('warning_no_active_record')}
+              </Text>
+            </View>
+          ) : (
+            <ScrollView
+              ref={scrollViewRef}
+              onContentSizeChange={() =>
+                scrollViewRef.current?.scrollToEnd({animated: true})
+              }
+              nestedScrollEnabled
+              className="max-h-[300px]">
+              <FlatList
+                data={sharedDetail}
+                renderItem={({item}) => (
+                  <CommentComp key={item.commentID} item={item} />
+                )}
+              />
+            </ScrollView>
+          )}
 
           <View className="rounded-xl border border-customLightGray bg-white h-[40px] overflow-hidden flex-row items-center">
             <TextInput
               className="placeholder flex-1 pl-2"
               placeholder={IntLabel('write_comment')}
               placeholderTextColor={'#4D4A48'}
+              value={addComment}
               onChangeText={(e: any) => setAddComment(e)}
             />
             <TouchableOpacity
@@ -356,7 +372,7 @@ const SharingComp = ({
                   }).then(res => {
                     if (res.data.code === '100') {
                       setAddComment(null);
-                      setClicked(true);
+                      setSentComment(true);
                     }
                   });
                 } else {

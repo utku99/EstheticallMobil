@@ -1,22 +1,22 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import HomeWrapper from './HomeWrapper';
 import SharingComp from '../../components/SharingComp';
 import WebClient from '../../utility/WebClient';
-import { useDispatch, useSelector } from 'react-redux';
-import { FlatList } from 'react-native';
-import { setListFilters } from '../../redux/slices/filter';
+import {useDispatch, useSelector} from 'react-redux';
+import {FlatList} from 'react-native';
+import {setListFilters} from '../../redux/slices/filter';
 import HandleData from '../../components/HandleData';
-import { OneSignal } from 'react-native-onesignal';
+import {OneSignal} from 'react-native-onesignal';
 import IntLabel from '../../components/IntLabel';
 import AdvertisementSharing from '../../components/AdvertisementSharing';
-import { SIZES } from '../../constants/constants';
-import { useIsFocused } from '@react-navigation/native';
+import {SIZES} from '../../constants/constants';
+import {useIsFocused} from '@react-navigation/native';
 
 const Sharings = () => {
-  const { Post } = WebClient();
+  const {Post} = WebClient();
   const dispatch = useDispatch();
-  const { user, language } = useSelector((state: any) => state.user);
-  const { connection, connectionId } = useSelector((state: any) => state.hub);
+  const {user, language} = useSelector((state: any) => state.user);
+  const {connection, connectionId} = useSelector((state: any) => state.hub);
   const [clicked, setClicked] = useState(false);
   const [loading, setLoading] = useState(true);
 
@@ -41,7 +41,6 @@ const Sharings = () => {
   });
 
   useEffect(() => {
-
     Post('/api/Shared/GetSharedLists', {
       countryId: country?.value ?? 0,
       cityId: city?.value ?? 0,
@@ -50,12 +49,14 @@ const Sharings = () => {
       serviceId: operation?.value ?? 0,
       serviceSubId: suboperation?.value ?? 0,
       userId: user?.id ?? 0,
-    }).then((res: any) => {
-      SetShareds(res.data);
-    }).finally(() => {
-      setClicked(false);
-      setLoading(false)
     })
+      .then((res: any) => {
+        SetShareds(res.data);
+      })
+      .finally(() => {
+        setClicked(false);
+        setLoading(false);
+      });
 
     if (OneSignal.User.pushSubscription.getPushSubscriptionId()) {
       Post('/api/Notification/SendOneSignalID', {
@@ -74,12 +75,10 @@ const Sharings = () => {
     }
 
     if (user && connection) {
-      connection.invoke('LoginMessageHub', { UserID: user?.id, TypeID: 1 });
+      connection.invoke('LoginMessageHub', {UserID: user?.id, TypeID: 1});
     }
 
     dispatch(setListFilters(false));
-
-
   }, [
     listFilters,
     clicked,
@@ -92,9 +91,8 @@ const Sharings = () => {
   const onViewCallBack = React.useCallback((viewableItems: any) => {
     setCurrentIndex(viewableItems?.viewableItems[0]?.index);
   }, []);
-  const viewConfigRef = React.useRef({ viewAreaCoveragePercentThreshold: 50 });
+  const viewConfigRef = React.useRef({viewAreaCoveragePercentThreshold: 50});
   const screenIsFocused = useIsFocused();
-
 
   return (
     <HomeWrapper>
@@ -104,12 +102,12 @@ const Sharings = () => {
         title={IntLabel('warning_no_active_record')}>
         <FlatList
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ display: 'flex', gap: 15, paddingBottom: 20 }}
+          contentContainerStyle={{display: 'flex', gap: 15, paddingBottom: 20}}
           data={shareds}
           initialNumToRender={3}
           onViewableItemsChanged={onViewCallBack}
           viewabilityConfig={viewConfigRef.current}
-          renderItem={({ item, index }) => (
+          renderItem={({item, index}) => (
             <SharingComp
               key={item.sharedID}
               item={item}
