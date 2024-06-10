@@ -1,4 +1,4 @@
-import {View, Text} from 'react-native';
+import {View, Text, ScrollView} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import UserWrapper from '../UserWrapper';
 import WebClient from '../../../utility/WebClient';
@@ -22,15 +22,13 @@ const AboutUs = () => {
   }, [language]);
 
   return (
-    <UserWrapper>
-      <View
-        className=" w-[90%]"
-        style={{backgroundColor: isDarkMode ? '#4D4A48' : 'white'}}>
+    <UserWrapper style={{backgroundColor: isDarkMode ? '#4D4A48' : 'white'}}>
+      <ScrollView className=" w-[90%]">
         <RenderHTML
           contentWidth={SIZES.width}
           source={{html: legalText?.content}}
         />
-      </View>
+      </ScrollView>
     </UserWrapper>
   );
 };

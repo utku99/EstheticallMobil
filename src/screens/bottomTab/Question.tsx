@@ -1,21 +1,21 @@
-import { View, Text, TextInput } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import {View, Text, TextInput} from 'react-native';
+import React, {useEffect, useState} from 'react';
 import UserWrapper from '../user/UserWrapper';
 import CustomInputs from '../../components/CustomInputs';
-import { SIZES } from '../../constants/constants';
+import {SIZES} from '../../constants/constants';
 import AddPhotoComp from '../../components/AddPhotoComp';
 import LegalTextComp from '../../components/LegalTextComp';
 import CustomButtons from '../../components/CustomButtons';
-import { useFormik } from 'formik';
-import WebClient, { toast } from '../../utility/WebClient';
-import { useSelector } from 'react-redux';
+import {useFormik} from 'formik';
+import WebClient, {toast} from '../../utility/WebClient';
+import {useSelector} from 'react-redux';
 import * as Yup from 'yup';
 import IntLabel from '../../components/IntLabel';
-import { messageEnum, messageTypeEnum } from '../../constants/enum';
+import {messageEnum, messageTypeEnum} from '../../constants/enum';
 
 const Question = () => {
-  const { Post } = WebClient();
-  const { user } = useSelector((state: any) => state.user);
+  const {Post} = WebClient();
+  const {user} = useSelector((state: any) => state.user);
   const [services, setServices] = useState([]);
   const [allCompanies, setAllCompanies] = useState(null);
 
@@ -47,7 +47,7 @@ const Question = () => {
         .oneOf([true], IntLabel('accept_text_warning'))
         .required(IntLabel('accept_text_warning')),
     }),
-    onSubmit: (values, { resetForm }) => {
+    onSubmit: (values, {resetForm}) => {
       Post('/api/Chatting/FirstMessage', {
         senderId: user?.id,
         senderType: messageTypeEnum.user,
@@ -97,7 +97,7 @@ const Question = () => {
 
   return (
     <UserWrapper>
-      <View className=" h-full w-full" style={{ width: SIZES.width * 0.95 }}>
+      <View className=" h-full w-full" style={{width: SIZES.width * 0.95}}>
         <Text className="font-poppinsMedium text-customGray text-base  mb-3">
           {IntLabel('ask_question')}
         </Text>
@@ -110,27 +110,25 @@ const Question = () => {
             formik.setValues({
               ...formik.values,
               institution: e,
-              operation: ""
-            })
+              operation: '',
+            });
           }}
           placeholder={IntLabel('select_institution')}
-          style={{ width: '75%', height: 32 }}
+          style={{width: '75%', height: 32}}
           isSearchable
           error={formik.errors.institution}
         />
 
-        {
-          formik.values.institution?.value &&
-          <CustomInputs
-            type="dropdown"
-            dropdownData={services}
-            value={formik.values.operation}
-            onChange={(e: any) => formik.setFieldValue('operation', e)}
-            placeholder={IntLabel('select_operation')}
-            style={{ width: '75%', height: 32 }}
-            error={formik.errors.operation}
-          />
-        }
+        <CustomInputs
+          type="dropdown"
+          dropdownData={services}
+          value={formik.values.operation}
+          onChange={(e: any) => formik.setFieldValue('operation', e)}
+          placeholder={IntLabel('select_operation')}
+          style={{width: '75%', height: 32}}
+          error={formik.errors.operation}
+          disable={services?.length == 0}
+        />
 
         <CustomInputs
           type="textareabig"
@@ -162,7 +160,7 @@ const Question = () => {
           icon="send"
           theme="big"
           onPress={formik.handleSubmit}
-          style={{ alignSelf: 'center' }}
+          style={{alignSelf: 'center'}}
         />
       </View>
     </UserWrapper>

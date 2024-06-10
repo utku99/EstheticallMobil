@@ -1,17 +1,17 @@
-import { View, Text, ScrollView } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import {View, Text, ScrollView} from 'react-native';
+import React, {useEffect, useState} from 'react';
 import UserWrapper from '../user/UserWrapper';
 import CustomInputs from '../../components/CustomInputs';
-import { SIZES } from '../../constants/constants';
+import {SIZES} from '../../constants/constants';
 import CustomButtons from '../../components/CustomButtons';
-import { useDispatch, useSelector } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import WebClient from '../../utility/WebClient';
-import { useFormik } from 'formik';
+import {useFormik} from 'formik';
 import * as Yup from 'yup';
-import { useNavigation } from '@react-navigation/core';
+import {useNavigation} from '@react-navigation/core';
 import IntLabel from '../../components/IntLabel';
 import moment from 'moment';
-import { FormattedMessage } from 'react-intl';
+import {FormattedMessage} from 'react-intl';
 
 const interviewData = [
   {
@@ -36,8 +36,8 @@ const interviewData = [
 
 const Appointment = () => {
   const dispatch = useDispatch();
-  const { Post } = WebClient();
-  const { user } = useSelector((state: any) => state.user);
+  const {Post} = WebClient();
+  const {user} = useSelector((state: any) => state.user);
   const navigation = useNavigation();
 
   const [countries, setCountries] = useState([]);
@@ -223,7 +223,7 @@ const Appointment = () => {
       <ScrollView
         showsVerticalScrollIndicator={false}
         className=" h-full w-full"
-        style={{ width: SIZES.width * 0.95 }}>
+        style={{width: SIZES.width * 0.95}}>
         <Text className="font-poppinsMedium text-customGray text-base  mb-3">
           {IntLabel('take_appointment')}
         </Text>
@@ -240,7 +240,7 @@ const Appointment = () => {
             isSearchable
             value={formik.values.country}
             onChange={(e: any) => formik.setFieldValue('country', e)}
-            style={{ width: '75%', height: 32 }}
+            style={{width: '75%', height: 32}}
             error={formik.errors.country}
           />
         )}
@@ -253,8 +253,9 @@ const Appointment = () => {
             isSearchable
             value={formik.values.city}
             onChange={(e: any) => formik.setFieldValue('city', e)}
-            style={{ width: '75%', height: 32 }}
+            style={{width: '75%', height: 32}}
             error={formik.errors.city}
+            disable={cities?.length == 0}
           />
         )}
 
@@ -266,8 +267,9 @@ const Appointment = () => {
             isSearchable
             value={formik.values.town}
             onChange={(e: any) => formik.setFieldValue('town', e)}
-            style={{ width: '75%', height: 32 }}
+            style={{width: '75%', height: 32}}
             error={formik.errors.town}
+            disable={towns?.length == 0}
           />
         )}
 
@@ -284,7 +286,7 @@ const Appointment = () => {
                 institutionType: '',
               });
             }}
-            style={{ width: '75%', height: 32 }}
+            style={{width: '75%', height: 32}}
             error={formik.errors.operation}
           />
         )}
@@ -296,7 +298,7 @@ const Appointment = () => {
             placeholder={IntLabel('select_sub_operation')}
             value={formik.values.suboperation}
             onChange={(e: any) => formik.setFieldValue('suboperation', e)}
-            style={{ width: '75%', height: 32 }}
+            style={{width: '75%', height: 32}}
             error={formik.errors.suboperation}
           />
         )}
@@ -309,8 +311,9 @@ const Appointment = () => {
           onChange={(e: any) => {
             formik.setFieldValue('institutionType', e);
           }}
-          style={{ width: '75%', height: 32 }}
+          style={{width: '75%', height: 32}}
           error={formik.errors.institutionType}
+          disable={filterInstitution?.length == 0}
         />
 
         <CustomInputs
@@ -320,8 +323,9 @@ const Appointment = () => {
           isSearchable
           value={formik.values.institution}
           onChange={(e: any) => formik.setFieldValue('institution', e)}
-          style={{ width: '75%', height: 32 }}
+          style={{width: '75%', height: 32}}
           error={formik.errors.institution}
+          disable={company?.length == 0}
         />
 
         {doctors?.length != 0 && (
@@ -331,7 +335,7 @@ const Appointment = () => {
             placeholder="Doktor Seç"
             value={formik.values.doctor}
             onChange={(e: any) => formik.setFieldValue('doctor', e)}
-            style={{ width: '75%', height: 32 }}
+            style={{width: '75%', height: 32}}
           />
         )}
 
@@ -339,7 +343,6 @@ const Appointment = () => {
           type="textareasmall"
           value={formik.values.title}
           onChangeText={formik.handleChange('title')}
-          onBlur={formik.handleBlur("title")}
           error={formik.errors.title}
         />
 
@@ -366,7 +369,7 @@ const Appointment = () => {
                 formik.setFieldValue('startDate', e);
                 formik.setFieldValue('endDate', '');
               }}
-              style={{ width: '75%' }}
+              style={{width: '75%'}}
             />
             <CustomInputs
               type="date"
@@ -378,7 +381,7 @@ const Appointment = () => {
               value={formik.values.endDate}
               error={formik.errors.endDate}
               onChange={(e: any) => formik.setFieldValue('endDate', e)}
-              style={{ width: '75%' }}
+              style={{width: '75%'}}
             />
           </View>
         </View>
@@ -418,7 +421,7 @@ const Appointment = () => {
           label={IntLabel('send')}
           icon="send"
           theme="big"
-          style={{ width: 180, alignSelf: 'center' }}
+          style={{width: 180, alignSelf: 'center'}}
           onPress={formik.handleSubmit}
         />
       </ScrollView>

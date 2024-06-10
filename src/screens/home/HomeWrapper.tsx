@@ -1,4 +1,10 @@
-import {View, Text, ScrollView, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  KeyboardAvoidingView,
+} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import FitlerIcon from '../../assets/svg/homepages/FitlerIcon';
 import CustomButtons from '../../components/CustomButtons';
@@ -217,7 +223,7 @@ const HomeWrapper: React.FC<props> = ({children}) => {
   }, [formik.values.institution.value, formik.values.operation.value]);
 
   return (
-    <View className="bg-[#FAFAFA] flex-1">
+    <KeyboardAvoidingView className="bg-[#FAFAFA] flex-1">
       {/* tabs */}
       <View className="h-[55px] flex-row items-center">
         <TouchableOpacity
@@ -497,7 +503,7 @@ const HomeWrapper: React.FC<props> = ({children}) => {
           onPress={formik.handleSubmit}
         />
       </Modal>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 

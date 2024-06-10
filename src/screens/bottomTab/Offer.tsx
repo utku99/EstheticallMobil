@@ -1,20 +1,20 @@
-import { View, Text, ScrollView } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import {View, Text, ScrollView} from 'react-native';
+import React, {useEffect, useState} from 'react';
 import UserWrapper from '../user/UserWrapper';
-import { SIZES } from '../../constants/constants';
+import {SIZES} from '../../constants/constants';
 import CustomInputs from '../../components/CustomInputs';
 import AddPhotoComp from '../../components/AddPhotoComp';
 import CustomButtons from '../../components/CustomButtons';
-import { useFormik } from 'formik';
+import {useFormik} from 'formik';
 import * as Yup from 'yup';
-import WebClient, { toast } from '../../utility/WebClient';
-import { useSelector } from 'react-redux';
+import WebClient, {toast} from '../../utility/WebClient';
+import {useSelector} from 'react-redux';
 import IntLabel from '../../components/IntLabel';
 import moment from 'moment';
 
 const Offer = () => {
-  const { Post } = WebClient();
-  const { user } = useSelector((state: any) => state.user);
+  const {Post} = WebClient();
+  const {user} = useSelector((state: any) => state.user);
 
   const [countries, setCountries] = useState([]);
   const [cities, setCities] = useState([]);
@@ -59,7 +59,7 @@ const Offer = () => {
         IntLabel('validation_message_this_field_is_required'),
       ),
     }),
-    onSubmit: (values, { resetForm }) => {
+    onSubmit: (values, {resetForm}) => {
       Post('/api/Offers/RequestOffer', {
         userID: user?.id,
         companyID: 0,
@@ -132,7 +132,7 @@ const Offer = () => {
       <ScrollView
         showsVerticalScrollIndicator={false}
         className=" h-full w-full"
-        style={{ width: SIZES.width * 0.95 }}>
+        style={{width: SIZES.width * 0.95}}>
         <Text className="font-poppinsMedium text-customGray text-base  mb-3">
           {IntLabel('take_offer')}
         </Text>
@@ -145,7 +145,7 @@ const Offer = () => {
             isSearchable
             value={formik.values.country}
             onChange={(e: any) => formik.setFieldValue('country', e)}
-            style={{ width: '75%', height: 32 }}
+            style={{width: '75%', height: 32}}
             error={formik.errors.country}
           />
         )}
@@ -158,8 +158,9 @@ const Offer = () => {
             isSearchable
             value={formik.values.city}
             onChange={(e: any) => formik.setFieldValue('city', e)}
-            style={{ width: '75%', height: 32 }}
+            style={{width: '75%', height: 32}}
             error={formik.errors.city}
+            disable={cities?.length == 0}
           />
         )}
 
@@ -171,7 +172,7 @@ const Offer = () => {
             placeholder={IntLabel('select_operation')}
             value={formik.values.operation}
             onChange={(e: any) => formik.setFieldValue('operation', e)}
-            style={{ width: '75%', height: 32 }}
+            style={{width: '75%', height: 32}}
             error={formik.errors.operation}
           />
         )}
@@ -184,7 +185,7 @@ const Offer = () => {
             placeholder={IntLabel('select_sub_operation')}
             value={formik.values.suboperation}
             onChange={(e: any) => formik.setFieldValue('suboperation', e)}
-            style={{ width: '75%', height: 32 }}
+            style={{width: '75%', height: 32}}
           />
         )}
 
@@ -256,7 +257,7 @@ const Offer = () => {
                 formik.setFieldValue('startDate', e);
                 formik.setFieldValue('endDate', '');
               }}
-              style={{ width: '75%' }}
+              style={{width: '75%'}}
             />
             <CustomInputs
               type="date"
@@ -268,7 +269,7 @@ const Offer = () => {
               value={formik.values.endDate}
               error={formik.errors.endDate}
               onChange={(e: any) => formik.setFieldValue('endDate', e)}
-              style={{ width: '75%' }}
+              style={{width: '75%'}}
             />
           </View>
         </View>
@@ -284,7 +285,7 @@ const Offer = () => {
           label={IntLabel('send')}
           icon="send"
           theme="big"
-          style={{ width: 180, alignSelf: 'center' }}
+          style={{width: 180, alignSelf: 'center'}}
           onPress={formik.handleSubmit}
         />
       </ScrollView>

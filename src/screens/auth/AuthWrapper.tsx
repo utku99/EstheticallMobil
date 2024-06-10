@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   Pressable,
   SafeAreaView,
+  KeyboardAvoidingView,
 } from 'react-native';
 import React, {useState} from 'react';
 import {ScrollView} from 'react-native-gesture-handler';
@@ -29,7 +30,7 @@ interface props {
 const AuthWrapper: React.FC<props> = ({children, title, onPress}) => {
   const [visible, setVisible] = useState(false);
   const [dropdown, setDropdown] = useState(false);
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
   const dispatch = useDispatch();
   const route = useRoute();
 
@@ -38,75 +39,76 @@ const AuthWrapper: React.FC<props> = ({children, title, onPress}) => {
       className="flex-1 justify-center"
       source={require('../../assets/images/authBg/auth2.jpg')}
       resizeMode="cover">
-      <SafeAreaView className="flex-1">
-        <ScrollView
-          className=""
-          contentContainerStyle={{
-            alignItems: 'center',
-            paddingHorizontal: 30,
-            flexGrow: 1,
-            paddingVertical: 20,
-            justifyContent: 'space-between',
-          }}>
-          {/* top cont */}
-          <View className="relative  w-full items-center">
-            <View className="absolute right-0 -top-5 ">
-              <LangChoiceComp />
+      <KeyboardAvoidingView className="flex-1">
+        <SafeAreaView className="flex-1">
+          <ScrollView
+            contentContainerStyle={{
+              alignItems: 'center',
+              paddingHorizontal: 30,
+              flexGrow: 1,
+              paddingVertical: 20,
+              justifyContent: 'space-between',
+            }}>
+            {/* top cont */}
+            <View className="relative  w-full items-center">
+              <View className="absolute right-0 -top-5 ">
+                <LangChoiceComp />
+              </View>
+              <View className="">
+                <EstheticLogo width={165} height={47} />
+              </View>
             </View>
-            <View className="">
-              <EstheticLogo width={165} height={47} />
-            </View>
-          </View>
 
-          <View className="w-full ">
-            <Text className="text-customGray font-poppinsMedium text-xl self-center mb-6">
-              {title}
-            </Text>
-            {children}
-          </View>
-
-          <View className="w-full h-[150px] justify-between">
-            <Pressable
-              onPress={() => dispatch(setGuest(true))}
-              className="flex-row items-center space-x-6 justify-center">
-              <Text className="text-customOrange font-poppinsMedium text-sm ">
-                {IntLabel('continue_without_membership')}
+            <View className="w-full ">
+              <Text className="text-customGray font-poppinsMedium text-xl self-center mb-6">
+                {title}
               </Text>
-            </Pressable>
-            {route.name == 'login' ? (
-              <>
-                <CustomButtons
-                  type="solid"
-                  label={IntLabel('login')}
-                  onPress={onPress}
-                  theme="big"
-                />
-                <CustomButtons
-                  type="outlined"
-                  label={IntLabel('register')}
-                  onPress={() => setVisible(true)}
-                  theme="big"
-                />
-              </>
-            ) : (
-              <>
-                <CustomButtons
-                  type="solid"
-                  label={IntLabel('register')}
-                  onPress={onPress}
-                  theme="big"
-                />
-                <CustomButtons
-                  type="outlined"
-                  label={IntLabel('login')}
-                  onPress={() => navigation.navigate('login')}
-                  theme="big"
-                />
-              </>
-            )}
-          </View>
-        </ScrollView>
-      </SafeAreaView>
+              {children}
+            </View>
+
+            <View className="w-full h-[150px] justify-between">
+              <Pressable
+                onPress={() => dispatch(setGuest(true))}
+                className="flex-row items-center space-x-6 justify-center">
+                <Text className="text-customOrange font-poppinsMedium text-sm ">
+                  {IntLabel('continue_without_membership')}
+                </Text>
+              </Pressable>
+              {route.name == 'login' ? (
+                <>
+                  <CustomButtons
+                    type="solid"
+                    label={IntLabel('login')}
+                    onPress={onPress}
+                    theme="big"
+                  />
+                  <CustomButtons
+                    type="outlined"
+                    label={IntLabel('register')}
+                    onPress={() => setVisible(true)}
+                    theme="big"
+                  />
+                </>
+              ) : (
+                <>
+                  <CustomButtons
+                    type="solid"
+                    label={IntLabel('register')}
+                    onPress={onPress}
+                    theme="big"
+                  />
+                  <CustomButtons
+                    type="outlined"
+                    label={IntLabel('login')}
+                    onPress={() => navigation.navigate('login')}
+                    theme="big"
+                  />
+                </>
+              )}
+            </View>
+          </ScrollView>
+        </SafeAreaView>
+      </KeyboardAvoidingView>
 
       <ModalWrapper visible={visible} setVisible={setVisible}>
         <Text className="text-xl text-customGray font-poppinsMedium text-center mb-6">

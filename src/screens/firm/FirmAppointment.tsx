@@ -1,17 +1,17 @@
-import { View, Text } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import {View, Text} from 'react-native';
+import React, {useEffect, useState} from 'react';
 import FirmWrapper from './FirmWrapper';
 import CustomInputs from '../../components/CustomInputs';
 import CustomButtons from '../../components/CustomButtons';
-import { SIZES } from '../../constants/constants';
-import { useNavigation } from '@react-navigation/native';
-import { useFormik } from 'formik';
-import { useSelector } from 'react-redux';
-import WebClient, { toast } from '../../utility/WebClient';
+import {SIZES} from '../../constants/constants';
+import {useNavigation} from '@react-navigation/native';
+import {useFormik} from 'formik';
+import {useSelector} from 'react-redux';
+import WebClient, {toast} from '../../utility/WebClient';
 import IntLabel from '../../components/IntLabel';
 import * as Yup from 'yup';
 import moment from 'moment';
-import { FormattedMessage } from 'react-intl';
+import {FormattedMessage} from 'react-intl';
 
 const interviewData = [
   {
@@ -38,10 +38,10 @@ interface props {
   route?: any;
 }
 
-const FirmAppointment = ({ route }: props) => {
+const FirmAppointment = ({route}: props) => {
   const navigation = useNavigation();
-  const { Post, loading } = WebClient();
-  const { user } = useSelector((state: any) => state.user);
+  const {Post, loading} = WebClient();
+  const {user} = useSelector((state: any) => state.user);
 
   const [services, setServices] = useState([]);
   const [subServices, setSubServices] = useState([]);
@@ -84,7 +84,7 @@ const FirmAppointment = ({ route }: props) => {
         IntLabel('validation_message_this_field_is_required'),
       ),
     }),
-    onSubmit: (values, { resetForm }) => {
+    onSubmit: (values, {resetForm}) => {
       Post('/api/Appointments/RequestAppointment', {
         userID: user?.id,
         companyID: company?.value,
@@ -144,7 +144,7 @@ const FirmAppointment = ({ route }: props) => {
 
   return (
     <FirmWrapper>
-      <View className=" h-full w-full" style={{ width: SIZES.width * 0.95 }}>
+      <View className=" h-full w-full" style={{width: SIZES.width * 0.95}}>
         <Text className="font-poppinsRegular text-customGray text-sm  mb-3">
           {IntLabel('appointment_info')}
         </Text>
@@ -153,7 +153,7 @@ const FirmAppointment = ({ route }: props) => {
           type="dropdown"
           value={company}
           dropdownData={[company]}
-          style={{ width: '75%', height: 32 }}
+          style={{width: '75%', height: 32}}
           disable
         />
 
@@ -164,7 +164,7 @@ const FirmAppointment = ({ route }: props) => {
             placeholder={IntLabel('select_operation')}
             value={formik.values.operation}
             onChange={(e: any) => formik.setFieldValue('operation', e)}
-            style={{ width: '75%', height: 32 }}
+            style={{width: '75%', height: 32}}
             error={formik.errors.operation}
           />
         )}
@@ -176,8 +176,9 @@ const FirmAppointment = ({ route }: props) => {
             placeholder={IntLabel('select_sub_operation')}
             value={formik.values.suboperation}
             onChange={(e: any) => formik.setFieldValue('suboperation', e)}
-            style={{ width: '75%', height: 32 }}
+            style={{width: '75%', height: 32}}
             error={formik.errors.suboperation}
+            disable={subServices?.length == 0}
           />
         )}
 
@@ -188,7 +189,7 @@ const FirmAppointment = ({ route }: props) => {
             value={formik.values.doctor}
             onChange={(e: any) => formik.setFieldValue('doctor', e)}
             placeholder={IntLabel('select_doctor')}
-            style={{ width: '75%', height: 32 }}
+            style={{width: '75%', height: 32}}
           />
         )}
 
@@ -222,7 +223,7 @@ const FirmAppointment = ({ route }: props) => {
                 formik.setFieldValue('startDate', e);
                 formik.setFieldValue('endDate', '');
               }}
-              style={{ width: '75%' }}
+              style={{width: '75%'}}
             />
             <CustomInputs
               type="date"
@@ -234,7 +235,7 @@ const FirmAppointment = ({ route }: props) => {
               value={formik.values.endDate}
               error={formik.errors.endDate}
               onChange={(e: any) => formik.setFieldValue('endDate', e)}
-              style={{ width: '75%' }}
+              style={{width: '75%'}}
             />
           </View>
         </View>
@@ -274,7 +275,7 @@ const FirmAppointment = ({ route }: props) => {
           label={IntLabel('send')}
           icon="send"
           theme="big"
-          style={{ alignSelf: 'center' }}
+          style={{alignSelf: 'center'}}
           onPress={formik.handleSubmit}
         />
       </View>

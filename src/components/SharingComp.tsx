@@ -41,6 +41,15 @@ const CommentComp = ({item}: any) => {
 
   return (
     <View className="space-y-2 mb-2">
+      <View className="w-[60px] h-[60px] overflow-hidden rounded-full  ">
+        <Image
+          source={{
+            uri: item?.image,
+          }}
+          className="w-full h-full"
+          resizeMode="cover"
+        />
+      </View>
       <Text className="text-xs text-customGray font-poppinsRegular">
         {translatedText ?? item?.comment}
       </Text>

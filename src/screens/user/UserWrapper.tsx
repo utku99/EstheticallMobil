@@ -1,4 +1,4 @@
-import {View, Text, ScrollView} from 'react-native';
+import {View, Text, ScrollView, KeyboardAvoidingView} from 'react-native';
 import React from 'react';
 import NotificationIcon2 from '../../assets/svg/userMenu/NotificationIcon2';
 
@@ -11,7 +11,7 @@ interface props {
 
 const UserWrapper = ({children, title, showBellIcon = false, style}: props) => {
   return (
-    <View className="bg-[#FAFAFA] flex-1" style={style}>
+    <KeyboardAvoidingView className="bg-[#FAFAFA] flex-1" style={style}>
       {title && (
         <>
           <Text className="font-poppinsMedium  text-customGray text-base text-center  ">
@@ -25,7 +25,7 @@ const UserWrapper = ({children, title, showBellIcon = false, style}: props) => {
         </>
       )}
       <View className="items-center h-full flex-1 py-3">{children}</View>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 

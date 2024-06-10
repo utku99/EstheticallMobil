@@ -1,4 +1,4 @@
-import {View, Text} from 'react-native';
+import {View, Text, KeyboardAvoidingView} from 'react-native';
 import React from 'react';
 import {SIZES} from '../constants/constants';
 import loader from '../assets/lottie/data.json';
@@ -38,7 +38,12 @@ const HandleData = ({data, loading, title, children}: props) => {
         </View>
       </View>
     );
-  } else return <View className="flex-1 ">{children}</View>;
+  } else
+    return (
+      <KeyboardAvoidingView className="flex-1 ">
+        {children}
+      </KeyboardAvoidingView>
+    );
 };
 
 export default HandleData;

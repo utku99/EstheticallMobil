@@ -1,4 +1,4 @@
-import {View, Text} from 'react-native';
+import {View, Text, ScrollView} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import UserWrapper from '../UserWrapper';
 import {legalTextType} from '../../../constants/enum';
@@ -23,12 +23,12 @@ const PrivacyPolicy = () => {
 
   return (
     <UserWrapper style={{backgroundColor: isDarkMode ? '#4D4A48' : 'white'}}>
-      <View className=" w-[90%]">
+      <ScrollView className=" w-[90%]">
         <RenderHTML
           contentWidth={SIZES.width}
           source={{html: legalText?.content}}
         />
-      </View>
+      </ScrollView>
     </UserWrapper>
   );
 };

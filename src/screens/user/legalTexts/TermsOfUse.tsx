@@ -1,11 +1,11 @@
-import {View, Text} from 'react-native';
+import {View, Text, ScrollView} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import UserWrapper from '../UserWrapper';
 import WebClient from '../../../utility/WebClient';
 import {useSelector} from 'react-redux';
 import {legalTextType} from '../../../constants/enum';
 import RenderHTML from 'react-native-render-html';
-import {SIZES} from '../../../constants/constants';
+import {SIZES, isDarkMode} from '../../../constants/constants';
 import SpinnerComp from '../../../components/SpinnerComp';
 
 const TermsOfUse = () => {
@@ -23,16 +23,16 @@ const TermsOfUse = () => {
   }, [language]);
 
   return (
-    <UserWrapper>
+    <UserWrapper style={{backgroundColor: isDarkMode ? '#4D4A48' : 'white'}}>
       {loading ? (
         <SpinnerComp />
       ) : (
-        <View className=" w-[90%]">
+        <ScrollView className=" w-[90%]">
           <RenderHTML
             contentWidth={SIZES.width}
             source={{html: legalText?.content}}
           />
-        </View>
+        </ScrollView>
       )}
     </UserWrapper>
   );
