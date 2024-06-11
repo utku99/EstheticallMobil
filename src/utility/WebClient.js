@@ -57,9 +57,9 @@ const WebClient = () => {
       const res = await axiosInstance.post(path, data);
 
       if (success) {
-        toast(res.data.message);
+        toast(res.data.message ?? res.data.result?.message ?? res.data?.resultMessage);
       } else if (error) {
-        toast(res.data.message);
+        toast(res.data.message ?? res.data.result?.message ?? res.data?.resultMessage);
       }
 
       return res;

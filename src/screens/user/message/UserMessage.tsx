@@ -62,7 +62,7 @@ const UserMessage = ({route}: {route?: any}) => {
           messagesType: route.params?.selectedUser?.messagesType,
           receiverId: route.params?.selectedUser?.correspondentID,
           receiverType: route.params?.selectedUser?.correspondentType,
-          serviceID: messages[0]?.serviceID,
+          serviceID: route.params?.selectedUser?.serviceID,
         },
         false,
         false,
