@@ -29,11 +29,3 @@ Platform.OS === 'ios'
   const colorScheme = Appearance.getColorScheme();
 export const isDarkMode = colorScheme === 'dark';
 
-  export const viewedType = {
-    package :0,
-    company:1,
-    office:2,
-    sharing:4,
-    offer: 5,
-    notification: 6
-}

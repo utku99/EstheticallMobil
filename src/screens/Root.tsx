@@ -30,7 +30,6 @@ import FirmCommunication from './firm/FirmCommunication';
 import FirmCommunicationQuestion from './firm/FirmCommunicationQuestion';
 import DrawerBar from '../components/DrawerBar';
 import UserProfile from './user/UserProfile';
-import UserOffer from './user/offer/UserOffer';
 import UserAppointment from './user/UserAppointment';
 import UserMessage from './user/message/UserMessage';
 import UserNotification from './user/UserNotification';

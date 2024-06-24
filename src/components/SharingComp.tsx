@@ -17,7 +17,7 @@ import SharingShareIcon from '../assets/svg/homepages/SharingShareIcon';
 import SharingSendMessageIcon from '../assets/svg/homepages/SharingSendMessageIcon';
 import Carousel, {Pagination} from 'react-native-snap-carousel';
 import WebClient, {toast} from '../utility/WebClient';
-import {SIZES, viewedType} from '../constants/constants';
+import {SIZES} from '../constants/constants';
 import HandleData from './HandleData';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
@@ -33,6 +33,7 @@ import Muted from '../assets/svg/homepages/Muted';
 import Share from 'react-native-share';
 import CompanyHeaderComp from './CompanyHeaderComp';
 import SpinnerComp from './SpinnerComp';
+import {viewedType} from '../constants/enum';
 
 const CommentComp = ({item}: any) => {
   const {Post, loading} = WebClient();
@@ -87,10 +88,12 @@ const SharingComp = ({
   item,
   setClicked,
   isFocus,
+  id,
 }: {
   item: any;
   setClicked: any;
   isFocus?: boolean;
+  id?: any;
 }) => {
   const [seeComments, setSeeComments] = useState(false);
   const [sharedDetail, setSharedDetail] = useState<any>(null);
@@ -125,7 +128,9 @@ const SharingComp = ({
 
   return (
     <View
-      className={`h-fit border border-customLightGray rounded-xl overflow-hidden bg-white `}
+      className={`h-fit border ${
+        id == item?.sharedID ? 'border-customOrange' : 'border-customLightGray'
+      } rounded-xl overflow-hidden bg-white `}
       style={{width: SIZES.width * 0.95}}>
       <CompanyHeaderComp
         item={item?.parentModel ?? item}

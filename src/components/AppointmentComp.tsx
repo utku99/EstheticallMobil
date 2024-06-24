@@ -1,5 +1,5 @@
 import {View, Text, Image, Pressable} from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {SIZES} from '../constants/constants';
 import CustomInputs from './CustomInputs';
 import LikeIcon from '../assets/svg/common/LikeIcon';
@@ -36,7 +36,7 @@ const interviewData = [
   },
 ];
 
-const AppointmentComp = ({item, setClicked}: any) => {
+const AppointmentComp = ({item, setClicked, id}: any) => {
   const [visible, setVisible] = useState(false);
   const {Post, loading} = WebClient();
   const {user} = useSelector((state: any) => state.user);
@@ -69,7 +69,11 @@ const AppointmentComp = ({item, setClicked}: any) => {
 
   return (
     <View
-      className={` border border-customLightGray rounded-xl bg-white `}
+      className={` border ${
+        id == item?.appointmentID
+          ? 'border-customOrange'
+          : 'border-customLightGray'
+      } rounded-xl bg-white `}
       style={{width: SIZES.width * 0.95}}>
       <View className="p-[10px] space-y-2">
         <Text className="text-customGray font-poppinsRegular text-xs ">

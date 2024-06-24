@@ -1,5 +1,5 @@
 import {View, Text, FlatList} from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import UserWrapper from '../UserWrapper';
 import CustomButtons from '../../../components/CustomButtons';
 import IntLabel from '../../../components/IntLabel';
@@ -11,9 +11,10 @@ import OfferRequestComp from '../../../components/OfferRequestComp';
 
 const UserOfferRequests = () => {
   const navigation = useNavigation<any>();
-  const route = useRoute();
   const {Post, loading} = WebClient();
   const {user} = useSelector((state: any) => state.user);
+  const flatlistRef = useRef<any>();
+  const route = useRoute<any>();
 
   const [offerRequests, setOfferRequests] = useState<any>([]);
   const [clicked, setClicked] = useState(false);
@@ -31,6 +32,23 @@ const UserOfferRequests = () => {
       setClicked(false);
     }
   }, [clicked]);
+
+  useEffect(() => {
+    if (route.params?.id && offerRequests.length > 0) {
+      let index = offerRequests.findIndex(
+        (item: any) => item.offerID == route.params?.id,
+      );
+
+      if (index !== -1 && index < offerRequests?.length) {
+        setTimeout(() => {
+          flatlistRef.current.scrollToIndex({
+            animated: true,
+            index: index,
+          });
+        }, 100);
+      }
+    }
+  }, [offerRequests]);
 
   return (
     <UserWrapper>
@@ -56,6 +74,7 @@ const UserOfferRequests = () => {
         loading={loading}
         title={IntLabel('warning_no_active_record')}>
         <FlatList
+          ref={flatlistRef}
           contentContainerStyle={{
             display: 'flex',
             gap: 15,
@@ -63,8 +82,22 @@ const UserOfferRequests = () => {
           }}
           data={offerRequests}
           renderItem={({item, index}) => (
-            <OfferRequestComp key={index} item={item} setClicked={setClicked} />
+            <OfferRequestComp
+              key={index}
+              item={item}
+              setClicked={setClicked}
+              id={route.params?.id ?? 0}
+            />
           )}
+          onScrollToIndexFailed={info => {
+            const wait = new Promise(resolve => setTimeout(resolve, 500));
+            wait.then(() => {
+              flatlistRef.current?.scrollToIndex({
+                index: info.index,
+                animated: true,
+              });
+            });
+          }}
         />
       </HandleData>
     </UserWrapper>

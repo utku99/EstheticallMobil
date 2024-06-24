@@ -8,13 +8,15 @@ import WebClient from '../utility/WebClient';
 import IntLabel from './IntLabel';
 import {useNavigation} from '@react-navigation/native';
 
-const OfferRequestComp = ({item, setClicked}: any) => {
+const OfferRequestComp = ({item, setClicked, id}: any) => {
   const {Post} = WebClient();
   const navigation = useNavigation<any>();
 
   return (
     <View
-      className={` border border-customLightGray rounded-xl bg-white p-[10px] space-y-3`}
+      className={` border ${
+        id == item?.offerID ? 'border-customOrange' : 'border-customLightGray'
+      } rounded-xl bg-white p-[10px] space-y-3`}
       style={{width: SIZES.width * 0.95}}>
       <View className="flex-row items-center justify-between">
         <View className="">

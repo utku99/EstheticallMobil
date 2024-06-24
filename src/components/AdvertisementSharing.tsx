@@ -15,7 +15,7 @@ import SharingShareIcon from '../assets/svg/homepages/SharingShareIcon';
 import SharingSendMessageIcon from '../assets/svg/homepages/SharingSendMessageIcon';
 import Carousel, {Pagination} from 'react-native-snap-carousel';
 import WebClient, {toast} from '../utility/WebClient';
-import {SIZES, viewedType} from '../constants/constants';
+import {SIZES} from '../constants/constants';
 import HandleData from './HandleData';
 import {useNavigation} from '@react-navigation/native';
 import {useSelector} from 'react-redux';
@@ -26,6 +26,7 @@ import IntLabel from './IntLabel';
 import Video from 'react-native-video';
 import BlueTick from '../assets/svg/common/BlueTick';
 import {useIntl} from 'react-intl';
+import {viewedType} from '../constants/enum';
 
 const AdvertisementSharing = ({
   onClickable = false,

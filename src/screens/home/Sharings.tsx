@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import HomeWrapper from './HomeWrapper';
 import SharingComp from '../../components/SharingComp';
 import WebClient from '../../utility/WebClient';
@@ -10,7 +10,7 @@ import {OneSignal} from 'react-native-onesignal';
 import IntLabel from '../../components/IntLabel';
 import AdvertisementSharing from '../../components/AdvertisementSharing';
 import {SIZES} from '../../constants/constants';
-import {useIsFocused} from '@react-navigation/native';
+import {useIsFocused, useRoute} from '@react-navigation/native';
 
 const Sharings = () => {
   const {Post} = WebClient();
@@ -19,6 +19,8 @@ const Sharings = () => {
   const {connection, connectionId} = useSelector((state: any) => state.hub);
   const [clicked, setClicked] = useState(false);
   const [loading, setLoading] = useState(true);
+  const flatlistRef = useRef<any>();
+  const route = useRoute<any>();
 
   const {
     country,
@@ -94,6 +96,23 @@ const Sharings = () => {
   const viewConfigRef = React.useRef({viewAreaCoveragePercentThreshold: 50});
   const screenIsFocused = useIsFocused();
 
+  useEffect(() => {
+    if (route.params?.id && shareds.length > 0) {
+      let index = shareds.findIndex(
+        (item: any) => item.sharedID == route.params?.id,
+      );
+
+      if (index !== -1 && index < shareds?.length) {
+        setTimeout(() => {
+          flatlistRef.current.scrollToIndex({
+            animated: true,
+            index: index,
+          });
+        }, 100);
+      }
+    }
+  }, [shareds]);
+
   return (
     <HomeWrapper>
       <HandleData
@@ -101,6 +120,7 @@ const Sharings = () => {
         loading={loading}
         title={IntLabel('warning_no_active_record')}>
         <FlatList
+          ref={flatlistRef}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{display: 'flex', gap: 15, paddingBottom: 20}}
           data={shareds}
@@ -112,9 +132,19 @@ const Sharings = () => {
               item={item}
               setClicked={setClicked}
               isFocus={index === currentIndex && screenIsFocused}
+              id={route.params?.id ?? 0}
             />
             // <AdvertisementSharing />
           )}
+          onScrollToIndexFailed={info => {
+            const wait = new Promise(resolve => setTimeout(resolve, 500));
+            wait.then(() => {
+              flatlistRef.current?.scrollToIndex({
+                index: info.index,
+                animated: true,
+              });
+            });
+          }}
         />
       </HandleData>
     </HomeWrapper>

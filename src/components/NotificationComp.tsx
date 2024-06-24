@@ -1,7 +1,7 @@
 import {View, Text, Image, TouchableOpacity, Pressable} from 'react-native';
-import React from 'react';
+import React, {useRef} from 'react';
 import LikeIcon from '../assets/svg/common/LikeIcon';
-import {SIZES, viewedType} from '../constants/constants';
+import {SIZES} from '../constants/constants';
 import TrashIcon from '../assets/svg/userMenu/TrashIcon';
 import ShareIcon from '../assets/svg/homepages/ShareIcon';
 import WebClient, {toast} from '../utility/WebClient';
@@ -13,6 +13,10 @@ import CustomInputs from './CustomInputs';
 import CompanyHeaderComp from './CompanyHeaderComp';
 import NotificationIcon from '../assets/svg/userMenu/NotificationIcon';
 import NotificationIcon2 from '../assets/svg/userMenu/NotificationIcon2';
+import IsReadNotificationIcon from '../assets/svg/userMenu/IsReadNotificationIcon';
+import BlueTick from '../assets/svg/common/BlueTick';
+import {NotificationsEnum, viewedType} from '../constants/enum';
+import {useNavigation} from '@react-navigation/native';
 
 interface props {
   item?: any;
@@ -22,6 +26,19 @@ interface props {
 const NotificationComp: React.FC<props> = ({item, setClicked}) => {
   const {Post} = WebClient();
   const {user} = useSelector((state: any) => state.user);
+  const navigation = useNavigation<any>();
+
+  const handleClick = () => {
+    if (item?.typeID == NotificationsEnum.UserMessage) {
+      navigation.navigate('userincomingmessage', {id: item?.messageID});
+    } else if (item?.typeID == NotificationsEnum.UserAppointment) {
+      navigation.navigate('userappointment', {id: 1061});
+    } else if (item?.typeID == NotificationsEnum.UserOffer) {
+      navigation.navigate('userofferrequests', {id: item?.offerID});
+    } else if (item?.typeID == NotificationsEnum.UserFavorites) {
+      navigation.navigate('sharing', {id: item?.sharedID});
+    }
+  };
 
   return (
     <>
@@ -62,35 +79,79 @@ const NotificationComp: React.FC<props> = ({item, setClicked}) => {
         </View>
       ) : (
         <View
-          className={` border ${
-            item?.isRead ? 'border-customLightGray' : 'border-customOrange'
-          }  rounded-xl bg-white p-[10px] space-y-3 `}
+          className={`flex-row border ${'border-customLightGray'} rounded-xl bg-white p-[10px] space-x-3`}
           style={{width: SIZES.width * 0.95}}>
-          <CompanyHeaderComp
-            item={item}
-            rating={parseFloat(item?.companyPoint) / 20}
-            companyId={item?.companyID}
-            officeId={item?.companyOfficeID}
-            isFavorite={item?.isCompanyFavorite}
-            setClicked={setClicked}
-            isApproved={item?.isApprovedAccount}
-          />
+          <TouchableOpacity
+            onPress={() => handleClick()}
+            className="flex-1 flex-row items-center justify-between">
+            {/* image */}
+            <View className="relative w-[60px] h-[60px]">
+              <View className="overflow-hidden rounded-full border-[0.6px] border-customGray ">
+                <Image
+                  source={{
+                    uri: item?.companyLogo,
+                  }}
+                  className="w-full h-full"
+                  resizeMode="cover"
+                />
+              </View>
+              <View className="absolute right-0 bg-white rounded-full">
+                {item?.isApprovedAccount && <BlueTick />}
+              </View>
+            </View>
 
-          <View className="flex-row items-center justify-between">
-            <Text
+            {/* company info */}
+            <View className="w-[37%] ">
+              <Text
+                numberOfLines={1}
+                className="text-customGray text-xs font-poppinsSemiBold ">
+                {item?.companyName}
+              </Text>
+              {item?.branch && (
+                <Text
+                  numberOfLines={1}
+                  className="text-customGray  text-xs font-poppinsRegular">
+                  {item?.branch}
+                </Text>
+              )}
+              <Text
+                numberOfLines={1}
+                className="text-customGray  text-xs font-poppinsRegular">
+                {item?.location}
+              </Text>
+            </View>
+
+            {/* contents */}
+            <View className="w-[37%] ">
+              <Text
+                numberOfLines={1}
+                className="text-customGray text-xs font-poppinsSemiBold ">
+                {item?.title}:
+              </Text>
+              <Text
+                numberOfLines={1}
+                className="text-customGray  text-xs font-poppinsRegular">
+                {item?.content}
+              </Text>
+            </View>
+          </TouchableOpacity>
+
+          <View className="items-center space-y-2">
+            <TouchableOpacity
               onPress={() => {
                 Post('/api/Common/InsertView', {
                   id: item?.userPushNotificationId,
                   isActive: true,
                   typeID: viewedType.notification,
-                  userID: user?.id ?? 0,
+                  userID: user?.id,
                 }).then(() => {
                   setClicked(true);
                 });
-              }}
-              className="text-customGray font-poppins text-sm  flex-1">
-              {item?.content}
-            </Text>
+              }}>
+              <IsReadNotificationIcon
+                fill={item?.isRead ? '#4D4A48' : '#FF8270'}
+              />
+            </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
                 Post('/api/Notification/RemoveUserPushMessage', {

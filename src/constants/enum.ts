@@ -48,3 +48,26 @@ export const companyType = {
     clinic: 3,
     doctor: 4,
 }
+
+
+export const NotificationsEnum = {
+    ToUser: 1,
+    ToCompanyOrOffice: 2,
+    ToAll: 3,
+    ToCompany: 4,
+    ToOffice: 5,
+    ToFiltered: 6,
+    UserOffer: 7,
+    UserAppointment: 8,
+    UserMessage: 9,
+    UserFavorites: 10,
+}
+
+export const viewedType = {
+    package :0,
+    company:1,
+    office:2,
+    sharing:4,
+    offer: 5,
+    notification: 6
+}
