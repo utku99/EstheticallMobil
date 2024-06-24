@@ -101,7 +101,13 @@ const UserProfile = () => {
   return (
     <UserWrapper>
       <HandleData loading={loading}>
-        <ScrollView className="items-center px-[5%] flex-1">
+        <ScrollView
+          contentContainerStyle={{
+            display: 'flex',
+            alignItems: 'center',
+            flexGrow: 1,
+          }}
+          className="px-[5%] ">
           {/* image */}
           <View className="flex-row space-x-1 mb-6">
             <View className="w-[80px] h-[80px] overflow-hidden rounded-full border border-opacity-50 border-customGray">
