@@ -23,18 +23,17 @@ const TermsOfUse = () => {
   }, [language]);
 
   return (
-    <UserWrapper style={{backgroundColor: isDarkMode ? '#4D4A48' : 'white'}}>
-      {loading ? (
-        <SpinnerComp />
-      ) : (
+    <>
+      <SpinnerComp loading={loading} />
+      <UserWrapper style={{backgroundColor: isDarkMode ? '#4D4A48' : 'white'}}>
         <ScrollView className=" w-[90%]">
           <RenderHTML
             contentWidth={SIZES.width}
             source={{html: legalText?.content}}
           />
         </ScrollView>
-      )}
-    </UserWrapper>
+      </UserWrapper>
+    </>
   );
 };
 

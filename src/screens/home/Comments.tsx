@@ -1,16 +1,17 @@
-import { FlatList } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import {FlatList} from 'react-native';
+import React, {useEffect, useState} from 'react';
 import HomeWrapper from './HomeWrapper';
 import CommentToCompanyComp from '../../components/CommentToCompanyComp';
 import WebClient from '../../utility/WebClient';
-import { useDispatch, useSelector } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import HandleData from '../../components/HandleData';
 import IntLabel from '../../components/IntLabel';
-import { setListFilters } from '../../redux/slices/filter';
+import {setListFilters} from '../../redux/slices/filter';
+import SpinnerComp from '../../components/SpinnerComp';
 
 const Comments = () => {
-  const { Post } = WebClient();
-  const { user, language } = useSelector((state: any) => state.user);
+  const {Post, loading} = WebClient();
+  const {user, language} = useSelector((state: any) => state.user);
   const {
     country,
     city,
@@ -24,9 +25,6 @@ const Comments = () => {
   const [comments, setComments] = useState<any>([]);
   const [clicked, setClicked] = useState(false);
 
-  const [loading, setLoading] = useState(true);
-
-
   useEffect(() => {
     Post('/api/Comment/GetCommentListAsync', {
       countryId: country?.value ?? 0,
@@ -39,30 +37,35 @@ const Comments = () => {
       userId: user?.id ?? 0,
     }).then((res: any) => {
       setComments(res.data);
-      setLoading(false)
       setClicked(false);
     });
 
     dispatch(setListFilters(false));
-
   }, [listFilters, clicked]);
 
   return (
-    <HomeWrapper>
-      <HandleData
-        data={comments}
-        loading={loading}
-        title={IntLabel('warning_no_active_record')}>
-        <FlatList
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ display: 'flex', gap: 15, paddingBottom: 20 }}
+    <>
+      <SpinnerComp loading={loading} />
+
+      <HomeWrapper>
+        <HandleData
           data={comments}
-          renderItem={({ item }) => (
-            <CommentToCompanyComp item={item} setClicked={setClicked} />
-          )}
-        />
-      </HandleData>
-    </HomeWrapper>
+          title={IntLabel('warning_no_active_record')}>
+          <FlatList
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{
+              display: 'flex',
+              gap: 15,
+              paddingBottom: 20,
+            }}
+            data={comments}
+            renderItem={({item}) => (
+              <CommentToCompanyComp item={item} setClicked={setClicked} />
+            )}
+          />
+        </HandleData>
+      </HomeWrapper>
+    </>
   );
 };
 

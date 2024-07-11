@@ -8,7 +8,7 @@ import {useSelector} from 'react-redux';
 import IntLabel from './IntLabel';
 
 const MessageComp = ({item}: any) => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<any>();
   const {connection} = useSelector((state: any) => state.hub);
   const {user} = useSelector((state: any) => state.user);
 

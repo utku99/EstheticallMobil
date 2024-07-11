@@ -9,7 +9,6 @@ import {SIZES, isDarkMode} from '../constants/constants';
 import IntLabel from './IntLabel';
 import {useSelector} from 'react-redux';
 import {FormattedMessage} from 'react-intl';
-import SpinnerComp from './SpinnerComp';
 
 interface props {
   value: boolean;
@@ -122,18 +121,12 @@ const LegalTextComp = ({value, onChange, type, error}: props) => {
               contentContainerStyle={{
                 backgroundColor: isDarkMode ? '#4D4A48' : 'white',
               }}>
-              {loading ? (
-                <View className="w-full h-full items-center">
-                  <SpinnerComp />
-                </View>
-              ) : (
-                <RenderHTML
-                  contentWidth={SIZES.width}
-                  source={{
-                    html: text == 1 ? legalText?.content : legalText2?.content,
-                  }}
-                />
-              )}
+              <RenderHTML
+                contentWidth={SIZES.width}
+                source={{
+                  html: text == 1 ? legalText?.content : legalText2?.content,
+                }}
+              />
             </ModalWrapper>
           </View>
           {error && <Text className="text-red-400 text-xs "> {error}</Text>}
@@ -204,23 +197,17 @@ const LegalTextComp = ({value, onChange, type, error}: props) => {
               contentContainerStyle={{
                 backgroundColor: isDarkMode ? '#4D4A48' : 'white',
               }}>
-              {loading ? (
-                <View className="w-full h-full items-center">
-                  <SpinnerComp />
-                </View>
-              ) : (
-                <RenderHTML
-                  contentWidth={SIZES.width}
-                  source={{
-                    html:
-                      text == 1
-                        ? legalText?.content
-                        : text == 2
-                        ? legalText2?.content
-                        : legalText4?.content,
-                  }}
-                />
-              )}
+              <RenderHTML
+                contentWidth={SIZES.width}
+                source={{
+                  html:
+                    text == 1
+                      ? legalText?.content
+                      : text == 2
+                      ? legalText2?.content
+                      : legalText4?.content,
+                }}
+              />
             </ModalWrapper>
           </View>
           {error && <Text className="text-red-400 text-xs "> {error}</Text>}
@@ -270,18 +257,12 @@ const LegalTextComp = ({value, onChange, type, error}: props) => {
               contentContainerStyle={{
                 backgroundColor: isDarkMode ? '#4D4A48' : 'white',
               }}>
-              {loading ? (
-                <View className="w-full h-full items-center">
-                  <SpinnerComp />
-                </View>
-              ) : (
-                <RenderHTML
-                  contentWidth={SIZES.width}
-                  source={{
-                    html: legalText3?.content,
-                  }}
-                />
-              )}
+              <RenderHTML
+                contentWidth={SIZES.width}
+                source={{
+                  html: legalText3?.content,
+                }}
+              />
             </ModalWrapper>
           </View>
           {error && <Text className="text-red-400 text-xs "> {error}</Text>}

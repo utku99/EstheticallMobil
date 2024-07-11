@@ -11,14 +11,14 @@ import IntLabel from '../../components/IntLabel';
 import AdvertisementSharing from '../../components/AdvertisementSharing';
 import {SIZES} from '../../constants/constants';
 import {useIsFocused, useRoute} from '@react-navigation/native';
+import SpinnerComp from '../../components/SpinnerComp';
 
 const Sharings = () => {
-  const {Post} = WebClient();
+  const {Post, loading} = WebClient();
   const dispatch = useDispatch();
   const {user, language} = useSelector((state: any) => state.user);
   const {connection, connectionId} = useSelector((state: any) => state.hub);
   const [clicked, setClicked] = useState(false);
-  const [loading, setLoading] = useState(true);
   const flatlistRef = useRef<any>();
   const route = useRoute<any>();
 
@@ -114,40 +114,45 @@ const Sharings = () => {
   }, [shareds]);
 
   return (
-    <HomeWrapper>
-      <HandleData
-        data={shareds}
-        loading={loading}
-        title={IntLabel('warning_no_active_record')}>
-        <FlatList
-          ref={flatlistRef}
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{display: 'flex', gap: 15, paddingBottom: 20}}
-          data={shareds}
-          onViewableItemsChanged={onViewCallBack}
-          viewabilityConfig={viewConfigRef.current}
-          renderItem={({item, index}) => (
-            <SharingComp
-              key={item.sharedID}
-              item={item}
-              setClicked={setClicked}
-              isFocus={index === currentIndex && screenIsFocused}
-              id={route.params?.id ?? 0}
-            />
-            // <AdvertisementSharing />
-          )}
-          onScrollToIndexFailed={info => {
-            const wait = new Promise(resolve => setTimeout(resolve, 500));
-            wait.then(() => {
-              flatlistRef.current?.scrollToIndex({
-                index: info.index,
-                animated: true,
+    <>
+      <SpinnerComp loading={loading} />
+
+      <HomeWrapper>
+        <HandleData data={shareds} title={IntLabel('warning_no_active_record')}>
+          <FlatList
+            ref={flatlistRef}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{
+              display: 'flex',
+              gap: 15,
+              paddingBottom: 20,
+            }}
+            data={shareds}
+            onViewableItemsChanged={onViewCallBack}
+            viewabilityConfig={viewConfigRef.current}
+            renderItem={({item, index}) => (
+              <SharingComp
+                key={item.sharedID}
+                item={item}
+                setClicked={setClicked}
+                isFocus={index === currentIndex && screenIsFocused}
+                id={route.params?.id ?? 0}
+              />
+              // <AdvertisementSharing />
+            )}
+            onScrollToIndexFailed={info => {
+              const wait = new Promise(resolve => setTimeout(resolve, 500));
+              wait.then(() => {
+                flatlistRef.current?.scrollToIndex({
+                  index: info.index,
+                  animated: true,
+                });
               });
-            });
-          }}
-        />
-      </HandleData>
-    </HomeWrapper>
+            }}
+          />
+        </HandleData>
+      </HomeWrapper>
+    </>
   );
 };
 

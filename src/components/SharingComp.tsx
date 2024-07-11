@@ -32,7 +32,6 @@ import UnMuted from '../assets/svg/homepages/UnMuted';
 import Muted from '../assets/svg/homepages/Muted';
 import Share from 'react-native-share';
 import CompanyHeaderComp from './CompanyHeaderComp';
-import SpinnerComp from './SpinnerComp';
 import {viewedType} from '../constants/enum';
 
 const CommentComp = ({item}: any) => {
@@ -98,18 +97,18 @@ const SharingComp = ({
   const [seeComments, setSeeComments] = useState(false);
   const [sharedDetail, setSharedDetail] = useState<any>(null);
   const [index, setIndex] = useState<any>(0);
-  const {Post, loading} = WebClient();
+  const {Post} = WebClient();
   const {user, isLoggedIn, language, isGuest} = useSelector(
     (state: any) => state.user,
   );
   const [translatedText, setTranslatedText] = useState(null);
   const isCarousel = useRef<any>(null);
-  const navigation = useNavigation();
   const [addComment, setAddComment] = useState<any>(null);
   const [isMuted, setIsMuted] = useState(true);
   const [sentComment, setSentComment] = useState(false);
   const intl = useIntl();
   const scrollViewRef = useRef<any>(null);
+  const [loading, setLoading] = useState(false);
 
   const warning = IntLabel('login_required_warning');
 
@@ -127,145 +126,139 @@ const SharingComp = ({
   }, [sentComment]);
 
   return (
-    <View
-      className={`h-fit border ${
-        id == item?.sharedID ? 'border-customOrange' : 'border-customLightGray'
-      } rounded-xl overflow-hidden bg-white `}
-      style={{width: SIZES.width * 0.95}}>
-      <CompanyHeaderComp
-        item={item?.parentModel ?? item}
-        setClicked={setClicked}
-        rating={
-          parseFloat(item?.companyPoint ?? item?.parentModel?.companyPoint) / 20
-        }
-        companyId={item?.companyId}
-        officeId={item?.companyOfficeId}
-        isFavorite={item?.parentModel?.isFavorite ?? item?.isFavorite}
-        isApproved={
-          item?.isApprovedAccount ?? item?.parentModel?.isApprovedAccount
-        }
-        style={{padding: 10}}
-      />
-
-      {/* carousel */}
-      <View className="w-full aspect-[1.3]">
-        <Carousel
-          ref={isCarousel}
-          data={(item?.imagesList ?? item?.files)?.map((img: any) => ({
-            imgUrl: img,
-            title: '',
-          }))}
-          renderItem={({item}: any) =>
-            item?.imgUrl?.includes('mp4') ? (
-              <TouchableHighlight
-                className="relative"
-                onPress={() => {
-                  setIsMuted(!isMuted);
-                }}>
-                <>
-                  <Video
-                    source={{uri: item?.imgUrl}}
-                    repeat
-                    muted={isMuted}
-                    paused={!isFocus}
-                    resizeMode="cover"
-                    className="w-full h-full "
-                  />
-                  <View className="absolute bottom-2 right-2">
-                    {isMuted ? <Muted /> : <UnMuted />}
-                  </View>
-                </>
-              </TouchableHighlight>
-            ) : (
-              <Image
-                source={{uri: item?.imgUrl}}
-                className="w-full h-full"
-                resizeMode="cover"
-              />
-            )
-          }
-          sliderWidth={SIZES.width * 0.95}
-          itemWidth={SIZES.width * 0.95}
-          loop={true}
-          enableSnap={true}
-          onSnapToItem={i => setIndex(i)}
-        />
-        <Pagination
-          dotsLength={item?.imagesList?.length ?? item?.files?.length}
-          activeDotIndex={index}
-          carouselRef={isCarousel}
-          dotStyle={{
-            width: 8,
-            height: 8,
-            borderRadius: 5,
-            borderWidth: 1,
-            borderColor: 'white',
-          }}
-          tappableDots={true}
-          dotColor="#FF8170"
-          inactiveDotColor="transparent"
-          inactiveDotScale={1}
-          containerStyle={{
-            position: 'absolute',
-            bottom: 0,
-            alignSelf: 'center',
-          }}
-        />
-      </View>
-
-      {/* description */}
-      <View className="px-[10px] py-3 space-y-1">
-        <Text
-          numberOfLines={2}
-          className="text-customGray text-xs font-poppinsRegular">
-          {translatedText ?? item?.description}
-        </Text>
-        <View className="flex flex-row justify-between">
-          <Text className="text-customGray text-xxs font-poppinsRegular">
-            {moment(item?.date, 'YYYY-MM-DD').format('DD.MM.YYYY')}
-          </Text>
-          <Text
-            onPress={() => {
-              if (translatedText) {
-                setTranslatedText(null);
-              } else {
-                Post('/api/Common/TranslateText', {
-                  text: item?.description,
-                  targetLanguage: language?.language_code,
-                }).then(res => {
-                  setTranslatedText(res.data.trans);
-                });
-              }
-            }}
-            className="self-end text-xs text-blue-400">
-            {translatedText
-              ? IntLabel('see_original')
-              : loading
-              ? IntLabel('loading')
-              : IntLabel('see_translate')}
-          </Text>
-        </View>
-      </View>
-
-      {/* bottom */}
+    <>
       <View
-        className={`bg-customBrown w-full h-[35px] px-[10px] rounded-b-xl flex-row items-center`}>
-        <Text
-          onPress={() => {
-            Post('/api/Common/InsertView', {
-              id: item?.sharedID,
-              isActive: true,
-              typeID: viewedType.sharing,
-              userID: user?.id ?? 0,
-            }).then(res => {
-              setSeeComments(!seeComments);
-            });
-          }}
-          className="text-white text-xs font-poppinsRegular flex-1">
-          {seeComments ? IntLabel('hide_comments') : IntLabel('see_comments')}
-        </Text>
-        <View className="flex-row space-x-3 ">
-          <TouchableOpacity
+        className={`h-fit border ${
+          id == item?.sharedID
+            ? 'border-customOrange'
+            : 'border-customLightGray'
+        } rounded-xl overflow-hidden bg-white `}
+        style={{width: SIZES.width * 0.95}}>
+        <CompanyHeaderComp
+          item={item?.parentModel ?? item}
+          setClicked={setClicked}
+          rating={
+            parseFloat(item?.companyPoint ?? item?.parentModel?.companyPoint) /
+            20
+          }
+          companyId={item?.companyId}
+          officeId={item?.companyOfficeId}
+          isFavorite={item?.parentModel?.isFavorite ?? item?.isFavorite}
+          isApproved={
+            item?.isApprovedAccount ?? item?.parentModel?.isApprovedAccount
+          }
+          style={{padding: 10}}
+        />
+
+        {/* carousel */}
+        <View className="w-full aspect-[1.3]">
+          <Carousel
+            ref={isCarousel}
+            data={(item?.imagesList ?? item?.files)?.map((img: any) => ({
+              imgUrl: img,
+              title: '',
+            }))}
+            renderItem={({item}: any) =>
+              item?.imgUrl?.includes('mp4') ? (
+                <TouchableHighlight
+                  className="relative"
+                  onPress={() => {
+                    setIsMuted(!isMuted);
+                  }}>
+                  <>
+                    <Video
+                      source={{uri: item?.imgUrl}}
+                      repeat
+                      muted={isMuted}
+                      paused={!isFocus}
+                      resizeMode="cover"
+                      className="w-full h-full "
+                    />
+                    <View className="absolute bottom-2 right-2">
+                      {isMuted ? <Muted /> : <UnMuted />}
+                    </View>
+                  </>
+                </TouchableHighlight>
+              ) : (
+                <Image
+                  source={{uri: item?.imgUrl}}
+                  className="w-full h-full"
+                  resizeMode="cover"
+                />
+              )
+            }
+            sliderWidth={SIZES.width * 0.95}
+            itemWidth={SIZES.width * 0.95}
+            loop={true}
+            enableSnap={true}
+            onSnapToItem={i => setIndex(i)}
+          />
+          <Pagination
+            dotsLength={item?.imagesList?.length ?? item?.files?.length}
+            activeDotIndex={index}
+            carouselRef={isCarousel}
+            dotStyle={{
+              width: 8,
+              height: 8,
+              borderRadius: 5,
+              borderWidth: 1,
+              borderColor: 'white',
+            }}
+            tappableDots={true}
+            dotColor="#FF8170"
+            inactiveDotColor="transparent"
+            inactiveDotScale={1}
+            containerStyle={{
+              position: 'absolute',
+              bottom: 0,
+              alignSelf: 'center',
+            }}
+          />
+        </View>
+
+        {/* description */}
+        <View className="px-[10px] py-3 space-y-1">
+          <Text
+            numberOfLines={2}
+            className="text-customGray text-xs font-poppinsRegular">
+            {translatedText ?? item?.description}
+          </Text>
+          <View className="flex flex-row justify-between">
+            <Text className="text-customGray text-xxs font-poppinsRegular">
+              {moment(item?.date, 'YYYY-MM-DD').format('DD.MM.YYYY')}
+            </Text>
+            <Text
+              onPress={() => {
+                setLoading(true);
+                if (translatedText) {
+                  setTranslatedText(null);
+                } else {
+                  Post('/api/Common/TranslateText', {
+                    text: item?.description,
+                    targetLanguage: language?.language_code,
+                  })
+                    .then(res => {
+                      setTranslatedText(res.data.trans);
+                    })
+                    .finally(() => {
+                      setLoading(false);
+                    });
+                }
+              }}
+              className="self-end text-xs text-blue-400">
+              {translatedText
+                ? IntLabel('see_original')
+                : loading
+                ? IntLabel('loading')
+                : IntLabel('see_translate')}
+            </Text>
+          </View>
+        </View>
+
+        {/* bottom */}
+        <View
+          className={`bg-customBrown w-full h-[35px] px-[10px] rounded-b-xl flex-row items-center`}>
+          <Text
             onPress={() => {
               Post('/api/Common/InsertView', {
                 id: item?.sharedID,
@@ -275,113 +268,123 @@ const SharingComp = ({
               }).then(res => {
                 setSeeComments(!seeComments);
               });
-            }}>
-            <SharingMessageIcon />
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            onPress={() => {
-              if (isLoggedIn && !isGuest) {
-                Post('/api/Common/SaveShared', {
-                  userID: user?.id,
-                  sharedID: item?.sharedID,
-                  isSaved: item?.isSaved
-                    ? !item?.isSaved
-                    : !item?.parentModel?.isSaved,
-                }).then(res => {
-                  setClicked(true);
-                });
-              } else {
-                toast(
-                  intl.formatMessage({
-                    id: 'login_required_warning',
-                    defaultMessage: 'login_required_warning',
-                  }),
-                );
-              }
-            }}>
-            {loading ? (
-              <SpinnerComp width={23} height={23} />
-            ) : (
-              <>
-                {item?.isSaved ?? item?.parentModel?.isSaved ? (
-                  <SharingSavedIcon />
-                ) : (
-                  <SharingSaveIcon />
-                )}
-              </>
-            )}
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            onPress={() => {
-              Share.open({
-                url: `https://dev.estheticall.com/paylasimlar?id=${item?.sharedID}`,
-              });
-            }}>
-            <SharingShareIcon />
-          </TouchableOpacity>
-        </View>
-      </View>
-
-      {seeComments && (
-        <View className="px-[10px] py-[16px] space-y-3 flex-1">
-          {sharedDetail?.length == 0 ? (
-            <View className="w-full items-center py-2">
-              <Text className="font-poppinsMedium text-customGray text-xs">
-                {IntLabel('warning_no_active_record')}
-              </Text>
-            </View>
-          ) : (
-            <ScrollView
-              ref={scrollViewRef}
-              onContentSizeChange={() =>
-                scrollViewRef.current?.scrollToEnd({animated: true})
-              }
-              nestedScrollEnabled
-              className="max-h-[300px]">
-              <FlatList
-                data={sharedDetail}
-                renderItem={({item}) => (
-                  <CommentComp key={item.commentID} item={item} />
-                )}
-              />
-            </ScrollView>
-          )}
-
-          <View className="rounded-xl border border-customLightGray bg-white h-[40px] overflow-hidden flex-row items-center">
-            <TextInput
-              className="placeholder flex-1 pl-2 text-customGray"
-              placeholder={IntLabel('write_comment')}
-              placeholderTextColor={'#4D4A48'}
-              value={addComment}
-              onChangeText={(e: any) => setAddComment(e)}
-            />
+            }}
+            className="text-white text-xs font-poppinsRegular flex-1">
+            {seeComments ? IntLabel('hide_comments') : IntLabel('see_comments')}
+          </Text>
+          <View className="flex-row space-x-3 ">
             <TouchableOpacity
               onPress={() => {
-                if (isLoggedIn && addComment) {
-                  Post('/api/Comment/AddComment', {
-                    sharedId: item?.sharedID,
-                    userId: user?.id,
-                    comment: addComment,
-                    isActive: true,
-                    isDeleted: false,
+                Post('/api/Common/InsertView', {
+                  id: item?.sharedID,
+                  isActive: true,
+                  typeID: viewedType.sharing,
+                  userID: user?.id ?? 0,
+                }).then(res => {
+                  setSeeComments(!seeComments);
+                });
+              }}>
+              <SharingMessageIcon />
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() => {
+                if (isLoggedIn && !isGuest) {
+                  Post('/api/Common/SaveShared', {
+                    userID: user?.id,
+                    sharedID: item?.sharedID,
+                    isSaved: item?.isSaved
+                      ? !item?.isSaved
+                      : !item?.parentModel?.isSaved,
                   }).then(res => {
-                    if (res.data.code === '100') {
-                      setAddComment(null);
-                      setSentComment(true);
-                    }
+                    setClicked(true);
                   });
                 } else {
-                  toast(warning);
+                  toast(
+                    intl.formatMessage({
+                      id: 'login_required_warning',
+                      defaultMessage: 'login_required_warning',
+                    }),
+                  );
                 }
               }}>
-              <SharingSendMessageIcon />
+              {item?.isSaved ?? item?.parentModel?.isSaved ? (
+                <SharingSavedIcon />
+              ) : (
+                <SharingSaveIcon />
+              )}
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              onPress={() => {
+                Share.open({
+                  url: `https://dev.estheticall.com/paylasimlar?id=${item?.sharedID}`,
+                });
+              }}>
+              <SharingShareIcon />
             </TouchableOpacity>
           </View>
         </View>
-      )}
-    </View>
+
+        {seeComments && (
+          <View className="px-[10px] py-[16px] space-y-3 flex-1">
+            {sharedDetail?.length == 0 ? (
+              <View className="w-full items-center py-2">
+                <Text className="font-poppinsMedium text-customGray text-xs">
+                  {IntLabel('warning_no_active_record')}
+                </Text>
+              </View>
+            ) : (
+              <ScrollView
+                ref={scrollViewRef}
+                onContentSizeChange={() =>
+                  scrollViewRef.current?.scrollToEnd({animated: true})
+                }
+                nestedScrollEnabled
+                className="max-h-[300px]">
+                <FlatList
+                  data={sharedDetail}
+                  renderItem={({item}) => (
+                    <CommentComp key={item.commentID} item={item} />
+                  )}
+                />
+              </ScrollView>
+            )}
+
+            <View className="rounded-xl border border-customLightGray bg-white h-[40px] overflow-hidden flex-row items-center">
+              <TextInput
+                className="placeholder flex-1 pl-2 text-customGray"
+                placeholder={IntLabel('write_comment')}
+                placeholderTextColor={'#4D4A48'}
+                value={addComment}
+                onChangeText={(e: any) => setAddComment(e)}
+              />
+              <TouchableOpacity
+                onPress={() => {
+                  if (isLoggedIn && addComment) {
+                    Post('/api/Comment/AddComment', {
+                      sharedId: item?.sharedID,
+                      userId: user?.id,
+                      comment: addComment,
+                      isActive: true,
+                      isDeleted: false,
+                    }).then(res => {
+                      if (res.data.code === '100') {
+                        setAddComment(null);
+                        setSentComment(true);
+                      }
+                    });
+                  } else {
+                    toast(warning);
+                  }
+                }}>
+                <SharingSendMessageIcon />
+              </TouchableOpacity>
+            </View>
+          </View>
+        )}
+      </View>
+    </>
   );
 };
 
